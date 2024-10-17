@@ -1,0 +1,31 @@
+@startuml 商品登録
+
+actor ユーザー as User
+entity 商品一覧画面 as ProductListScreen
+entity 商品情報変更画面 as ProductEditScreen
+entity 商品 as Product
+entity 商品DAO as ProductDAO
+
+User -> ProductListScreen : 商品一覧画面を表示する
+User -> ProductEditScreen : 商品情報を入力する
+
+ProductEditScreen -> ProductDAO : 画像以外が未入力？
+ProductDAO --> ProductEditScreen : NO
+
+ProductEditScreen -> ProductEditScreen : 画像が未入力？
+ProductEditScreen --> ProductEditScreen : NO
+ProductEditScreen -> ProductListScreen : 商品一覧画面を表示する
+
+ProductEditScreen -> ProductEditScreen : ツールチップを表示する
+
+ProductEditScreen -> ProductDAO : 商品情報を変更する
+ProductDAO -> Product : 商品情報を更新する
+Product -> ProductDAO : 商品情報の更新完了
+
+ProductListScreen -> ProductDAO : すべての商品情報を取得する
+ProductDAO -> Product : 商品情報を取得
+Product -> ProductDAO : 商品情報を返す
+ProductDAO -> ProductListScreen : 商品情報を表示する
+
+
+@enduml
