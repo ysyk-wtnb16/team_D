@@ -1,0 +1,52 @@
+' サインアップする
+@startuml jsingup
+' ①縦軸の並び順を決める
+actor "店長" as act
+boundary "従業員登録画面" as jtb
+' コントローラーに初回アクセスするもの
+boundary "ブラウザ" as brz
+' コントローラーまたはビューの名称を決める
+control "従業員登録コントローラー" as jtc
+' DAOまたはモデルとなる
+entity "アカウントDAO" as account
+entity "従業員アカウントDAO" as jaccount
+
+boundary "従業員登録完了" as jkb
+control "従業員登録完了コントローラー" as jkc
+
+' ②手順を時系列順に記述する
+brz -> jtc: GET
+
+jtb <- jtc:表示する
+
+act -> jtb:従業員情報を入力し\nサインアップボタンを\nクリックする
+
+alt 項目に未入力がある
+    ' HTMLで行うことなので自己向き矢印にしている
+    jtb -> jtb:ツールチップを表示する
+else
+    ' サーバーに送信する
+    ' どんなデータを送信するのかを記述
+    jtb -> jtc: POST（従業員情報）
+    
+    alt メールアドレスが妥当でない
+        jtb <- jtc: メッセージを表示する
+    else パスワードが要件を満たさない
+        jtb <- jtc: メッセージを表示する
+    else パスワードが一致しない
+        jtb <- jtc: メッセージを表示する
+    else 
+        jtc -> account: メールアドレスで検索する
+        jtc <-- account
+        alt メールアドレスが登録済み
+            jtb <- jtc: メールアドレスを表示する
+        else
+            jtc -> account: 登録する
+            jtc -> jaccount: 登録する
+
+            jtc -> jkc: リダイレクト
+            jkb <- jkc:表示する
+        end
+    end
+end
+@enduml
