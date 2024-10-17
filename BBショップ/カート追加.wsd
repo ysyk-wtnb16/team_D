@@ -1,0 +1,26 @@
+@startuml カート追加
+actor 会員 as user
+participant 商品一覧画面 as productList
+participant 商品詳細画面 as productDetail
+participant カートコントローラー as cartController
+participant 商品DAO as productDAO
+participant 在庫DAO as stockDAO
+participant カート as cart
+
+user -> productList: 商品一覧を表示
+productList -> productDetail: 商品を選択して詳細画面を表示
+user -> productDetail: 商品をカートに追加
+productDetail -> cartController: カートに商品を追加依頼
+cartController -> productDAO: 商品情報取得
+productDAO -> cartController: 商品情報を返す
+
+cartController -> stockDAO: 在庫確認
+alt 在庫あり
+    stockDAO -> cartController: 在庫あり
+    cartController -> cart: 商品をカートに追加
+    cart -> user: カートに商品を追加完了
+else 在庫なし
+    stockDAO -> cartController: 在庫なし
+    cartController -> productDetail: 在庫がありませんと表示
+end
+@enduml
