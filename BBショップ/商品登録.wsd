@@ -1,4 +1,4 @@
-@startuml 商品登録
+@startuml 河野相馬
 
 actor ユーザー as User
 entity 商品一覧画面 as ProductListScreen
