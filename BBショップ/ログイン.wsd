@@ -1,48 +1,28 @@
-'サインアップする
-@startuml singnup
-' ①縦軸の並び順を決める
-actor "会員ユーザー" as act
-boundary "ログイン画面" as log
-' コントローラーに初回アクセスするもの
+@startuml login
+actor "会員ユーザー" as member
+actor "従業員ユーザー" as employee
+boundary "ログイン" as log
 boundary "ブラウザ" as brz
-' コントローラーまたはビューの名称を決める
-control "ログインコントローラー" as ktc
-' DAOまたはモデルとなる
-entity "会員アカウントDAO" as kaccount
-boundary "ログイン完了" as kkb
+control "ログイン\nコントローラー" as logc
+entity "アカウント" as account
+boundary "ログイン完了" as logk
+control "ログイン完了\nコントローラー" as logc2
 
-' ②手順を時系列に記述する
-brz -> ktc: GET
-ktc -> kaccount: すべてのアカウント情報を取得する
-log  <- ktc: 表示する
+log -> brz: ログイン画面表示
+brz -> logjs: メールアドレスとパスワード入力
+logjs -> logc: ログインリクエスト送信
 
-act -> log: 会員情報を入力し\nログインボタンを\nクリックsuru
-
-alt 項目未入力がある
-    ' HTMLで行うことなので自己向き矢印にしている
-    log -> log: ツールチップを表示する
-
-    ' サーバーに送信する
-    ' どんなデータを送信するのかを記述
-    log -> ktc: POST (会員情報)
-    else メールアドレスが一致しない
-        log <- ktc: メッセージを表示する
-    else パスワードが一致しない
-        log <- ktc: メッセージを表示する    
-    else
-        ktc -> kaccount: メールアドレスで検索する
-        ktc <-- kaccount
-        alt メールアドレスが登録済み
-            log <- ktc: メッセージを表示する
-        else
-            ktc -> kaccount: ログインする
-            ktc -> kaccount: ログインする
-
-            ktc -> kkc: リダイレクト
-            kkb <- kkc: 表示する
-        end
-    end
+alt メールアドレスとパスワードが正しい場合
+    logc -> account: アカウント確認
+    account --> logc: アカウント有効
+    logc -> logc2: ログイン成功
+    logc2 -> logk: ログイン完了画面表示
+    logk --> member: ログイン完了通知
+else メールアドレスとパスワードが正しくない場合
+    logc -> brz: メールアドレスまたはパスワードが正しくありませんと表示
+else 従業員アカウントの初回ログインの場合
+    logc -> logc2: パスワード再設定要求
+    logc2 -> brz: パスワード再設定画面表示
 end
-
 
 @enduml
