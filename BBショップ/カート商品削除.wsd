@@ -1,0 +1,19 @@
+@startuml shop
+
+boundary カート画面 as kart
+entity カート情報 as kartInfo
+control 商品削除 as delete
+
+kart -> delete: 削除ボタンをクリックする
+delete -> kart: アラートを表示する（商品を削除してもよろしいでしょうか？）
+
+alt Yes
+    delete -> kartInfo: 変更した内容を削除する
+    delete -> kart: 削除完了のアラートを表示する
+end
+
+alt No
+    delete -> kart: 操作をキャンセル
+end
+
+@enduml

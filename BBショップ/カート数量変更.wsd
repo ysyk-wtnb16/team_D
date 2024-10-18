@@ -1,0 +1,19 @@
+@startuml shop
+
+boundary カート画面 as kart
+entity 在庫データ as stockData
+entity カート情報 as kartInfo
+control 数量変更 as new
+
+kart -> new: 数量を変更する
+new -> stockData: 在庫データを取得する
+stockData -> new: 在庫はあるか？
+
+alt 在庫あり
+    new -> kartInfo: 変更した内容を更新する
+end
+
+alt 在庫なし
+    new -> kart: エラーメッセージを表示する
+end
+@enduml
