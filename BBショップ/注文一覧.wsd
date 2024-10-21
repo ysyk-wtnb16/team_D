@@ -1,0 +1,29 @@
+' サインアップする
+@startuml update
+' ①縦軸の並び順を決める
+actor "従業員" as act
+boundary "注文一覧画面" as oeb
+' コントローラーに初回アクセスするもの
+boundary "ブラウザ" as brz
+' コントローラーまたはビューの名称を決める
+control "注文編集コントローラー" as oec
+' DAOまたはモデルとなる
+entity "アカウントDAO" as account
+entity "商品DAO" as pdt
+entity "注文DAO" as order
+
+brz -> oec: GET
+
+oeb <- oec:表示する
+
+act -> oeb:注文一覧を\n表示させたい日付の\n日付ボタンをクリックする
+
+oec <- account:すべての注文を取得する
+oec <- pdt:すべての注文を取得する
+oec <- order:すべての注文を取得する
+
+alt 指定した日付に注文がない
+    oeb <- oec:アラートを表示する
+end
+
+@enduml
