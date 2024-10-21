@@ -1,0 +1,33 @@
+@startuml syouhin_touroku
+actor "従業員" as act
+boundary "商品情報変更画面" as shb
+boundary "ブラウザ" as brz
+
+control "商品変更コントローラー" as shc
+
+entity "商品DAO" as account
+
+boundary "商品変更完了" as shb
+control "商品変更完了コントローラー" as shc
+
+boundary "商品一覧画面" as sib
+
+brz -> shc: GET
+
+shb <- shc: 表示する
+
+act -> shb: 商品情報を入力する
+
+alt 項目に未入力がある
+    
+    shb -> shb: ツールチップを表示する
+else
+    shb -> shc: POST（商品情報）
+
+    else
+        shc -> account: 登録する
+
+        shc -> shc: リダイレクト
+        shb <- shc: 表示する
+end
+@enduml

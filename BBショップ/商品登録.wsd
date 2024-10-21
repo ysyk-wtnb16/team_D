@@ -5,7 +5,7 @@ boundary "ブラウザ" as brz
 
 control "商品登録コントローラー" as stc
 
-entity "商品DAO" as account
+entity "商品DAO" as product
 
 boundary "商品登録完了" as skb
 control "商品登録完了コントローラー" as skc
@@ -23,7 +23,7 @@ else
     stb -> stc: POST（商品情報）
 
     else
-        stc -> account: 登録する
+        stc -> product: 登録する
 
         stc -> skc: リダイレクト
         skb <- skc: 表示する
