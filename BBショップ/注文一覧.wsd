@@ -1,5 +1,5 @@
 ' サインアップする
-@startuml update
+@startuml list
 ' ①縦軸の並び順を決める
 actor "従業員" as act
 boundary "注文一覧画面" as oeb
