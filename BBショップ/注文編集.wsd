@@ -13,7 +13,7 @@ entity "商品DAO" as pdt
 entity "注文DAO" as order
 
 boundary "注文編集完了" as oekb
-control "注文編集完了コントローラー" as okc
+control "注文編集完了コントローラー" as oekc
 
 brz -> oec: GET
 
@@ -25,7 +25,7 @@ oec <- pdt:すべての注文を取得する
 oec <- order:すべての注文を取得する
 
 oec -> order: 登録する
-oec -> okc:リダイレクト
-okc -> oekb:表示する
+oec -> oekc:リダイレクト
+oekc -> oekb:表示する
 
 @enduml
