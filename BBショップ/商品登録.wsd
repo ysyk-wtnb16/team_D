@@ -1,0 +1,31 @@
+@startuml syouhin_touroku
+actor "従業員" as act
+boundary "商品登録画面" as jtb
+boundary "ブラウザ" as brz
+
+control "商品登録コントローラー" as jtc
+
+entity "商品DAO" as account
+
+boundary "商品登録完了" as jkb
+control "商品登録完了コントローラー" as jkc
+
+brz -> jtc: GET
+
+jtb <- jtc:表示する
+
+act -> jtb:商品情報を入力する
+
+alt 項目に未入力がある
+    
+    jtb -> jtb:ツールチップを表示する
+else
+    jtb -> jtc: POST（商品情報）
+
+    else
+        jtc -> account: 登録する
+
+        jtc -> jkc: リダイレクト
+        jkb <- jkc:表示する
+end
+@enduml
