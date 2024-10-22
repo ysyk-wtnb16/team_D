@@ -7,9 +7,9 @@ boundary "ブラウザ" as brz
 ' コントローラーまたはビューの名称を決める
 control "注文編集コントローラー" as oec
 ' DAOまたはモデルとなる
-entity "アカウントDAO" as account
-entity "商品DAO" as pdt
-entity "注文DAO" as order
+entity "アカウント" as account
+entity "商品" as pdt
+entity "注文" as order
 
 brz -> oec: GET
 
@@ -17,9 +17,12 @@ oeb <- oec:表示する
 
 act -> oeb:注文一覧を\n表示させたい日付の\n日付ボタンをクリックする
 
-oec <- account:すべての注文を取得する
-oec <- pdt:すべての注文を取得する
-oec <- order:すべての注文を取得する
+oec -> account:すべての注文を取得する
+account --> oec
+oec -> pdt:すべての注文を取得する
+pdt --> oec
+oec -> order:すべての注文を取得する
+order --> oec
 
 alt 指定した日付に注文がない
     oeb <- oec:アラートを表示する

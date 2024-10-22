@@ -4,7 +4,7 @@ actor "会員ユーザー" as act
 boundary "注文確定画面" as okb
 boundary "ブラウザ" as brz
 control "注文確定\nコントローラー" as okc
-entity "注文DAO" as order
+entity "注文" as order
 boundary "決済完了画面" as okkb
 control "決済完了\nコントローラー" as kkc
 

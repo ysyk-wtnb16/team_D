@@ -8,8 +8,8 @@ boundary "ブラウザ" as brz
 control "注文編集コントローラー" as oec
 ' DAOまたはモデルとなる
 
-entity "商品DAO" as pdt
-entity "注文DAO" as order
+entity "商品" as pdt
+entity "注文" as order
 
 boundary "注文編集完了" as oekb
 control "注文編集完了コントローラー" as oekc
@@ -20,10 +20,10 @@ oeb <- oec:表示する
 
 act -> oeb:注文状況を選択し\n完了ボタンを\nクリックする
 
-oec <- pdt:すべての注文を取得する
-pdt <-- oec
-oec <- order:すべての注文を取得する
-order <-- oec
+oec -> pdt:すべての注文を取得する
+pdt --> oec
+oec -> order:すべての注文を取得する
+order --> oec
 
 oec -> order: 登録する
 oec -> oekc:リダイレクト

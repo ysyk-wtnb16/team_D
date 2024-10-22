@@ -2,13 +2,15 @@
 actor "従業員" as act
 boundary "商品情報変更画面" as shb
 boundary "ブラウザ" as brz
-control "商品変更コントローラー" as shc
-entity "商品DAO" as product
-control "商品変更完了コントローラー" as shkc
-boundary "商品一覧画面" as sib
+control "商品変更ビュー" as shc
+entity "商品" as product
 boundary "商品変更完了画面" as shkb
+control "商品変更完了ビュー" as shkc
 
-shc <- brz: GET
+' 商品の主キーを()の中に入れる
+shc <- brz: GET()
+shc -> product: 商品情報を取得
+shc <-- product:
 shb <- shc: 表示する
 act -> shb: 商品情報を入力する
 
@@ -18,10 +20,8 @@ alt 未入力の項目がある
 else
     shb -> shc: POST（商品情報）
 
-    else
-        shc -> product: 変更する
-        shc -> sib: アラートを表示する
-        shb <- shc: 表示する
-        shkc -> shkb: 変更完了
+    shc -> product: 変更する
+    shc -> shkc: リダイレクト 
+    shkc -> shkb: 表示する
 end
 @enduml

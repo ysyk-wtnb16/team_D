@@ -2,10 +2,10 @@
 actor "従業員" as act
 boundary "商品登録画面" as stb
 boundary "ブラウザ" as brz
-control "商品登録コントローラー" as stc
-entity "商品DAO" as product
+control "商品登録ビュー" as stc
+entity "商品" as product
 boundary "商品登録完了" as skb
-control "商品登録完了コントローラー" as skc
+control "商品登録完了ビュー" as skc
 
 brz -> stc: GET
 stb <- stc: 表示する
@@ -15,9 +15,9 @@ alt 項目に未入力がある
     stb -> stb: ツールチップを表示する
 else
     stb -> stc: POST（商品情報）
-
-    else
-        stc -> product: 登録する
-        skb <- skc: 表示する
+    
+    stc -> product: 登録する
+    stc -> skc: リダイレクト 
+    skb <- skc: 表示する
 end
 @enduml
