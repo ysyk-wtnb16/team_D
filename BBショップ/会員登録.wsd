@@ -1,35 +1,30 @@
 @startuml kaiin_touroku
-actor "店長" as manager
-boundary "従業員登録画面" as reg
-control "従業員登録\nコントローラー" as regc
-entity "従業員アカウント" as emp_account
-boundary "会員登録完了画面" as regk
+actor "非会員ユーザー" as user
+boundary "会員登録画面" as reg
+control "会員登録コントローラー" as regc
+entity "ユーザーデータベース" as db
 boundary "アラート" as alert
-boundary "ツールチップ" as tooltip
-control "店舗取得" as shop_get
-entity "店舗" as shop
+boundary "登録完了画面" as regk
 
-manager -> reg: 会員情報を入力
-manager -> reg: サインアップボタンをクリック
+user -> reg: 会員登録画面を表示
+reg -> user: メールアドレス、氏名、住所等の入力
+user -> regc: サインアップボタンをクリック
 
-alt 未入力のものがある場合
-    regc -> tooltip: ツールチップを表示する
-else パスワード条件未満の場合
-    regc -> alert: パスワードは8文字以上、英大文字・小文字・数字を含める必要がありますと表示
-else メールアドレスが登録済みの場合
-    regc -> emp_account: メールアドレス確認
-    emp_account --> regc: メールアドレスが既に登録済み
-    regc -> alert: エラーメッセージを表示する
-else 正常な入力の場合
-    regc -> emp_account: メールアドレスとパスワードで従業員アカウント登録
-    emp_account --> regc: 登録成功
-    regc -> regk: 会員登録完了画面を表示
-    regk --> manager: アカウント登録完了
+alt メールアドレスが既に登録済みの場合
+    regc -> db: メールアドレス確認
+    db --> regc: 登録済み
+    regc -> alert: このメールアドレスは利用できませんと表示
+else パスワード条件が不足している場合
+    regc -> reg: パスワードの条件確認
+    reg -> alert: パスワードは半角英大文字小文字数字を含む8文字以上にしてくださいと表示
+else パスワードが一致しない場合
+    regc -> reg: パスワード確認
+    reg -> alert: パスワードが一致しませんと表示
+else 入力内容が正常な場合
+    regc -> db: ユーザー情報を登録
+    db --> regc: 登録成功
+    regc -> regk: 登録完了画面を表示
+    regk --> user: 登録完了通知
 end
 
-alt すべての店舗を取得する場合
-    regc -> shop_get: 店舗リスト取得
-    shop_get --> shop: すべての店舗を取得する
-    shop -> reg: 店舗情報を表示
-end
 @enduml
