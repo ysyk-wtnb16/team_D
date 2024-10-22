@@ -8,8 +8,8 @@ boundary "ブラウザ" as brz
 control "注文編集コントローラー" as oec
 ' DAOまたはモデルとなる
 
-entity "商品DAO" as pdt
-entity "注文DAO" as order
+entity "商品" as pdt
+entity "注文" as order
 
 boundary "注文編集完了" as oekb
 control "注文編集完了コントローラー" as oekc
