@@ -1,4 +1,4 @@
-@startuml kaiin_touroku
+@startuml kaiin_touroku 
 actor "非会員ユーザー" as user
 boundary "会員登録画面" as reg
 control "会員登録コントローラー" as regc
