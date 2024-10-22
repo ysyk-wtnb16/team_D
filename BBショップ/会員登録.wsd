@@ -4,7 +4,7 @@ boundary "会員登録画面" as reg
 control "会員登録コントローラー" as regc
 entity "ユーザーデータベース" as db
 boundary "アラート" as alert
-boundary "登録完了画面" as regk
+
 
 user -> reg: 会員登録画面を表示
 reg -> user: メールアドレス、氏名、住所等の入力
@@ -23,7 +23,7 @@ else パスワードが一致しない場合
 else 入力内容が正常な場合
     regc -> db: ユーザー情報を登録
     db --> regc: 登録成功
-    regc -> regk: 登録完了画面を表示
+    regc -> alert: 登録完了とアラートを表示
     regk --> user: 登録完了通知
 end
 
