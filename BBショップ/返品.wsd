@@ -12,22 +12,24 @@ entity "注文" as order
 boundary "返品\n完了画面" as orkb
 control "注文返品完了\nビュー" as orkc
 
-brz -> orc: GET
-orc -> order:会員の注文情報を取得する
+brz -> orc: GET（注文の主キー）
+' 主キーを使って取得する
+orc -> order:注文情報を取得する
 orc <-- order
 ' orc -> pdt:商品を取得する
 ' orc <-- pdt
 orb <- orc:表示する
-act -> orb:返品手続きをする
+act -> orb:返品理由を選択して、\n返品を申請するボタン\nをクリックする
 
 
 alt 項目に未入力がある
     orb <- orc:メッセージを表示する
 end
 
-orc -> order: 注文を変更する
+orc -> order: 注文状況を変更する
 orc -> orkc: リダイレクト
 orkb <- orkc:表示する
 
 @enduml
 
+参照はげｔ、取得はpost
