@@ -1,32 +1,30 @@
 @startuml return
 ' ①縦軸の並び順を決める
-actor "従業員" as act
-boundary "注文返品画面" as orb
+actor "会員" as act
+boundary "注文\n返品画面" as orb
 ' コントローラーに初回アクセスするもの
 boundary "ブラウザ" as brz
 ' コントローラーまたはビューの名称を決める
-control "注文返品コントローラー" as orc
+control "注文返品\nコントローラー" as orc
 ' DAOまたはモデルとなる
-entity "商品DAO" as pdt
-entity "注文DAO" as order
-
-boundary "注文一覧完了" as orkb
-control "注文返品完了コントローラー" as orkc
+entity "商品\nDAO" as pdt
+entity "注文\nDAO" as order
+boundary "返品\n完了画面" as orkb
+control "注文返品\n完了コントローラー" as orkc
 
 brz -> orc: GET
-
-orb <- orc:表示する
-
-act -> orb:返品手続きをする
-
 orc <- pdt:すべての注文を取得する
 orc <- order:すべての注文を取得する
+orb <- orc:表示する
+act -> orb:返品手続きをする
+
 
 alt 項目に未入力がある
     orb <- orc:アラートを表示する
 end
 
-
+orc -> order: 注文を変更する
+orc -> orkc: リダイレクト
 orkb <- orkc:表示する
 
 @enduml
