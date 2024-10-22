@@ -10,7 +10,7 @@ control "注文返品\nコントローラー" as orc
 entity "商品\nDAO" as pdt
 entity "注文\nDAO" as order
 boundary "返品\n完了画面" as orkb
-control "注文返品\n完了コントローラー" as orkc
+control "注文返品完了\nコントローラー" as orkc
 
 brz -> orc: GET
 orc <- pdt:すべての注文を取得する
