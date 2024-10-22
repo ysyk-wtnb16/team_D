@@ -1,28 +1,29 @@
 @startuml login
-actor "会員ユーザー" as kaiin_user
-actor "従業員ユーザー" as juugyouin_user
-boundary "ログイン" as log
-boundary "ブラウザ" as brz
+actor "非ログインユーザー" as nonlogin
+boundary "ログイン画面" as log
 control "ログイン\nコントローラー" as logc
 entity "アカウント" as account
-boundary "ログイン完了" as logk
-control "ログイン完了\nコントローラー" as logc2
+boundary "エラーメッセージ" as error
+boundary "客TOP画面" as cust_top
+boundary "従業員TOP画面" as emp_top
+ 
+nonlogin -> log: ログイン画面を表示
 
-log -> brz: ログイン画面表示
-brz -> logjs: メールアドレスとパスワード入力
-logjs -> logc: ログインリクエスト送信
+log -> logc: ログイン情報を入力
  
-alt メールアドレスとパスワードが正しい場合
-    logc -> account: アカウント確認
-    account --> logc: アカウント有効
-    logc -> logc2: ログイン成功
-    logc2 -> logk: ログイン完了画面表示
-    logk --> kaiin_user: ログイン完了通知
-else メールアドレスとパスワードが正しくない場合
-    logc -> brz: メールアドレスまたはパスワードが正しくありませんと表示
-else 従業員アカウントの初回ログインの場合
-    logc -> logc2: パスワード再設定要求
-    logc2 -> brz: パスワード再設定画面表示
+ 
+alt メールアドレスが間違っている場合
+    logc -> error: エラーメッセージを表示
+else メールアドレスとパスワードが一致しない場合
+    logc -> error: エラーメッセージを表示
+else ログイン成功
+    
+    logc -> account: メールアドレスとパスワードで検索
+    account --> logc: アカウント確認
+    alt ログインしたのが従業員の場合
+        logc -> emp_top: 従業員TOP画面を表示
+    else ログインしたのが顧客の場合
+        logc -> cust_top: 顧客TOP画面を表示
+    end
 end
- 
 @enduml
