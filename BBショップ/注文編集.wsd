@@ -1,4 +1,3 @@
-' サインアップする
 @startuml update
 ' ①縦軸の並び順を決める
 actor "従業員" as act

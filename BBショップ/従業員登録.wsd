@@ -1,4 +1,3 @@
-' サインアップする
 @startuml jsingup
 ' ①縦軸の並び順を決める
 actor "店長" as act
