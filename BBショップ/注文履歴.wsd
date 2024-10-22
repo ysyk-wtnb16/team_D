@@ -1,14 +1,21 @@
 @startuml list
 actor "会員ユーザー" as act
+boundary "メニュー画面" as menu 
+control "メニュービュー" as menuv
 boundary "注文一覧画面" as tib
 boundary "ブラウザ" as brz
-control "注文一覧コントローラー" as tic
+control "注文一覧ビュー" as tiv
 entity "商品DAO" as product
 entity "注文DAO" as order
 
-brz -> tic: GET
-tic -> product: 商品情報を取得する
-tic <-- product
-tic -> order: 注文情報を取得する
-tic <-- order
-tib <- tic: 表示する
+menu <- menuv: 表示する
+act -> menu: 注文一覧ボタンをクリック
+menu -> tib: GET
+brz -> tiv: GET
+tiv -> product: 商品情報を取得する
+tiv <-- product
+tiv -> order: 注文情報を取得する
+tiv <-- order
+tib <- tiv: 表示する
+
+@enduml
