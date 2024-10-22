@@ -27,7 +27,7 @@ alt 項目に未入力がある
     orb <- orc:アラートを表示する
 end
 
-orc -> orkc: リダイレクト
+
 orkb <- orkc:表示する
 
 @enduml
