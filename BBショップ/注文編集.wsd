@@ -21,10 +21,12 @@ oeb <- oec:表示する
 act -> oeb:注文状況を選択し\n完了ボタンを\nクリックする
 
 oec <- pdt:すべての注文を取得する
+pdt <-- oec
 oec <- order:すべての注文を取得する
+order <-- oec
 
 oec -> order: 登録する
-
+oec -> oekc:リダイレクト
 oekc -> oekb:表示する
 
 @enduml
