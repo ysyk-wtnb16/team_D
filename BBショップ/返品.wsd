@@ -22,7 +22,7 @@ act -> orb:返品手続きをする
 
 
 alt 項目に未入力がある
-    orb <- orc:アラートを表示する
+    orb <- orc:メッセージを表示する
 end
 
 orc -> order: 注文を変更する
