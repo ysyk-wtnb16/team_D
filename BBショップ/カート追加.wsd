@@ -9,13 +9,11 @@ entity "カート" as cart
 boundary "商品\n一覧画面" as sib
 control "追加完了\nビュー" as shkc
 
-cac <- brz: GET
-cac -> product: 商品情報を取得する
-cac <-- product
-shb <- cac: 表示する
 act -> shb: 追加ボタンをクリックする
 
-shb -> cac: POST（商品情報）
+shb -> cac: POST（商品の主キー）
+cac -> product: 商品の在庫情報を取得する
+cac <-- product
 alt 在庫なし
     shb <- cac: エラーメッセージを表示する
 end
