@@ -1,0 +1,14 @@
+@startuml list
+actor "会員ユーザー" as act
+boundary "注文一覧画面" as tib
+boundary "ブラウザ" as brz
+control "注文一覧コントローラー" as tic
+entity "商品DAO" as product
+entity "注文DAO" as order
+
+brz -> tic: GET
+tic -> product: 商品情報を取得する
+tic <-- product
+tic -> order: 注文情報を取得する
+tic <-- order
+tib <- tic: 表示する
