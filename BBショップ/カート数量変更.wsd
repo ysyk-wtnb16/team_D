@@ -1,10 +1,12 @@
 @startuml shop
 
+actor 会員ユーザー as act
 boundary カート画面 as kart
 entity 在庫データ as stockData
 entity カート情報 as kartInfo
 control 数量変更 as new
 
+act -> kart:カートの商品の\n数量を変更する
 kart -> new: 数量を変更する
 new -> stockData: 在庫データを取得する
 stockData -> new: 在庫はあるか？

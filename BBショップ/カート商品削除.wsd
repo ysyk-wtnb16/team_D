@@ -1,9 +1,11 @@
 @startuml shop
 
+actor 会員ユーザー as act
 boundary カート画面 as kart
 entity カート情報 as kartInfo
 control 商品削除 as delete
 
+act -> kart:カートの商品を\n削除する
 kart -> delete: 削除ボタンをクリックする
 delete -> kart: アラートを表示する（商品を削除してもよろしいでしょうか？）
 
