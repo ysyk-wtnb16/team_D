@@ -1,5 +1,5 @@
 @startuml login
-actor "会員ユーザー" as member
+actor "会員ユーザー" as kuser
 actor "従業員ユーザー" as employee
 boundary "ログイン" as log
 boundary "ブラウザ" as brz
@@ -17,7 +17,7 @@ alt メールアドレスとパスワードが正しい場合
     account --> logc: アカウント有効
     logc -> logc2: ログイン成功
     logc2 -> logk: ログイン完了画面表示
-    logk --> member: ログイン完了通知
+    logk --> kuser: ログイン完了通知
 else メールアドレスとパスワードが正しくない場合
     logc -> brz: メールアドレスまたはパスワードが正しくありませんと表示
 else 従業員アカウントの初回ログインの場合
