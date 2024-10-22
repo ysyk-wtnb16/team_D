@@ -5,10 +5,10 @@ boundary "注文一覧画面" as oeb
 ' コントローラーに初回アクセスするもの
 boundary "ブラウザ" as brz
 ' コントローラーまたはビューの名称を決める
-control "注文編集コントローラー" as oec
+control "注文一覧ビュー" as oec
 ' DAOまたはモデルとなる
-entity "アカウント" as account
-entity "商品" as pdt
+' entity "アカウント" as account
+' entity "商品" as pdt
 entity "注文" as order
 
 brz -> oec: GET
@@ -16,16 +16,18 @@ brz -> oec: GET
 oeb <- oec:表示する
 
 act -> oeb:注文一覧を\n表示させたい日付の\n日付ボタンをクリックする
-
-oec -> account:すべての注文を取得する
-account --> oec
-oec -> pdt:すべての注文を取得する
-pdt --> oec
-oec -> order:すべての注文を取得する
+oeb ->oec:GET(日付)
+' oec -> account:すべての注文を取得する
+' account --> oec
+' oec -> pdt:すべての注文を取得する
+' pdt --> oec
+oec -> order:指定された日付の注文を取得する
 order --> oec
 
 alt 指定した日付に注文がない
-    oeb <- oec:アラートを表示する
+    oeb <- oec:メッセージを表示する
+else 
+    oeb <- oec:表示する
 end
 
 @enduml

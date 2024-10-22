@@ -5,13 +5,13 @@ boundary "従業員登録画面" as jtb
 ' コントローラーに初回アクセスするもの
 boundary "ブラウザ" as brz
 ' コントローラーまたはビューの名称を決める
-control "従業員登録コントローラー" as jtc
+control "従業員登録ビュー" as jtc
 ' DAOまたはモデルとなる
 entity "アカウント" as account
 entity "従業員アカウント" as jaccount
 
 boundary "従業員登録完了" as jkb
-control "従業員登録完了コントローラー" as jkc
+control "従業員登録完了ビュー" as jkc
 
 ' ②手順を時系列順に記述する
 brz -> jtc: GET
@@ -38,7 +38,7 @@ else
         jtc -> account: メールアドレスで検索する
         jtc <-- account
         alt メールアドレスが登録済み
-            jtb <- jtc: メールアドレスを表示する
+            jtb <- jtc: メッセージを表示する
         else
             jtc -> account: 登録する
             jtc -> jaccount: 登録する

@@ -5,27 +5,28 @@ boundary "注文一覧画面" as oeb
 ' コントローラーに初回アクセスするもの
 boundary "ブラウザ" as brz
 ' コントローラーまたはビューの名称を決める
-control "注文編集コントローラー" as oec
+control "注文編集ビュー" as oec
 ' DAOまたはモデルとなる
 
-entity "商品" as pdt
+' entity "商品" as pdt
 entity "注文" as order
 
 boundary "注文編集完了" as oekb
-control "注文編集完了コントローラー" as oekc
+control "注文編集完了ビュー" as oekc
 
-brz -> oec: GET
+' brz -> oec: GET
 
-oeb <- oec:表示する
+' oeb <- oec:表示する
 
 act -> oeb:注文状況を選択し\n完了ボタンを\nクリックする
 
-oec -> pdt:すべての注文を取得する
-pdt --> oec
-oec -> order:すべての注文を取得する
-order --> oec
+oeb -> oec:POST()
+' oec -> pdt:すべての注文を取得する
+' pdt --> oec
 
-oec -> order: 登録する
+
+
+oec -> order: 更新する
 oec -> oekc:リダイレクト
 oekc -> oekb:表示する
 

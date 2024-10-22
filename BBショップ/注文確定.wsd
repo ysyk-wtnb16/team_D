@@ -3,10 +3,10 @@ actor "会員ユーザー" as act
 
 boundary "注文確定画面" as okb
 boundary "ブラウザ" as brz
-control "注文確定\nコントローラー" as okc
+control "注文確定\nビュー" as okc
 entity "注文" as order
 boundary "決済完了画面" as okkb
-control "決済完了\nコントローラー" as kkc
+control "決済完了\nビュー" as kkc
 
 brz -> okc: GET
 
@@ -14,21 +14,22 @@ okb <- okc:表示する
 
 act -> okb:決済方法を選択し\n注文を確定する
 
-alt クレジットカードの場合
-    okb -> okc:カード情報を入力する
-else 銀行振込の場合
-    okb -> okc:振込情報を入力する
-else 電信振替の場合
-    okb -> okc:振込情報を入力する
-else 代引きの場合
-    okb -> okc:決済を完了する
+act -> okb :カード情報を入力する
 
-    alt 項目に未入力がある
-        okb -> okb:ツールチップを表示する
-    end
+act -> okb :振込情報を入力する
+
+act -> okb :振込情報を入力する
+
+
+alt 項目に未入力がある
+    okb -> okb:ツールチップを表示する
 end
 
+okb -> okc:POST()
+
 okc -> order:注文情報を追加
+okc -> kkc:リダイレクト
+
 
 kkc -> okkb:表示する
 @enduml
