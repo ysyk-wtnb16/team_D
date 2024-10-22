@@ -1,4 +1,4 @@
-@startuml list
+@startuml rireki
 actor "会員ユーザー" as act
 boundary "メニュー画面" as menu 
 control "メニュービュー" as menuv
