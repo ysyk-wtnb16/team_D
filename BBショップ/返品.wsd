@@ -13,10 +13,10 @@ boundary "返品\n完了画面" as orkb
 control "注文返品完了\nビュー" as orkc
 
 brz -> orc: GET
-orc -> order:注文を取得する
+orc -> order:会員の注文情報を取得する
 orc <-- order
-orc -> pdt:商品を取得する
-orc <-- pdt
+' orc -> pdt:商品を取得する
+' orc <-- pdt
 orb <- orc:表示する
 act -> orb:返品手続きをする
 
