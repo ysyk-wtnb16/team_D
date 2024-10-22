@@ -1,4 +1,3 @@
-' サインアップする
 @startuml update
 ' ①縦軸の並び順を決める
 actor "従業員" as act
@@ -25,7 +24,7 @@ oec <- pdt:すべての注文を取得する
 oec <- order:すべての注文を取得する
 
 oec -> order: 登録する
-oec -> oekc:リダイレクト
+
 oekc -> oekb:表示する
 
 @enduml

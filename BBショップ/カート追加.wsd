@@ -3,29 +3,24 @@
 actor "会員" as act
 boundary "商品\n詳細画面" as shb
 boundary "ブラウザ" as brz
-control "カート追加\nコントローラー" as shc
+control "カート追加\nコントローラー" as cac
 entity "商品\nDAO" as product
-control "追加完了\nコントローラー" as shkc
+entity "カート\nDAO" as cart
 boundary "商品\n一覧画面" as sib
-boundary "カート追加\n完了画面" as shkb
+control "追加完了\nコントローラー" as shkc
 
-shc <- brz: GET
-shc -> product: 商品情報を取得する
-shc <-- product
-shb <- shc: 表示する
+cac <- brz: GET
+cac -> product: 商品情報を取得する
+cac <-- product
+shb <- cac: 表示する
 act -> shb: 追加ボタンをクリックする
 
-alt 在庫がない
-    
-    shb -> shb: ツールチップを表示する
-else
-    shb -> shc: POST（商品情報）
-
-    else
-        shc -> product: カートに追加する
-        shc -> sib: アラートを表示する
-        shc -> shc: リダイレクト
-        shb <- shc: 表示する
-        shkc -> shkb: 追加完了
+shb -> cac: POST（商品情報）
+alt 在庫なし
+    shb <- cac: エラーメッセージを表示する
 end
+cac -> cart: カートに追加する
+cac -> shkc: リダイレクト
+sib <- shkc: 表示する        
+
 @enduml

@@ -9,9 +9,7 @@ boundary "商品一覧画面" as sib
 boundary "商品変更完了画面" as shkb
 
 shc <- brz: GET
-
 shb <- shc: 表示する
-
 act -> shb: 商品情報を入力する
 
 alt 未入力の項目がある
@@ -23,7 +21,6 @@ else
     else
         shc -> product: 変更する
         shc -> sib: アラートを表示する
-        shc -> shc: リダイレクト
         shb <- shc: 表示する
         shkc -> shkb: 変更完了
 end
