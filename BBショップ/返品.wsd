@@ -10,7 +10,7 @@ control "注文返品コントローラー" as orc
 entity "商品DAO" as pdt
 entity "注文DAO" as order
 
-boundary "注文返品完了" as orkb
+boundary "注文一覧完了" as orkb
 control "注文返品完了コントローラー" as orkc
 
 brz -> orc: GET
