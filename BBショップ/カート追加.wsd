@@ -3,11 +3,11 @@
 actor "会員" as act
 boundary "商品\n詳細画面" as shb
 boundary "ブラウザ" as brz
-control "カート追加\nコントローラー" as cac
-entity "商品\nDAO" as product
-entity "カート\nDAO" as cart
+control "カート追加\nビュー" as cac
+entity "商品" as product
+entity "カート" as cart
 boundary "商品\n一覧画面" as sib
-control "追加完了\nコントローラー" as shkc
+control "追加完了\nビュー" as shkc
 
 cac <- brz: GET
 cac -> product: 商品情報を取得する
