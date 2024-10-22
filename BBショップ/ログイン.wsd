@@ -10,7 +10,9 @@ boundary "従業員TOP画面" as emp_top
  
 nonlogin -> log: ログイン画面を表示
 
-log -> logc: ログイン情報を入力
+nonlogin <- log: ログイン情報を入力
+
+nonlogin -> logc: ログインボタンをクリック
  
  
 alt メールアドレスが間違っている場合
