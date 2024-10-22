@@ -1,26 +1,31 @@
-@startuml カート追加
-actor 会員 as user
-participant 商品一覧画面 as productList
-participant 商品詳細画面 as productDetail
-participant カートコントローラー as cartController
-participant 商品DAO as productDAO
-participant 在庫DAO as stockDAO
-participant カート as cart
+@startuml syouhin_tuika
 
-user -> productList: 商品一覧を表示
-productList -> productDetail: 商品を選択して詳細画面を表示
-user -> productDetail: 商品をカートに追加
-productDetail -> cartController: カートに商品を追加依頼
-cartController -> productDAO: 商品情報取得
-productDAO -> cartController: 商品情報を返す
+actor "会員" as act
+boundary "商品\n詳細画面" as shb
+boundary "ブラウザ" as brz
+control "カート追加\nコントローラー" as shc
+entity "商品\nDAO" as product
+control "追加完了\nコントローラー" as shkc
+boundary "商品\n一覧画面" as sib
+boundary "カート追加\n完了画面" as shkb
 
-cartController -> stockDAO: 在庫確認
-alt 在庫あり
-    stockDAO -> cartController: 在庫あり
-    cartController -> cart: 商品をカートに追加
-    cart -> user: カートに商品を追加完了
-else 在庫なし
-    stockDAO -> cartController: 在庫なし
-    cartController -> productDetail: 在庫がありませんと表示
+shc <- brz: GET
+shc -> product: 商品情報を取得する
+shc <-- product
+shb <- shc: 表示する
+act -> shb: 追加ボタンをクリックする
+
+alt 在庫がない
+    
+    shb -> shb: ツールチップを表示する
+else
+    shb -> shc: POST（商品情報）
+
+    else
+        shc -> product: カートに追加する
+        shc -> sib: アラートを表示する
+        shc -> shc: リダイレクト
+        shb <- shc: 表示する
+        shkc -> shkb: 追加完了
 end
 @enduml
