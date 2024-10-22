@@ -24,7 +24,7 @@ else 入力内容が正常な場合
     regc -> db: ユーザー情報を登録
     db --> regc: 登録成功
     regc -> alert: 登録完了とアラートを表示
-    regk --> user: 登録完了通知
+
 end
 
 @enduml
