@@ -1,28 +1,30 @@
-@startuml login
-actor "会員ユーザー" as member
-actor "従業員ユーザー" as employee
-boundary "ログイン" as log
-boundary "ブラウザ" as brz
-control "ログイン\nコントローラー" as logc
-entity "アカウント" as account
-boundary "ログイン完了" as logk
-control "ログイン完了\nコントローラー" as logc2
+@startuml registration
+actor "非会員ユーザー" as user
+boundary "会員登録画面" as reg
+control "会員登録コントローラー" as regc
+entity "ユーザーデータベース" as db
+boundary "アラート" as alert
+boundary "登録完了画面" as regk
 
-log -> brz: ログイン画面表示
-brz -> logjs: メールアドレスとパスワード入力
-logjs -> logc: ログインリクエスト送信
+user -> reg: 会員登録画面を表示
+reg -> user: メールアドレス、氏名、住所等の入力
+user -> regc: サインアップボタンをクリック
 
-alt メールアドレスとパスワードが正しい場合
-    logc -> account: アカウント確認
-    account --> logc: アカウント有効
-    logc -> logc2: ログイン成功
-    logc2 -> logk: ログイン完了画面表示
-    logk --> member: ログイン完了通知
-else メールアドレスとパスワードが正しくない場合
-    logc -> brz: メールアドレスまたはパスワードが正しくありませんと表示
-else 従業員アカウントの初回ログインの場合
-    logc -> logc2: パスワード再設定要求
-    logc2 -> brz: パスワード再設定画面表示
+alt メールアドレスが既に登録済みの場合
+    regc -> db: メールアドレス確認
+    db --> regc: 登録済み
+    regc -> alert: このメールアドレスは利用できませんと表示
+else パスワード条件が不足している場合
+    regc -> reg: パスワードの条件確認
+    reg -> alert: パスワードは半角英大文字小文字数字を含む8文字以上にしてくださいと表示
+else パスワードが一致しない場合
+    regc -> reg: パスワード確認
+    reg -> alert: パスワードが一致しませんと表示
+else 入力内容が正常な場合
+    regc -> db: ユーザー情報を登録
+    db --> regc: 登録成功
+    regc -> regk: 登録完了画面を表示
+    regk --> user: 登録完了通知
 end
 
 @enduml
