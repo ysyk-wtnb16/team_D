@@ -4,7 +4,6 @@ boundary "ログイン画面" as log
 control "ログイン\nコントローラー" as logc
 entity "アカウント" as account
 boundary "エラーメッセージ" as error
-boundary "アラート" as alert
 boundary "客TOP画面" as cust_top
 boundary "従業員TOP画面" as emp_top
  
@@ -25,10 +24,10 @@ else ログイン成功
     account --> logc: アカウント確認
     alt ログインしたのが従業員の場合
         logc -> emp_top: 従業員TOP画面を表示
-        logc -> alert:ログイン完了とアラートを表示
+        logc -> emp_top:ログイン完了とアラートを表示
     else ログインしたのが顧客の場合
         logc -> cust_top: 顧客TOP画面を表示
-        logc -> alert:ログイン完了とアラートを表示
+        logc -> cust_top:ログイン完了とアラートを表示
     end
 end
 @enduml
