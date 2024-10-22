@@ -7,8 +7,8 @@ boundary "ブラウザ" as brz
 ' コントローラーまたはビューの名称を決める
 control "従業員登録コントローラー" as jtc
 ' DAOまたはモデルとなる
-entity "アカウントDAO" as account
-entity "従業員アカウントDAO" as jaccount
+entity "アカウント" as account
+entity "従業員アカウント" as jaccount
 
 boundary "従業員登録完了" as jkb
 control "従業員登録完了コントローラー" as jkc
