@@ -1,29 +1,28 @@
 @startuml kaiin_touroku 
 actor "非会員ユーザー" as user
 boundary "会員登録画面" as reg
-control "会員登録コントローラー" as regc
+control "会員登録\nビュー" as regv
 entity "ユーザーデータベース" as db
-boundary "アラート" as alert
 
 
 user -> reg: 会員登録画面を表示
 reg -> user: メールアドレス、氏名、住所等の入力
-user -> regc: サインアップボタンをクリック
+user -> regv: サインアップボタンをクリック
 
 alt メールアドレスが既に登録済みの場合
-    regc -> db: メールアドレス確認
-    db --> regc: 登録済み
-    regc -> alert: このメールアドレスは利用できませんと表示
+    regv -> db: メールアドレス確認
+    db --> regv: 登録済み
+    regv -> reg: このメールアドレスは利用できませんと表示
 else パスワード条件が不足している場合
-    regc -> reg: パスワードの条件確認
-    regc -> reg: パスワードは半角英大文字小文字数字を含む8文字以上にしてくださいと表示
+    regv -> reg: パスワードの条件確認
+    regv -> reg: パスワードは半角英大文字小文字数字を含む8文字以上にしてくださいと表示
 else パスワードが一致しない場合
-    regc -> reg: パスワード確認
-    regc -> reg: パスワードが一致しませんと表示
+    regv -> reg: パスワード確認
+    regv -> reg: パスワードが一致しませんと表示
 else 入力内容が正常な場合
-    regc -> db: ユーザー情報を登録
-    db --> regc: 登録成功
-    regc -> alert: 登録完了とアラートを表示
+    regv -> db: ユーザー情報を登録
+    db --> regv: 登録成功
+    regv -> reg: 登録完了とアラートを表示
 
 end
 

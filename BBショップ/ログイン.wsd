@@ -1,33 +1,32 @@
 @startuml login
 actor "非ログインユーザー" as nonlogin
 boundary "ログイン画面" as log
-control "ログイン\nコントローラー" as logc
+control "ログイン\nビュー" as logv
 entity "アカウント" as account
-boundary "エラーメッセージ" as error
-boundary "客TOP画面" as cust_top
-boundary "従業員TOP画面" as emp_top
+boundary "客TOP画面" as kyaku_top
+boundary "従業員TOP画面" as juugyouin_top
  
 nonlogin -> log: ログイン画面を表示
 
 nonlogin <- log: ログイン情報を入力
 
-nonlogin -> logc: ログインボタンをクリック
+nonlogin -> logv: ログインボタンをクリック
  
  
 alt メールアドレスが間違っている場合
-    logc -> error: エラーメッセージを表示
+    logv -> log: エラーメッセージを表示
 else メールアドレスとパスワードが一致しない場合
-    logc -> error: エラーメッセージを表示
+    logv -> log: エラーメッセージを表示
 else ログイン成功
 
-    logc -> account: メールアドレスとパスワードで検索
-    account --> logc: アカウント確認
+    logv -> account: メールアドレスとパスワードで検索
+    account --> logv: アカウント確認
     alt ログインしたのが従業員の場合
-        logc -> emp_top: 従業員TOP画面を表示
-        logc -> emp_top:ログイン完了とアラートを表示
+        logv -> juugyouin_top: 従業員TOP画面を表示
+        logv -> juugyouin_top:ログイン完了とアラートを表示
     else ログインしたのが顧客の場合
-        logc -> cust_top: 顧客TOP画面を表示
-        logc -> cust_top:ログイン完了とアラートを表示
+        logv -> kyaku_top: 顧客TOP画面を表示
+        logv -> kyaku_top:ログイン完了とアラートを表示
     end
 end
 @enduml
