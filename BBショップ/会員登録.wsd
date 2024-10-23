@@ -4,7 +4,6 @@ boundary "会員登録画面" as reg
 control "会員登録\nビュー" as regv
 entity "ユーザーデータベース" as db
 
-
 user -> reg: 会員登録画面を表示する
 reg -> user: メールアドレス、氏名、住所等の入力をする
 user -> regv: サインアップボタンをクリックする
