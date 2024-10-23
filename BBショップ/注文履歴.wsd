@@ -9,8 +9,16 @@ entity "注文" as order
 brz -> tiv: GET
 ' tiv -> product: 商品情報を取得する
 ' tiv <-- product
-tiv -> order: 会員の注文情報を取得する
+tiv -> order: 会員の注文情報を\n取得する
 tiv <-- order
-tib <- tiv: 表示する
+
+alt 商品が届いてから10日以内の場合
+    tib <- tiv: 注文情報と\n返品ボタンを表示する
+
+
+else 10日以内ではない場合
+    tib <- tiv: 注文情報を表示する
+
+end
 
 @enduml
