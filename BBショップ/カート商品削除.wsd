@@ -1,21 +1,21 @@
-@startuml shop
+@startuml cartdelete
 
-actor 会員ユーザー as act
-boundary カート画面 as kart
-entity カート情報 as kartInfo
-control 商品削除 as delete
+actor "会員" as act
+boundary "カート\n画面" as cartv
+boundary "ブラウザ" as brz
+control "カート商品削除\nビュー" as delete
+entity "商品" as product
+entity "カート" as cart
+control "商品削除完了\nビュー" as shkc
 
-act -> kart:カートの商品を\n削除する
-kart -> delete: 削除ボタンをクリックする
-delete -> kart: アラートを表示する（商品を削除してもよろしいでしょうか？）
-
-alt Yes
-    delete -> kartInfo: 変更した内容を削除する
-    delete -> kart: 削除完了のアラートを表示する
-end
-
-alt No
-    delete -> kart: 操作をキャンセル
+act -> cartv:削除ボタンを\nクリックする
+cartv <- delete:「商品をカートから\n削除しますか？」\nと確認メッセージを表示 
+alt はいをクリックした場合
+    delete -> cart:商品を削除する
+    delete -> shkc:リダイレクト
+    cartv <- shkc:削除完了メッセージを表示
+else いいえをクリックした場合
+    cartv <- delete:元のカート画面を表示
 end
 
 @enduml
