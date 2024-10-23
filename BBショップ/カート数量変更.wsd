@@ -1,4 +1,4 @@
-@startuml shop
+@startuml cart_tuika
 
 actor "会員ユーザー" as act
 boundary "カート画面" as cart
