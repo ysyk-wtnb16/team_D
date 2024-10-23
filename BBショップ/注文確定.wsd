@@ -25,7 +25,7 @@ alt 項目に未入力がある
     okb -> okb:ツールチップを表示する
 end
 
-okb -> okc:POST()
+okb -> okc:POST(注文)
 
 okc -> order:注文情報を追加
 okc -> kkc:リダイレクト
