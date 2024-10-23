@@ -5,19 +5,15 @@ boundary "カート\n画面" as cartv
 boundary "ブラウザ" as brz
 control "カート商品削除\nビュー" as delete
 entity "カート" as cart
-control "商品削除完了\nビュー" as shkc
+control "カート一覧\nビュー" as shkc
+
 
 act -> cartv:削除ボタンを\nクリックする
-brz -> delete:GET()
-delete -> cart:カート情報を取得
-delete <-- cart
-cartv <- delete:「商品をカートから\n削除しますか？」\nと確認メッセージを表示 
-alt はいをクリックした場合
+cartv -> cartv:「商品をカートから\n削除しますか？」\nとアラートを表示 
+act -> cartv:はいをクリックする
+cartv -> delete:POST()
     delete -> cart:商品を削除する
     delete -> shkc:リダイレクト
-    cartv <- shkc:削除完了メッセージを表示
-else いいえをクリックした場合
-    cartv <- delete:元のカート画面を表示
-end
+    cartv <- shkc:カート画面と削除完了メッセージを表示
 
 @enduml
