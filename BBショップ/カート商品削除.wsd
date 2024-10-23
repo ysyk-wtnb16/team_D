@@ -4,7 +4,6 @@ actor "会員" as act
 boundary "カート\n画面" as cartv
 boundary "ブラウザ" as brz
 control "カート商品削除\nビュー" as delete
-entity "商品" as product
 entity "カート" as cart
 control "商品削除完了\nビュー" as shkc
 
