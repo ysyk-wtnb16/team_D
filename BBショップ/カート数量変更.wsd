@@ -6,10 +6,11 @@ boundary "ブラウザ" as brz
 control "数量変更ビュー" as shv
 entity "在庫データ" as stockdata
 entity "カート情報" as cartinfo
-boundary "数量変更\n完了ビュー" as shkv
+boundary "カート一覧ビュー" as shkv
 
 act -> cart:カートの商品の\n数量を変更する
-cart -> shv: GET()
+' 主キーいれる
+cart -> shv: POST()
 shv -> stockdata: 在庫データを取得
 shv <-- stockdata:
 
@@ -19,7 +20,8 @@ alt 在庫あり
     cart <- shkv: 変更後のカート内容を表示する
 
 else 在庫なし
-    shv -> cart: エラーメッセージを表示する
+    shv -> shkv: リダイレクト
+    shkv -> cart: エラーメッセージを表示する
 end
 
 @enduml
