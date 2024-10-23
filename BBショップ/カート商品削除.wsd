@@ -8,6 +8,9 @@ entity "カート" as cart
 control "商品削除完了\nビュー" as shkc
 
 act -> cartv:削除ボタンを\nクリックする
+brz -> delete:GET()
+delete -> cart:カート情報を取得
+delete <-- cart
 cartv <- delete:「商品をカートから\n削除しますか？」\nと確認メッセージを表示 
 alt はいをクリックした場合
     delete -> cart:商品を削除する
