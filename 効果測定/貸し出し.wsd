@@ -1,3 +1,8 @@
 @startuml Rental 
+actor "図書員" as librarian
+boundary "貸し出し\n画面" as Rens
+boundary "ブラウザ" as brz
+control "貸し出し\nビュー" as Renv
+entity "貸し出し\n履歴" as RenH
 
 @enduml
