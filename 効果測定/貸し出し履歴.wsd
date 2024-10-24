@@ -1,6 +1,6 @@
 @startuml Rental History
 
-actor "図書員" as librarian
+actor "事務職員" as staff
 boundary "貸し出し\n履歴画面" as RenHs
 boundary "ブラウザ" as brz
 control "貸し出し\n履歴ビュー" as RenHv
