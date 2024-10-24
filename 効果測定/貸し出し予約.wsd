@@ -1,3 +1,27 @@
 @startuml Rental Reservation
 
+actor "利用者" as user
+boundary "貸し出し予約\n検索画面" as RRss
+boundary "ブラウザ" as brz
+control "貸し出し\n予約ビュー" as RRv
+entity "会員" as member
+boundary "図書" as book
+boundary "貸し出し予約\n完了画面" as RRCs
+ 
+
+brz -> RRv: GET
+RRss <- RRv: 表示する
+user -> RRss: 会員番号、書名を\n入力して図書検索ボタン\nをクリックする
+RRss -> RRv: POST（会員の主キー、商品情報）
+RRv -> member: 会員情報を取得
+RRv <-- member
+RRv -> book: 会員情報を取得
+RRv <-- book
+alt 会員番号および管理番号が未入力の場合
+    RRss <- RRv:ツールチップを表示する
+else 会員または図書が存在しない場合
+    RRss <- RRv:メッセージを表示する
+end
+
+
 @enduml
