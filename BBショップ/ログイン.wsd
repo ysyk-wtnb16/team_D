@@ -6,7 +6,7 @@ entity "会員アカウント" as account
 boundary "客TOP画面" as kyaku_top
 boundary "従業員TOP画面" as juugyouin_top
  
-nonlogin -> log: ログイン画面を表示する
+nonlogin -> log: 表示する
 
 nonlogin <- log: ログイン情報を入力する
 
@@ -21,10 +21,10 @@ else ログイン成功
     logv -> account: メールアドレスとパスワードで検索
     account --> logv: アカウント確認
     alt ログインしたのが従業員の場合
-        logv -> juugyouin_top: 従業員TOP画面を表示する
+        logv -> juugyouin_top: 表示する
         logv -> juugyouin_top:ログイン完了とアラートを表示する
     else ログインしたのが顧客の場合
-        logv -> kyaku_top: 顧客TOP画面を表示する
+        logv -> kyaku_top: 表示する
         logv -> kyaku_top:ログイン完了とアラートを表示する
     end
 end
