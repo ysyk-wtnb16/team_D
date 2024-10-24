@@ -5,10 +5,14 @@ boundary "貸し出し\n履歴画面" as RenHs
 boundary "ブラウザ" as brz
 control "貸し出し\n履歴ビュー" as RenHv
 entity "会員" as member
-entity "図書" as book
+entity "本" as bookr
 entity "貸し出し\n履歴" as RenH
 
+
 brz -> RenHv: GET(貸し出し\n履歴の主キー)
-RenHv -> RenH: 貸し出し\n履歴を取得
+RenHv -> RenH: 貸し出し履歴を取得
 RenHv <-- RenH:
+RenHs <- RenHv:貸し出し履歴を表示
+
+
 @enduml

@@ -2,17 +2,19 @@
 
 actor "利用者" as user
 boundary "貸し出し予約\n検索画面" as RenRSs
+boundary "貸し出し予約\n画面" as RenRs
 boundary "ブラウザ" as brz
 control "貸し出し\n予約ビュー" as RenRv
 entity "会員" as member
-entity "図書" as book
+entity "本" as book
+entity "貸し出し\n予約" as RenR
 boundary "貸し出し予約\n完了画面" as RenRCs
  
 
 brz -> RenRv: GET
 RenRSs <- RenRv: 表示する
-user -> RenRSs: 会員番号、書名を\n入力して図書検索ボタン\nをクリックする
-RenRSs -> RenRv: POST（会員の主キー、商品情報）
+user -> RenRSs: 会員番号、書名を入力\nして図書検索ボタン\nをクリックする
+RenRSs -> RenRv: POST（?）
 RenRv -> member: 会員情報を取得
 RenRv <-- member
 RenRv -> book: 会員情報を取得

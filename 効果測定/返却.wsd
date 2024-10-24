@@ -1,8 +1,22 @@
 @startuml Return
+
 actor "図書員" as librarian
-boundary "貸し出し\n画面" as Rets
+boundary "返却\n検索画面" as RetSs
+boundary "返却\n画面" as Rets
 boundary "ブラウザ" as brz
-control "貸し出し\nビュー" as Retv
+control "返却\nビュー" as Retv
+entity "会員" as member
+entity "本" as book
 entity "貸し出し\n履歴" as RenH
+entity "貸し出し\n予約" as RenR
+control "返却完了\nビュー" as RetCv
+
+
+librarian -> RetSs: 管理番号を入力\nして次へボタン\nをクリックする
+RetSs -> Retv: POST（?）
+Retv -> RenH: 貸し出し履歴を取得
+Retv <-- RenH
+Retv -> RenR: 貸し出し予約を取得
+Retv <-- RenR
 
 @enduml

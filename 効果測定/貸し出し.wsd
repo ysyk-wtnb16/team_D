@@ -1,8 +1,17 @@
 @startuml Rental 
+
 actor "図書員" as librarian
 boundary "貸し出し\n画面" as Rens
 boundary "ブラウザ" as brz
 control "貸し出し\nビュー" as Renv
+entity "会員" as member
+entity "本" as book
 entity "貸し出し\n履歴" as RenH
+control "貸し出し\n完了ビュー" as RenCv
+
+
+librarian -> Rens: 会員番号、管理番号を\n入力して次へボタン\nをクリックする
+Rens -> Renv: POST（?）
+
 
 @enduml
