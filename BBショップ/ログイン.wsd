@@ -2,7 +2,7 @@
 actor "非ログインユーザー" as nonlogin
 boundary "ログイン画面" as log
 control "ログイン\nビュー" as logv
-entity "アカウント" as account
+entity "会員アカウント" as account
 boundary "客TOP画面" as kyaku_top
 boundary "従業員TOP画面" as juugyouin_top
  
