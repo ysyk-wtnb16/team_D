@@ -1,4 +1,4 @@
-@startuml Return
+@startuml HK
 
 actor "事務職員" as staff
 boundary "返却\n検索画面" as HKKs
