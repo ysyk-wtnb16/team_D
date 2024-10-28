@@ -1,0 +1,18 @@
+@startuml KD
+
+actor "事務職員" as staff
+boundary "貸出\n入力画面" as KDIns
+boundary "貸出\n選択画面" as KDSelects
+boundary "ブラウザ" as brz
+control "貸出\nビュー" as KDv
+entity "会員" as member
+entity "本" as book
+entity "貸出\n履歴" as KDR
+control "貸出\n完了ビュー" as KDOKv
+
+
+staff -> KDIns: 会員番号、管理番号を\n入力して次へボタン\nをクリックする
+KDIns -> KDv: POST（?）
+
+
+@enduml

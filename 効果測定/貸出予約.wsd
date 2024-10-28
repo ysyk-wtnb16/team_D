@@ -1,0 +1,29 @@
+@startuml KY
+
+actor "利用者" as user
+boundary "貸出予約\n入力画面" as KYKs
+boundary "貸出予約\n洗濯画面" as KYs
+boundary "ブラウザ" as brz
+control "貸出\n予約ビュー" as KYv
+entity "会員" as member
+entity "本" as book
+entity "貸出\n予約" as KY
+boundary "貸出予約\n完了画面" as KYOKs
+ 
+
+brz -> KYv: GET
+KYKs <- KYv: 表示する
+user -> KYKs: 会員番号、書名を入力\nして図書検索ボタン\nをクリックする
+KYKs -> KYv: POST（?）
+KYv -> member: 会員情報を取得
+KYv <-- member
+KYv -> book: 会員情報を取得
+KYv <-- book
+alt 会員番号および管理番号が未入力の場合
+    KYKs <- KYv:ツールチップを表示する
+else 会員または図書が存在しない場合
+    KYKs <- KYv:メッセージを表示する
+end
+
+
+@enduml
