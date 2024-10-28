@@ -1,18 +1,18 @@
 @startuml Rental History
 
 actor "事務職員" as staff
-boundary "貸し出し\n履歴画面" as RenHs
+boundary "貸し出し\n履歴画面" as KDRs
 boundary "ブラウザ" as brz
-control "貸し出し\n履歴ビュー" as RenHv
+control "貸し出し\n履歴ビュー" as KDRv
 entity "会員" as member
 entity "本" as bookr
-entity "貸し出し\n履歴" as RenH
+entity "貸し出し\n履歴" as KDR
 
 
-brz -> RenHv: GET(貸し出し\n履歴の主キー)
-RenHv -> RenH: 貸し出し履歴を取得
-RenHv <-- RenH:
-RenHs <- RenHv:貸し出し履歴を表示
+brz -> KDRv: GET(貸し出し\n履歴の主キー)
+KDRv -> KDR: 貸し出し履歴を取得
+KDRv <-- KDR:
+KDRs <- KDRv:貸し出し履歴を表示
 
 
 @enduml

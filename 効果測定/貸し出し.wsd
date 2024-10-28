@@ -1,17 +1,17 @@
-@startuml Rental 
+@startuml KD
 
 actor "事務職員" as staff
-boundary "貸し出し\n画面" as Rens
+boundary "貸し出し\n画面" as KDs
 boundary "ブラウザ" as brz
-control "貸し出し\nビュー" as Renv
+control "貸し出し\nビュー" as KDv
 entity "会員" as member
 entity "本" as book
-entity "貸し出し\n履歴" as RenH
-control "貸し出し\n完了ビュー" as RenCv
+entity "貸し出し\n履歴" as KDR
+control "貸し出し\n完了ビュー" as KDOKv
 
 
-staff -> Rens: 会員番号、管理番号を\n入力して次へボタン\nをクリックする
-Rens -> Renv: POST（?）
+staff -> KDs: 会員番号、管理番号を\n入力して次へボタン\nをクリックする
+KDs -> KDv: POST（?）
 
 
 @enduml

@@ -1,22 +1,22 @@
 @startuml Return
 
 actor "事務職員" as staff
-boundary "返却\n検索画面" as RetSs
-boundary "返却\n画面" as Rets
+boundary "返却\n検索画面" as HKKs
+boundary "返却\n画面" as HKs
 boundary "ブラウザ" as brz
-control "返却\nビュー" as Retv
+control "返却\nビュー" as HKv
 entity "会員" as member
 entity "本" as book
-entity "貸し出し\n履歴" as RenH
-entity "貸し出し\n予約" as RenR
-control "返却完了\nビュー" as RetCv
+entity "貸し出し\n履歴" as HKR
+entity "貸し出し\n予約" as HKY
+control "返却完了\nビュー" as HKOKv
 
 
-staff -> RetSs: 管理番号を入力\nして次へボタン\nをクリックする
-RetSs -> Retv: POST（?）
-Retv -> RenH: 貸し出し履歴を取得
-Retv <-- RenH
-Retv -> RenR: 貸し出し予約を取得
-Retv <-- RenR
+staff -> HKKs: 管理番号を入力\nして次へボタン\nをクリックする
+HKKs -> HKv: POST（?）
+HKv -> HKR: 貸し出し履歴を取得
+HKv <-- HKR
+HKv -> HKY: 貸し出し予約を取得
+HKv <-- HKY
 
 @enduml
