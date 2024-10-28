@@ -2,21 +2,38 @@
 
 actor "事務職員" as staff
 boundary "返却\n検索画面" as HKKs
-boundary "返却\n画面" as HKs
+boundary "返却\n確認画面" as HKChecks
 boundary "ブラウザ" as brz
-control "返却\nビュー" as HKv
+control "返却\n検索ビュー" as HKv
+control "返却\n確認ビュー" as HKCheckv
+control "返却完了\nビュー" as HKOKv
 entity "会員" as member
 entity "本" as book
-entity "貸し出し\n履歴" as HKR
-entity "貸し出し\n予約" as HKY
-control "返却完了\nビュー" as HKOKv
+entity "貸出\n履歴" as HKR
+entity "貸出\n予約" as KDY
+boundary "返却\n画面" as HKOKs
 
 
+brz -> HKv:GET
+HKKs <- HKv:表示する
 staff -> HKKs: 管理番号を入力\nして次へボタン\nをクリックする
-HKKs -> HKv: POST（?）
-HKv -> HKR: 貸し出し履歴を取得
+HKKs -> HKv: GET（?）
+HKv -> HKR: 貸出履歴を取得
 HKv <-- HKR
-HKv -> HKY: 貸し出し予約を取得
-HKv <-- HKY
+alt 管理番号が存在しない場合
+    HKKs <- HKv:エラーメッセージを表示
+else 管理番号が存在する場合
+    HKChecks <- HKv:返却する内容を表示
+    staff -> HKChecks:決定ボタンをクリックする
+    HKChecks -> HKOKv:GET
+    HKOKv -> KDY: 貸出予約を取得
+    HKOKv <-- KDY
+    alt 貸出予約されていた場合
+        HKOKv -> HKOKs:メッセージと書名一覧を表示する
+    else 貸出予約されていない場合
+        HKOKv -> HKOKs:表示する
+    end
+end
+
 
 @enduml

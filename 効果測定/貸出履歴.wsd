@@ -1,0 +1,21 @@
+@startuml KR
+
+actor "事務職員" as staff
+boundary "貸出\n履歴画面" as KRs
+boundary "ブラウザ" as brz
+control "貸出\n履歴ビュー" as KRv
+entity "会員" as member
+entity "本" as bookr
+entity "貸出\n履歴" as KR
+
+
+brz -> KRv: GET(？)
+KRv -> KR: 貸出履歴を取得
+KRv <-- KR:
+alt 貸し出し履歴が存在しない場合
+KRs <- KRv:メッセージを表示
+else 貸し出し履歴が存在する場合
+KRs <- KRv:貸出履歴一覧を表示
+end
+
+@enduml
