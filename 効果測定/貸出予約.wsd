@@ -16,7 +16,7 @@ boundary "貸出予約\n完了ビュー" as KYOKv
 brz -> KYv: GET
 KYKs <- KYv: 表示する
 user -> KYKs: 会員番号、書名を入力\nして図書検索ボタン\nをクリックする
-KYKs -> KYv: POST（?）
+KYKs -> KYv: GET（?）
 KYv -> member: 会員情報を取得
 KYv <-- member
 KYv -> book: 会員情報を取得
@@ -32,7 +32,7 @@ else 学生以外だった場合
     KYs <- KYv:すべての選択ボタンを表示
 end
 user -> KYs:予約したい図書の選択ボタンをクリックする
-KYs -> KYv:POST
+KYs -> KYv: GET()
 KYChecks <- KYv:表示する
 user -> KYChecks:決定ボタンをクリックする
 KYChecks -> KYv:POST(貸出予約情報)
