@@ -6,38 +6,45 @@ boundary "貸出予約\n選択画面" as KYs
 boundary "貸出予約\n確認画面" as KYChecks
 boundary "ブラウザ" as brz
 control "貸出\n予約ビュー" as KYv
-entity "会員" as member
 entity "本" as book
+entity "会員" as member
 entity "貸出\n予約" as KY
 boundary "貸出予約\n完了画面" as KYOKs
-boundary "貸出予約\n完了ビュー" as KYOKv
- 
+control "貸出予約\n完了ビュー" as KYOKv
 
 brz -> KYv: GET
 KYKs <- KYv: 表示する
-user -> KYKs: 会員番号、書名を入力\nして図書検索ボタン\nをクリックする
-KYKs -> KYv: GET（?）
-KYv -> member: 会員情報を取得
-KYv <-- member
-KYv -> book: 会員情報を取得
-KYv <-- book
-alt 会員番号および管理番号が未入力の場合
-    KYKs <- KYv:ツールチップを表示する
-else 会員または図書が存在しない場合
-    KYKs <- KYv:メッセージを表示する
+
+user -> KYKs: 会員番号、書名を\n入力して図書検索\nボタンをクリック
+alt 会員番号または書名が未入力の場合
+    KYKs <- KYv: 「この項目を入力してください」ツールチップを表示
+else 
+    KYKs -> KYv: GET(?)
+    KYv -> member: 会員情報を取得
+    KYv <- member
+    KYv -> book: 本の情報を取得
+    KYv <- book
+    alt 会員情報が存在しない場合
+        KYKs <- KYv: 「会員情報が存在しません」メッセージを表示
+    else 図書が存在しない場合
+        KYKs <- KYv: 「該当図書は見つかりませんでした」メッセージを表示
+    else 
+        KYs <- KYv: 貸出予約選択画面を表示
+        user -> KYs: 予約したい図書の選択ボタンをクリック
+        KYs -> KYv: GET(?)
+        KYChecks <- KYv: 貸出予約確認画面を表示
+        alt キャンセルボタンをクリックした場合
+            user -> KYChecks: キャンセルボタンをクリック
+            KYChecks -> KYv:GET
+            KYKs <- KYv:表示する
+        else 決定ボタンをクリックした場合
+            user -> KYChecks: 決定ボタンをクリック
+            KYChecks -> KYv: POST(?)
+            KYv -> KY: 登録する
+            KYv -> KYOKv: リダイレクト
+            KYOKs <- KYOKv: 表示する
+        end    
+    end
 end
-alt 学生だった場合
-    KYs <- KYv:雑誌の選択ボタンは非表示にする
-else 学生以外だった場合
-    KYs <- KYv:すべての選択ボタンを表示
-end
-user -> KYs:予約したい図書の選択ボタンをクリックする
-KYs -> KYv: GET()
-KYChecks <- KYv:表示する
-user -> KYChecks:決定ボタンをクリックする
-KYChecks -> KYv:POST(貸出予約情報)
-KYv -> KY:登録する
-KYv -> KYOKv:リダイレクト
-KYOKs <- KYOKv:表示する
 
 @enduml

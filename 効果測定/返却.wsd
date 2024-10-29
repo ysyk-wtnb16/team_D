@@ -4,36 +4,40 @@ actor "事務職員" as staff
 boundary "返却\n検索画面" as HKKs
 boundary "返却\n確認画面" as HKChecks
 boundary "ブラウザ" as brz
-control "返却\n検索ビュー" as HKv
-control "返却\n確認ビュー" as HKCheckv
-control "返却完了\nビュー" as HKOKv
+control "返却\n検索ビュー" as HKKv
+control "返却\nビュー" as HKv
 entity "会員" as member
 entity "本" as book
-entity "貸出\n履歴" as HKR
+entity "貸出\n履歴" as KDR
 entity "貸出\n予約" as KDY
-boundary "返却\n画面" as HKOKs
+boundary "返却\n完了画面" as HKOKs
+control "返却完了\nビュー" as HKOKv
 
-
-brz -> HKv:GET
-HKKs <- HKv:表示する
+brz -> HKKv:GET
+HKKs <- HKKv:表示する
 staff -> HKKs: 管理番号を入力\nして次へボタン\nをクリックする
-HKKs -> HKv: POST（?）
-HKv -> HKR: 貸出履歴を取得
-HKv <-- HKR
-alt 管理番号が存在しない場合
-    HKKs <- HKv:エラーメッセージを表示
-else 管理番号が存在する場合
-    HKChecks <- HKv:返却する内容を表示
-    staff -> HKChecks:決定ボタンをクリックする
-    HKChecks -> HKOKv:GET
-    HKOKv -> KDY: 貸出予約を取得
-    HKOKv <-- KDY
-    alt 貸出予約されていた場合
-        HKOKv -> HKOKs:メッセージと書名一覧を表示する
-    else 貸出予約されていない場合
-        HKOKv -> HKOKs:表示する
+alt 管理番号が未入力の場合
+    HKKs <- HKKv: 「この項目を入力してください」\nとツールチップを表示
+else
+    HKKs -> HKKv: GET（?）
+    HKKv -> KDR: 貸出履歴を取得
+    HKKv <-- KDR
+    alt 管理番号が存在しない場合
+        HKKs <- HKKv: エラーメッセージを表示
+    else 管理番号が存在する場合
+        HKChecks <- HKKv: 表示する
+        staff -> HKChecks: 決定ボタンをクリックする
+        HKChecks -> HKv: POST 
+        HKv -> KDR: 貸出履歴に返却日\nを登録する
+        HKv -> HKOKv: リダイレクト
+        HKChecks -> HKOKv: GET
+        KDY <- HKOKv: 貸出予約を取得
+        KDY --> HKOKv
+        HKOKs <- HKOKv: 返却完了画面を表示
+        alt 貸出予約されていた場合
+            HKOKs <- HKOKv: メッセージと書名リスト\nも表示する
+        end
     end
 end
-
 
 @enduml
