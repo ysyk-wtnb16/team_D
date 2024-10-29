@@ -8,8 +8,7 @@ entity "会員" as member
 entity "本" as bookr
 entity "貸出\n履歴" as KR
 
-
-brz -> KRv: GET(？)
+brz -> KRv: GET(?)
 KRv -> KR: 貸出履歴を取得
 KRv <-- KR:
 alt 貸し出し履歴が存在しない場合

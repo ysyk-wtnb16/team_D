@@ -24,10 +24,10 @@ else
     KYv <- member
     KYv -> book: 本の情報を取得
     KYv <- book
-    alt 会員情報が存在しない場合
-        KYKs <- KYv: 「会員情報が存在しません」メッセージを表示
+    alt 会員が存在しない場合
+        KYKs <- KYv: メッセージを表示する
     else 図書が存在しない場合
-        KYKs <- KYv: 「該当図書は見つかりませんでした」メッセージを表示
+        KYKs <- KYv: メッセージを表示する
     else 
         KYs <- KYv: 貸出予約選択画面を表示
         user -> KYs: 予約したい図書の選択ボタンをクリック
