@@ -2,13 +2,15 @@
 
 actor "利用者" as user
 boundary "貸出予約\n入力画面" as KYKs
-boundary "貸出予約\n洗濯画面" as KYs
+boundary "貸出予約\n選択画面" as KYs
+boundary "貸出予約\n確認画面" as KYChecks
 boundary "ブラウザ" as brz
 control "貸出\n予約ビュー" as KYv
 entity "会員" as member
 entity "本" as book
 entity "貸出\n予約" as KY
 boundary "貸出予約\n完了画面" as KYOKs
+boundary "貸出予約\n完了ビュー" as KYOKv
  
 
 brz -> KYv: GET
@@ -24,6 +26,18 @@ alt 会員番号および管理番号が未入力の場合
 else 会員または図書が存在しない場合
     KYKs <- KYv:メッセージを表示する
 end
-
+alt 学生だった場合
+    KYs <- KYv:雑誌の選択ボタンは非表示にする
+else 学生以外だった場合
+    KYs <- KYv:すべての選択ボタンを表示
+end
+user -> KYs:予約したい図書の選択ボタンをクリックする
+KYs -> KYv:POST
+KYChecks <- KYv:表示する
+user -> KYChecks:決定ボタンをクリックする
+KYChecks -> KYv:POST(貸出予約情報)
+KYv -> KY:登録する
+KYv -> KYOKv:リダイレクト
+KYOKs <- KYOKv:表示する
 
 @enduml
