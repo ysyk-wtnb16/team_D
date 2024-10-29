@@ -17,7 +17,7 @@ boundary "返却\n画面" as HKOKs
 brz -> HKv:GET
 HKKs <- HKv:表示する
 staff -> HKKs: 管理番号を入力\nして次へボタン\nをクリックする
-HKKs -> HKv: GET（?）
+HKKs -> HKv: POST（?）
 HKv -> HKR: 貸出履歴を取得
 HKv <-- HKR
 alt 管理番号が存在しない場合
