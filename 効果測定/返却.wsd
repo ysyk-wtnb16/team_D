@@ -16,7 +16,7 @@ control "返却完了\nビュー" as HKOKv
 brz -> HKKv:GET
 HKKs <- HKKv:表示する
 staff -> HKKs: 管理番号を入力\nして次へボタン\nをクリックする
-alt 管理番号が未入力の場合
+alt 管理番号がすべて未入力の場合
     HKKs <- HKKv: ツールチップを表示
 else
     HKKs -> HKKv: GET(?)
