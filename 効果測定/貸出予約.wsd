@@ -25,9 +25,9 @@ else
     KYv -> book: 本の情報を取得
     KYv <- book
     alt 会員が存在しない場合
-        KYKs -> KYKs: メッセージを表示する
+        KYv -> KYKs: メッセージを表示する
     else 図書が存在しない場合
-        KYKs -> KYKs: メッセージを表示する
+        KYv -> KYKs: メッセージを表示する
     else
         KYs <- KYv: 貸出予約選択画面を表示
         user -> KYs: 予約したい図書の選択ボタンをクリック
