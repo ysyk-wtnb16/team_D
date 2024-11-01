@@ -36,7 +36,7 @@ else
         KDY --> HKOKv
         HKOKs <- HKOKv: 返却完了画面を表示
         alt 貸出予約されていた場合
-            HKOKs -> HKOKs: メッセージと書名リスト\nも表示する
+            HKOKv -> HKOKs: メッセージと書名リスト\nも表示する
         end
     end
 end

@@ -10,7 +10,7 @@ brz -> KRv: GET(貸出履歴)
 KRv -> KR: 貸出履歴を取得
 KRv <-- KR:
 alt 貸し出し履歴が存在しない場合
-KRs -> KRs:メッセージを表示
+KRv -> KRs:メッセージを表示
 else 貸し出し履歴が存在する場合
 KRs <- KRv:貸出履歴一覧を表示
 end
