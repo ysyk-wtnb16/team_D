@@ -20,9 +20,7 @@ mcc <-- account
 ktj <-- mcc
 ktb <- ktj: アラートを表示する
 act -> ktb: サインアップボタンをクリックする
-ktb -> ktb: ツールチップを表示する
 ktb -> ktc: POST(会員情報)
-ktb <- ktc: メッセージを表示する
 ktc -> account: 登録する
 ktc -> kaccount: 登録する
 ktc -> kkc: リダイレクト

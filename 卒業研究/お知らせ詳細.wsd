@@ -1,14 +1,16 @@
-' @startuml KR
- 
-' actor "会員" as user
-' boundary "お知らせ\n詳細画面" as PostDetails
-' boundary "ブラウザ" as brz
-' control "お知らせ\詳細ビュー" as PostDetailv
-' entity "お知らせ" as Post
- 
-' brz -> PostDetailv: GET(お知らせ)
-' PostDetailv -> Post: お知らせを取得
-' PostDetailv <-- Post:
-' PostDetails <- PostDetailv:お知らせ詳細を表示
- 
-' @enduml
+@startuml Postdelete
+
+actor "会員" as act
+boundary "お知らせ\n詳細画面" as PostDetails
+boundary "ブラウザ" as brz
+control "お知らせ\n詳細ビュー" as PostDetailv
+entity "お知らせ" as Post
+control "お知らせ\n削除ビュー" as PostDeletev
+
+act -> PostDetails:削除ボタンを\nクリックする
+PostDetails -> PostDeletev:POST()
+PostDeletev -> Post:お知らせを削除する
+PostDeletev -> PostDeletev:リダイレクト
+PostDetails <- PostDeletev:お知らせと削除完了メッセージを表示
+
+@enduml

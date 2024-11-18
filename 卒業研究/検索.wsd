@@ -1,0 +1,18 @@
+@startuml search
+
+actor "会員" as User
+boundary "検索画面" as Ss
+boundary "ブラウザ" as brz
+control "検索ビュー" as Sv
+control "検索結果ビュー" as SCompv
+entity "投稿" as Post
+
+brz -> Sv:GET
+Ss <- Sv:表示する
+User -> Ss : 検索キーワード入力し、\n検索ボタンをクリックする
+Ss -> SCompv: GET(投稿)
+SCompv -> Post: 該当する投稿を取得
+SCompv <-- Post
+Ss <- SCompv: 検索結果を表示する
+
+@enduml

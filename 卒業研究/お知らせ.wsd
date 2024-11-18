@@ -1,21 +1,14 @@
-' @startuml syouhin_touroku
-' actor "従業員" as act
-' boundary "お知らせ投稿画面" as stb
-' boundary "ブラウザ" as brz
-' control "お知らせ投稿ビュー" as stc
-' entity "お知らせ" as product
-' boundary "お知らせ投稿完了画面" as skb
-' control "お知らせ投稿完了ビュー" as skc
-
-' brz -> stc: GET
-' stb <- stc: 表示する
-' act -> stb: お知らせ情報を入力し、\n投稿ボタンをクリックする
-' alt 項目に未入力がある
-'     stb -> stb: ツールチップを表示する
-' else
-'     stb -> stc: POST（投稿）
-'     stc -> product: 登録する
-'     stc -> skc: リダイレクト 
-'     skb <- skc: 表示する
-' end
-' @enduml
+@startuml KR
+ 
+actor "会員" as user
+boundary "お知らせ\n画面" as Posts
+boundary "ブラウザ" as brz
+control "お知らせ\ビュー" as Postv
+entity "お知らせ" as Post
+ 
+brz -> Postv: GET(お知らせ)
+Postv -> Post: お知らせを取得
+Postv <-- Post:
+Posts <- Postv:お知らせを表示
+ 
+@enduml

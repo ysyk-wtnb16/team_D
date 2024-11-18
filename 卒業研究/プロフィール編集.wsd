@@ -7,10 +7,6 @@ entity "アカウント" as account
 boundary "プロフィール\n編集完了画面" as Profileokb
 control "プロフィール\n編集完了ビュー" as ProfileEditc
 
-brz -> Profilev: GET
-Profilev -> account:プロフィール情報を取得する
-Profilev <-- account:
-ProfileEditb <- Profilev: 表示する
 act -> ProfileEditb: プロフィール編集情報を\n入力し、完了ボタンを\nクリックする
 ProfileEditb -> Profilev: POST（プロフィール）
 Profilev -> account: 変更する
