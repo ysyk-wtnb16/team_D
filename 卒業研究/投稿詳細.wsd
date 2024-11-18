@@ -1,0 +1,14 @@
+@startuml KR
+ 
+actor "会員" as user
+boundary "投稿\n詳細画面" as PostDetails
+boundary "ブラウザ" as brz
+control "投稿\詳細ビュー" as PostDetailv
+entity "投稿" as Post
+ 
+brz -> PostDetailv: GET(投稿)
+PostDetailv -> Post: 投稿を取得
+PostDetailv <-- Post:
+PostDetails <- PostDetailv:投稿詳細を表示
+ 
+@enduml

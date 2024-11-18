@@ -1,0 +1,20 @@
+@startuml cartdelete
+
+actor "会員" as act
+boundary "アカウント\n削除画面" as accountDeleteb
+boundary "会員登録画面" as ktb
+boundary "ブラウザ" as brz
+control "アカウント\n削除ビュー" as accountDeletev
+entity "account" as account
+control "アカウント\n削除完了ビュー" as accountDelteokv
+
+brz -> accountDeletev: GET
+accountDeleteb <- accountDeletev: 表示する
+act -> accountDeleteb:削除ボタンを\nクリックする
+accountDeleteb -> accountDeleteb:「削除してもよろしいですか？」\nとアラートを表示 
+act -> accountDeleteb:削除をクリックする
+accountDeleteb -> accountDeletev:POST()
+accountDeletev -> account:アカウントを削除する
+accountDeletev -> accountDelteokv:リダイレクト
+ktb <- accountDelteokv:会員登録画面と削除完了メッセージを表示
+@enduml

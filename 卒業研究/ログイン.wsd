@@ -1,0 +1,20 @@
+@startuml login
+actor "非ログインユーザー" as nonlogin
+boundary "ログイン画面" as loginb
+boundary "ブラウザ" as brz
+control "ログイン\nビュー" as loginv
+entity "会員アカウント" as account
+boundary "トップ画面" as Topb
+control "ログイン\n完了ビュー" as loginokv
+
+brz -> loginv: GET
+loginb <- loginv: 表示する
+nonlogin -> loginb: ログイン情報を入力し、\nログインボタンをクリックする
+loginb -> loginb: ツールチップを表示する
+loginb -> loginv:POST(メールアドレス、パスワード)
+loginv -> account: メールアドレスと\nパスワードで検索する
+loginv <-- account
+loginv -> Topb: 表示する
+loginv -> loginokv:リダイレクト
+Topb <- loginokv:「ログイン完了」\nアラートを表示する
+@enduml

@@ -1,0 +1,17 @@
+@startuml syouhin_touroku
+actor "会員" as act
+boundary "投稿画面" as stb
+boundary "ブラウザ" as brz
+control "投稿ビュー" as stc
+entity "投稿" as product
+boundary "投稿完了画面" as skb
+control "投稿完了ビュー" as skc
+
+brz -> stc: GET
+stb <- stc: 表示する
+act -> stb: 投稿情報を入力し、\n投稿ボタンをクリックする
+stb -> stc: POST（投稿）
+stc -> product: 登録する
+stc -> skc: リダイレクト 
+skb <- skc: 表示する
+@enduml

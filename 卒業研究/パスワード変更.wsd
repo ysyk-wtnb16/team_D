@@ -1,0 +1,31 @@
+' @startuml password_change
+
+' actor "会員" as act
+' boundary "パスワード変更画面" as PasswordChangeScreen
+' boundary "ブラウザ" as Browser
+' control "パスワード変更ビュー" as PasswordChangeView
+' entity "アカウントデータベース" as AccountDB
+' boundary "パスワード変更完了画面" as PasswordChangeCompleteScreen
+' control "パスワード変更完了ビュー" as PasswordChangeCompleteView
+
+' Browser -> PasswordChangeView: GET /password_change
+' PasswordChangeView -> PasswordChangeScreen: 表示する
+
+' act -> PasswordChangeScreen: メールアドレスを入力し、送信ボタンをクリック
+' PasswordChangeScreen -> PasswordChangeView: POST /send_email
+' PasswordChangeView -> AccountDB: メールアドレス確認
+' PasswordChangeView <-- AccountDB: 確認結果
+' PasswordChangeView -> act: メール送信（リンクを含む）
+
+' act -> Browser: メールのリンクをクリック
+' Browser -> PasswordChangeView: GET /password_reset_link
+' PasswordChangeView -> PasswordChangeScreen: 表示する
+
+' act -> PasswordChangeScreen: 新しいパスワードを入力し、送信ボタンをクリック
+' PasswordChangeScreen -> PasswordChangeView: POST /password_reset
+' PasswordChangeView -> AccountDB: パスワードを変更する
+' PasswordChangeView --> PasswordChangeCompleteView: リダイレクト
+' PasswordChangeCompleteView -> PasswordChangeCompleteScreen: 表示する
+
+' PasswordChangeCompleteScreen -> act: パスワード変更完了のアラートを表示
+' @enduml

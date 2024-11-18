@@ -1,0 +1,19 @@
+@startuml syouhin_touroku
+actor "会員" as act
+boundary "プロフィール編集画面" as ProfileEditb
+boundary "ブラウザ" as brz
+control "プロフィール\nビュー" as Profilev
+entity "アカウント" as account
+boundary "プロフィール\n編集完了画面" as Profileokb
+control "プロフィール\n編集完了ビュー" as ProfileEditc
+
+brz -> Profilev: GET
+Profilev -> account:プロフィール情報を取得する
+Profilev <-- account:
+ProfileEditb <- Profilev: 表示する
+act -> ProfileEditb: プロフィール編集情報を\n入力し、完了ボタンを\nクリックする
+ProfileEditb -> Profilev: POST（プロフィール）
+Profilev -> account: 変更する
+Profilev -> ProfileEditc: リダイレクト 
+Profileokb <- ProfileEditc: 表示する
+@enduml
