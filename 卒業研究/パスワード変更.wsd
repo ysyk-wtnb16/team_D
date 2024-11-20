@@ -1,31 +1,34 @@
 ' @startuml password_change
 
 ' actor "会員" as act
-' boundary "パスワード変更画面" as PasswordChangeScreen
-' boundary "ブラウザ" as Browser
-' control "パスワード変更ビュー" as PasswordChangeView
+' boundary "パスワード\n変更画面" as PasswordChangeScreen
+' boundary "ブラウザ" as brz
+' control "パスワード変更\nビュー" as PasswordChangeView
 ' entity "アカウントデータベース" as AccountDB
-' boundary "パスワード変更完了画面" as PasswordChangeCompleteScreen
-' control "パスワード変更完了ビュー" as PasswordChangeCompleteView
+' boundary "パスワード変更\n完了画面" as PasswordChangeCompleteScreen
+' control "パスワード\n変更完了ビュー" as PasswordChangeCompleteView
+' entity "メール送信システム" as MailSystem
 
-' Browser -> PasswordChangeView: GET /password_change
+' ' ステップ1: メールアドレス入力と送信ボタンクリック
+' brz -> PasswordChangeView: GET 
 ' PasswordChangeView -> PasswordChangeScreen: 表示する
-
 ' act -> PasswordChangeScreen: メールアドレスを入力し、送信ボタンをクリック
 ' PasswordChangeScreen -> PasswordChangeView: POST /send_email
 ' PasswordChangeView -> AccountDB: メールアドレス確認
-' PasswordChangeView <-- AccountDB: 確認結果
-' PasswordChangeView -> act: メール送信（リンクを含む）
+' AccountDB -> PasswordChangeView: 確認結果
+' PasswordChangeView -> MailSystem: パスワードリセットリンク送信
+' MailSystem -> act: リセットリンク付きメール送信
 
-' act -> Browser: メールのリンクをクリック
-' Browser -> PasswordChangeView: GET /password_reset_link
+' ' ステップ2: リセットリンクのクリック
+' act -> brz: メールのリンクをクリック
+' brz -> PasswordChangeView: GET 
 ' PasswordChangeView -> PasswordChangeScreen: 表示する
-
 ' act -> PasswordChangeScreen: 新しいパスワードを入力し、送信ボタンをクリック
-' PasswordChangeScreen -> PasswordChangeView: POST /password_reset
-' PasswordChangeView -> AccountDB: パスワードを変更する
-' PasswordChangeView --> PasswordChangeCompleteView: リダイレクト
+' PasswordChangeScreen -> PasswordChangeView: POST 
+' PasswordChangeView -> AccountDB: 新しいパスワードを保存
+' AccountDB -> PasswordChangeView: パスワード変更結果
+' PasswordChangeView -> PasswordChangeCompleteView: リダイレクト
 ' PasswordChangeCompleteView -> PasswordChangeCompleteScreen: 表示する
-
 ' PasswordChangeCompleteScreen -> act: パスワード変更完了のアラートを表示
+
 ' @enduml

@@ -5,18 +5,10 @@ boundary "ブラウザ" as brz
 control "募金申し込み\nビュー" as Moneyv
 boundary "募金手続き\n画面" as MoneyPs
 control "募金手続き\nビュー" as MoneyPv
-entity "募金履歴情報" as Moneyhistory
-boundary "募金手続き\n完了画面" as MoneyPOKv
-control "募金履歴\nビュー" as Moneyhistoryv
 
 brz -> Moneyv:GET
 Moneys <- Moneyv:表示する
 user -> Moneys:「寄付する」\nボタンをクリックする
 Moneys -> MoneyPv:GET
 MoneyPs <- MoneyPv:表示する
-user -> MoneyPs:支払い情報\nを入力する
-MoneyPs -> MoneyPv:POST
-MoneyPv -> Moneyhistory:登録する
-MoneyPv -> Moneyhistoryv:リダイレクト
-MoneyPOKv <- Moneyhistoryv:表示する
 @enduml
