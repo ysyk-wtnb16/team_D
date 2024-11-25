@@ -1,0 +1,20 @@
+@startuml cartdelete
+
+actor "会員" as act
+boundary "退会画面" as Secessionb
+boundary "会員登録画面" as ktb
+boundary "ブラウザ" as brz
+control "退会ビュー" as Secessionv
+entity "アカウント" as account
+control "退会完了ビュー" as Secessionokv
+
+brz -> Secessionv: GET
+Secessionb <- Secessionv: 表示する
+act -> Secessionb:退会ボタンを\nクリックする
+Secessionb -> Secessionb:「退会してもよろしいですか？」\nとアラートを表示 
+act -> Secessionb:退会をクリックする
+Secessionb -> Secessionv:POST()
+Secessionv -> account:アカウントを削除する
+Secessionv -> Secessionokv:リダイレクト
+ktb <- Secessionokv:会員登録画面と退会完了メッセージを表示
+@enduml

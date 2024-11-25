@@ -1,28 +1,27 @@
-@startuml signup
-actor "非会員ユーザー" as act
-boundary "会員登録画面" as ktb
-control "会員登録JS" as ktj
-boundary "ブラウザ" as brz
-control "会員登録\nビュー" as ktc
-control "メールアドレス重複\nチェックコントローラー" as mcc
-entity "アカウント" as account
-entity "会員アカウント" as kaccount
-boundary "会員登録完了画面" as kkb
-control "会員登録完了\nビュー" as kkc
+' @startuml signup
+' actor "非会員ユーザー" as act
+' boundary "会員登録画面" as ktb
+' control "会員登録JS" as ktj
+' boundary "ブラウザ" as brz
+' control "会員登録\nビュー" as ktc
+' control "メールアドレス重複\nチェックコントローラー" as mcc
+' entity "アカウント" as account
+' entity "会員アカウント" as kaccount
+' boundary "会員登録完了画面" as kkb
+' control "会員登録完了\nビュー" as kkc
 
-brz -> ktc: GET
-ktb <- ktc: 表示する
-act -> ktb:会員情報を入力する
-ktb -> ktj: メールアドレスの重複をチェックする
-ktj -> mcc: GET(メールアドレス)
-mcc -> account: メールアドレスで検索する
-mcc <-- account
-ktj <-- mcc
-ktb <- ktj: アラートを表示する
-act -> ktb: サインアップボタンをクリックする
-ktb -> ktc: POST(会員情報)
-ktc -> account: 登録する
-ktc -> kaccount: 登録する
-ktc -> kkc: リダイレクト
-kkb <- kkc: 表示する
-@enduml
+' brz -> ktc: GET
+' ktb <- ktc: 表示する
+' act -> ktb:会員情報を入力し\n登録ボタンをクリックする
+' ktb -> ktj: メールアドレスの重複をチェックする
+' ktj -> mcc: GET(メールアドレス)
+' mcc -> account: メールアドレスで検索する
+' mcc <-- account
+' ktj <-- mcc
+' ktb <- ktj: アラートを表示する
+' ktb -> ktc: POST(会員情報)
+' ktc -> account: 登録する
+' ktc -> kaccount: 登録する
+' ktc -> kkc: リダイレクト
+' kkb <- kkc: 表示する
+' @enduml

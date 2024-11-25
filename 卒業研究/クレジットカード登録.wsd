@@ -1,0 +1,18 @@
+' @startuml Credit Card Registration
+
+' actor "会員" as user
+' boundary "クレジットカード登録画面" as CCRs
+' boundary "ブラウザ" as brz
+' control "クレジットカード登録\nビュー" as CCRv
+' entity "クレジットカード" as Credit Card
+
+' brz -> CCRv:GET
+' CCRs <- CCRv:表示する
+' user -> CCRs : クレジットカード情報を入力し\n登録ボタンをクリックする
+' ShoppingSite -> PaymentGateway : クレジットカード情報を送信
+' PaymentGateway -> Bank : クレジットカード情報を確認
+' Bank -> PaymentGateway : 承認/拒否の結果を返す
+' PaymentGateway -> ShoppingSite : 承認/拒否の結果を返す
+' ShoppingSite -> User : 登録結果を通知
+
+' @enduml

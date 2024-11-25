@@ -4,8 +4,8 @@ actor "会員" as act
 boundary "お知らせ\n詳細画面" as PostDetails
 boundary "ブラウザ" as brz
 control "お知らせ\n詳細ビュー" as PostDetailv
-entity "お知らせ" as Post
 control "お知らせ\n削除ビュー" as PostDeletev
+entity "お知らせ" as Post
 
 act -> PostDetails:削除ボタンを\nクリックする
 PostDetails -> PostDeletev:POST()

@@ -1,0 +1,14 @@
+@startuml KR
+ 
+actor "会員" as user
+boundary "マイポスト画面" as MyPosts
+boundary "ブラウザ" as brz
+control "マイポストビュー" as MyPostv
+entity "投稿" as Post
+ 
+brz -> MyPostv: GET(投稿)
+MyPostv -> Post: 自分の投稿を取得
+MyPostv <-- Post:
+MyPosts <- MyPostv:投稿を表示
+ 
+@enduml

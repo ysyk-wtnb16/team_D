@@ -10,8 +10,8 @@ control "ログイン\n完了ビュー" as loginokv
 brz -> loginv: GET
 loginb <- loginv: 表示する
 nonlogin -> loginb: ログイン情報を入力し、\nログインボタンをクリックする
-loginb -> loginv:POST(メールアドレス、パスワード)
-loginv -> account: メールアドレスと\nパスワードで検索する
+loginb -> loginv:POST(ユーザーID、パスワード)
+loginv -> account: ユーザーIDと\nパスワードで検索する
 loginv <-- account
 loginv -> Topb: 表示する
 loginv -> loginokv:リダイレクト

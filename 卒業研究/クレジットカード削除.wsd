@@ -1,0 +1,19 @@
+' @startuml Credit Card  Deletev
+
+' actor "会員" as act
+' boundary "クレジットカード削除画面" as CCDb
+' boundary "ブラウザ" as brz
+' control "クレジットカード削除ビュー" as CCDv
+' entity "アカウント" as account
+' control "クレジットカード削除完了ビュー" as CCDokv
+
+' brz -> CCDv: GET
+' CCDb <- CCDv: 表示する
+' act -> CCDb:削除ボタンを\nクリックする
+' CCDb -> CCDb:「削除してもよろしいですか？」\nとアラートを表示 
+' act -> CCDb:削除をクリックする
+' CCDb -> CCDv:POST()
+' CCDv -> account:クレジットカードの登録を削除する
+' CCDv -> CCDokv:リダイレクト
+' CCDb <- CCDokv:削除完了メッセージを表示
+' @enduml
