@@ -1,5 +1,5 @@
 @startuml Fundraising
-actor "会員" as user
+actor "市役所ユーザー" as user
 boundary "募金作成\n画面" as Fundraisings
 boundary "ブラウザ" as brz
 control "募金作成\nビュー" as Fundraisingv
@@ -9,7 +9,7 @@ control "募金作成完了\nビュー" as Fundraisingokv
 
 brz -> Fundraisingv:GET
 Fundraisings <- Fundraisingv:表示する
-user -> Fundraisings:震災名を入力し、画像をアップロードして\n完成ボタンをクリックする
+user -> Fundraisings:題名を入力し、画像をアップロードして\n完了ボタンをクリックする
 Fundraisings -> Fundraisingv:POST
 Fundraisingv -> Fundraising:登録する
 Fundraisingv -> Fundraisingokv:リダイレクト

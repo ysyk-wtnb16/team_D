@@ -1,22 +1,22 @@
-' @startuml Sister City Application
-' actor "非会員ユーザー" as act
-' boundary "市役所申請画面" as SCAb
-' boundary "ブラウザ" as brz
-' control "姉妹都市申請\nビュー" as SCAv
-' control "姉妹都市申請\n検索ビュー" as SCASv
-' entity "市役所コード" as CHCode
-' entity "姉妹都市" as SCA
-' boundary "姉妹都市申請完了画面" as SCAokb
-' control "姉妹都市申請完了\nビュー" as SCAokv
+@startuml Sister City Application
+actor "市役所ユーザー" as act
+boundary "姉妹都市申請申請画面" as SCAb
+boundary "ブラウザ" as brz
+control "姉妹都市申請\nビュー" as SCAv
+control "姉妹都市申請\n検索ビュー" as SCASv
+entity "市役所コード" as CHCode
+entity "姉妹都市" as SCA
+boundary "姉妹都市申請完了画面" as SCAokb
+control "姉妹都市申請完了\nビュー" as SCAokv
 
-' brz -> SCAv: GET
-' SCAb <- SCAv: 表示する
-' act -> SCAb:市役所コード２種類を入力し\n申請ボタンをクリックする
-' SCAb -> SCASv: GET(市役所コード)
-' SCASv -> CHCode: 市役所コードで検索する
-' SCASv <-- CHCode
-' SCAb -> SCAv: POST(姉妹都市)
-' SCAv -> SCA:登録する
-' SCAv -> SCAokv: リダイレクト
-' SCAokb <- SCAokv: 表示する
-' @enduml
+brz -> SCAv: GET
+SCAb <- SCAv: 表示する
+act -> SCAb:市役所コード２種類を入力し\n申請ボタンをクリックする
+SCAb -> SCASv: GET(市役所コード)
+SCASv -> CHCode: 市役所コードで検索する
+SCASv <-- CHCode
+SCAb -> SCAv: POST(姉妹都市)
+SCAv -> SCA:登録する
+SCAv -> SCAokv: リダイレクト
+SCAokb <- SCAokv: 表示する
+@enduml

@@ -1,12 +1,12 @@
-@startuml Moneyhistory
+@startuml Moneyhistory_s
  
-actor "会員" as user
+actor "市役所ユーザー" as user
 boundary "募金履歴画面" as Moneyhistorys
 boundary "ブラウザ" as brz
 control "募金履歴\nビュー" as Moneyhistoryv
 entity "募金履歴情報" as Moneyhistory
  
-brz -> Moneyhistoryv: GET(お知らせ)
+brz -> Moneyhistoryv: GET(募金)
 Moneyhistoryv -> Moneyhistory: 募金履歴を取得
 Moneyhistoryv <-- Moneyhistory:
 Moneyhistorys <- Moneyhistoryv:募金履歴を表示

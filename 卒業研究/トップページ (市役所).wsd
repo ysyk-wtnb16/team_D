@@ -1,0 +1,17 @@
+@startuml top_s
+ 
+actor "市役所ユーザー" as user
+boundary "トップ画面" as PostDetails
+boundary "ブラウザ" as brz
+control "トップビュー" as PostDetailv
+entity "投稿" as Post
+entity "募金履歴情報" as Moneyhistory
+ 
+brz -> PostDetailv: GET(投稿、募金)
+PostDetailv -> Post: 投稿を取得
+PostDetailv <-- Post:
+PostDetailv -> Moneyhistory: すべてのユーザーの\n募金履歴を取得
+PostDetailv <-- Moneyhistory
+PostDetails <- PostDetailv:トップ画面に\n投稿と募金総額を表示
+ 
+@enduml
