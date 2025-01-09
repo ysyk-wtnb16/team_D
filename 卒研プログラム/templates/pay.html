@@ -30,7 +30,8 @@
             <div id="page-content-wrapper">
                 <!-- Top navigation-->
                 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                    <div class="container-fluid">
+                    <h1 class="navbar-brand">ホーム</h1>
+                    <!-- <div class="container-fluid">
                         <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -48,21 +49,33 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
                 </nav>
                 <!-- Page content-->
                 <div class="container-fluid">
-                      <!-- タイトル、画像を入力し募金ページを作成するフォーム -->
+                    <!-- 必要項目を入力し募金するフォーム -->
                     <form>
-                        <label for="title">寄付金額</label></br>
-                        <input type="text" id="title" name="title"><br><br>
-                    
-                        <label for="photo">使用する画像</label></br>
-                        <input type="file" id="photo" name="photo" accept="image/*"><br><br>
-                    
-                        <input type="submit" value="作成">
+                        <label for="amount">募金金額</label></br>
+                        <input type="number" min="1" id="amount" name="amount" placeholder="入力してください">円<br><br>
+                 
+                        <label for="photo">応援メッセージ（任意）</label></br>
+                        <textarea id="message" name="message" rows="5" cols="50"></textarea><br><br>
+                       
+                        <p>支払い方法</p>
+                        <fieldset>
+                            <div>
+                              <input type="radio" id="card" name="payment" value="pcard" class="radiobutton">
+                              <label for="card">クレジットカード</label>
+                            </div>
+                            <div>
+                              <input type="radio" id="bank" name="payment" value="pbank" class="radiobutton">
+                              <label for="bank">銀行振込</label>
+                            </div>
+                        </fieldset><br>
+                 
+                        <input type="submit" value="募金" class="button">
                     </form>
-                  <!-- フォームここまで -->
+                    <!-- フォームここまで -->
                 </div>
             </div>
         </div>
