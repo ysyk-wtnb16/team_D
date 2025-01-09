@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投稿閲覧 </title>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>投稿閲覧 (View Post)</h1>
+
+        <div class="post-header">
+            <p><strong>ニックネーム:</strong> <span id="nickname">Loading...</span></p>
+            <p><strong>ユーザーID :</strong> <span id="user_id">Loading...</span></p>
+            <p><strong>日付 :</strong> <span id="post_date">Loading...</span></p>
+        </div>
+
+        <div class="post-title">
+            <p><strong>タイトル :</strong> <span id="post_title">Loading...</span></p>
+        </div>
+
+        <div class="post-text">
+            <p><strong>テキスト:</strong> <span id="post_text">Loading...</span></p>
+        </div>
+
+        <div class="media" id="media">
+        </div>
+
+        <div class="button-group">
+            <button class="comment-btn" id="comment_btn">コメント</button>
+            <button class="like-btn" id="like_btn">いいね！</button>
+            <button class="donate-btn" id="donate_btn">募金をする </button>
+        </div>
+    </div>
+
+    <script>
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Update the HTML with the fetched data
+                document.getElementById('nickname').textContent = data.nickname;
+                document.getElementById('user_id').textContent = data.user_id;
+                document.getElementById('post_date').textContent = data.post_date;
+                document.getElementById('post_title').textContent = data.post_title;
+                document.getElementById('post_text').textContent = data.post_text;
+
+                // Check and display media (image or video)
+                const mediaContainer = document.getElementById('media');
+                if (data.media_type === 'image') {
+                    const img = document.createElement('img');
+                    img.src = data.media_url;
+                    img.alt = 'Post Image';
+                    img.width = 500;
+                    mediaContainer.appendChild(img);
+                } else if (data.media_type === 'video') {
+                    const video = document.createElement('video');
+                    video.src = data.media_url;
+                    video.controls = true;
+                    video.width = 500;
+                    mediaContainer.appendChild(video);
+                }
+            })
+            .catch(error => console.error('Error loading the post data:', error));
+    </script>
+
+</body>
+
+</html>

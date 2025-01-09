@@ -1,0 +1,19 @@
+@startuml
+actor User as "会員ユーザー"
+entity "システム" as System
+entity "検索画面" as SearchPage
+entity "検索バー" as SearchBar
+entity "検索結果" as SearchResult
+
+User -> SearchPage: アクセスする
+SearchPage -> SearchBar: 「検索バー」表示
+User -> SearchBar: 「検索キーワード」または「絞り込み項目」を入力
+User -> SearchPage: 「検索」ボタンをクリック
+SearchPage -> System: 検索キーワードまたは絞り込み項目を送信
+System -> SearchResult: 検索結果を取得
+System -> SearchResult: 検索結果を表示
+alt 検索結果がない場合 (No search results)
+    System -> User: 該当する投稿がありません
+end
+@enduml
+

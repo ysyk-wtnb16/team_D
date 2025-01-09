@@ -1,0 +1,36 @@
+@startuml
+actor User as "会員ユーザー"
+actor Admin as "管理者"
+
+rectangle "システム" {
+usecase "投稿" as UC1
+usecase "タイトル、テキスト、写真、位置情報の入力" as UC2
+usecase "投稿ボタンをクリック" as UC3
+usecase "投稿完了メッセージ表示" as UC4
+usecase "入力項目不足の場合のエラーメッセージ" as UC5
+usecase "写真/動画の確認" as UC6
+usecase "位置情報確認" as UC7
+usecase "メディアの検証" as UC8
+usecase "投稿内容の検証" as UC9
+usecase "管理者による投稿監視" as UC10
+}
+
+User --> UC1: アクセスする
+User --> UC2: 情報を入力する
+User --> UC3: 投稿ボタンをクリック
+UC3 --> UC4: 投稿完了メッセージ表示
+
+UC2 --> UC6: メディアの確認
+UC2 --> UC7: 位置情報確認
+UC2 --> UC9: 内容の確認
+
+alt 入力項目不足の場合
+    UC3 --> UC5: 不足項目エラーメッセージ
+
+UC1 --> UC10: 管理者による監視
+
+' Include and Extend relations
+UC6 .u.> UC8: メディア検証
+UC7 .u.> UC8: 位置情報検証
+
+@enduml

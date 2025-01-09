@@ -1,0 +1,13 @@
+@startuml
+actor User as "ユーザー"
+participant "Webページ" as WebPage
+participant "サーバー" as Server
+participant "データベース" as Database
+
+User -> WebPage : 1. 退会リクエスト送信
+WebPage -> Server : 2. 退会リクエスト
+Server -> Database : 3. ユーザーデータ削除
+Database -> Server : 4. データ削除完了
+Server -> WebPage : 5. 退会完了メッセージ
+WebPage -> User : 6. 退会完了表示
+@enduml
