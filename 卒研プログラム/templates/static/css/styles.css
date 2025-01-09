@@ -10878,6 +10878,18 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
   cursor: pointer; /* カーソルをポインターに変更 */
 }
 
+.button1 {
+  width: 200px; /* 幅を設定 */
+  height: 50px; /* 高さを設定 */
+  font-size: 20px; /* 文字サイズを設定 */
+  padding: 10px; /* 内側の余白を設定 */
+  background-color: #dc143c; /* 背景色を設定 */
+  color: white; /* 文字色を設定 */
+  border: none; /* 枠線を削除 */
+  border-radius: 5px; /* 角を丸くする */
+  cursor: pointer; /* カーソルをポインターに変更 */
+}
+
 .button:hover {
   background-color: #87cefa; /* カーソルを合わせた時の背景色を設定 */
 }
