@@ -1,0 +1,130 @@
+{% extends "base_nosidebar.html" %}
+
+{% block title %}サインアップ{% endblock title %}
+
+{% block script %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container px-4 px-lg-5 mt-5">
+    <h1 class="text-center">会員登録</h1>
+    <hr>
+    <div class="row">
+        <div class="col offset-2">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-8">
+                        <label for="email" class="form-label">メールアドレス</label>
+                        <!-- <input type="email" class="form-control ms-5" id="email" placeholder="you@example.com"> -->
+                        {{form.email}}
+                        {% for error in form.email.errors %}
+                        <p style="color:red">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-8">
+                        <label for="name" class="form-label">氏名</label>
+                        <!-- <input type="text" class="form-control ms-5" id="name" placeholder="" value=""> -->
+                        {{form.name}}
+                        {% for error in form.name.errors %}
+                        <p style="color:red">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-8">
+                        <label for="zip" class="form-label">郵便番号</label>
+                        <div class="row ms-5">
+                            <div class="col-6 ps-0">
+                                <!-- <input type="text" class="form-control" id="zip" placeholder="" value=""> -->
+                                {{form.zip_code}}
+                                {% for error in form.zip_code.errors %}
+                                <p style="color:red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-3">
+                                <button class="btn btn-light">住所検索</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-8">
+                        <label for="address" class="form-label">住所</label>
+                        <!-- <input type="text" class="form-control ms-5" id="address" placeholder="" value=""> -->
+                        {{form.address}}
+                        {% for error in form.address.errors %}
+                        <p style="color:red">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-8">
+                        <label for="" class="form-label">マイショップ</label>
+                        <div class="row ms-5">
+                            {# 複数のcheckboxであるmyshopsをループ #}
+                            {% for option in form.myshops %}
+                            <div class="col-3">
+                                {# <input type=checkbox> を出力 #}
+                                {{ option.tag }}
+                                <label for="{{ option.id_for_label }}">{{ option.choice_label }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% for error in form.myshops.errors %}
+                        <p style="color:red">{{ error }}</p>
+                        {% endfor %}
+                        <!-- <div class="row ms-5">
+                            <div class="col-3">
+                                <input type="checkbox" name="shop1">
+                                <label for="shop1">店舗①</label>
+                            </div>
+                            <div class="col-3">
+                                <input type="checkbox" name="shop1">
+                                <label for="shop1">店舗②</label>
+                            </div>
+                            <div class="col-3">
+                                <input type="checkbox" name="shop1">
+                                <label for="shop1">店舗③</label>
+                            </div>
+                            <div class="col-3">
+                                <input type="checkbox" name="shop1">
+                                <label for="shop1">店舗④</label>
+                            </div>
+                            <div class="col-3">
+                                <input type="checkbox" name="shop1">
+                                <label for="shop1">店舗⑤</label>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="col-8">
+                        <label for="password1" class="form-label">パスワード</label>
+                        <!-- <input type="password" class="form-control ms-5" id="password1" placeholder="" value=""> -->
+                        {{form.password1}}
+                        {% for error in form.password1.errors %}
+                        <p style="color:red">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="col-8">
+                        <label for="password2" class="form-label">パスワード（確認）</label>
+                        <!-- <input type="password" class="form-control ms-5" id="password2" placeholder="" value=""> -->
+                        {{form.password2}}
+                        {% for error in form.password2.errors %}
+                        <p style="color:red">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <hr class="my-4">
+                    <div class="row justify-content-center">
+
+                        <button class="w-50 btn btn-primary btn-lg" type="submit">サインアップ</button>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <p class="text-end">
+                <a href="{% url 'main:index' %}">登録をやめてトップページに戻る</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock content %}
