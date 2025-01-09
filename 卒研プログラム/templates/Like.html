@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投稿詳細</title>
+</head>
+<body>
+    <header>
+        <h1>投稿詳細</h1>
+    </header>
+
+    <section>
+        <h2>投稿タイトル</h2>
+        <p>投稿内容がここに表示されます。</p>
+
+        <button onclick="likePost()">いいね</button>
+        <span id="like-count">0</span> いいね
+
+        <script>
+            let likeCount = 0;
+
+            function likePost() {
+                likeCount++;
+                document.getElementById('like-count').innerText = likeCount;
+            }
+        </script>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 市役所</p>
+    </footer>
+
+</body>
+</html>
