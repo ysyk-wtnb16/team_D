@@ -52,15 +52,17 @@
                 </nav>
                 <!-- Page content-->
                 <div class="container-fluid">
-                    <h1 class="mt-4">Simple Sidebar</h1>
-                    <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-                    <p>
-                        Make sure to keep all page content within the
-                        <code>#page-content-wrapper</code>
-                        . The top navbar is optional, and just for demonstration. Just create an element with the
-                        <code>#sidebarToggle</code>
-                        ID which will toggle the menu when clicked.
-                    </p>
+                      <!-- タイトル、画像を入力し募金ページを作成するフォーム -->
+                    <form>
+                        <label for="title">寄付金額</label></br>
+                        <input type="text" id="title" name="title"><br><br>
+                    
+                        <label for="photo">使用する画像</label></br>
+                        <input type="file" id="photo" name="photo" accept="image/*"><br><br>
+                    
+                        <input type="submit" value="作成">
+                    </form>
+                  <!-- フォームここまで -->
                 </div>
             </div>
         </div>
