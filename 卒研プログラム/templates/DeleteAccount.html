@@ -1,47 +1,73 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>退会ページ</title>
-    <!-- Bootstrap core CSS-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>トラベルプ</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="static/css/styles.css" rel="stylesheet" />
 </head>
-
 <body>
-    <header class="bg-dark text-white text-center py-3">
-        <h1>退会ページ</h1>
-    </header>
-
-    <section class="container my-5">
-        <h2>アカウント情報</h2>
-        <form action="delete_account.php" method="POST">
-            <table class="table">
-                <tr>
-                    <td><label for="user_id">ユーザーID:</label></td>
-                    <td><input type="text" id="user_id" value="123456" readonly class="form-control"></td>
-                </tr>
-                <tr>
-                    <td><label for="nickname">ニックネーム:</label></td>
-                    <td><input type="text" id="nickname" value="ユーザーのニックネーム" readonly class="form-control"></td>
-                </tr>
-                <tr>
-                    <td><label for="email">メールアドレス:</label></td>
-                    <td><input type="email" id="email" value="user@example.com" readonly class="form-control"></td>
-                </tr>
-            </table>
-
-            <p>アカウントを削除すると、すべての投稿やコメントが失われ、復元できません。</p>
-            <button type="submit" class="btn btn-danger btn-block">アカウントを削除</button>
-        </form>
-
-        <br>
-        <a href="index.html"><button class="btn btn-primary btn-block">ホームページに戻る</button></a>
-    </section>
-
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom bg-light">トラベルプ</div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="home.html">ホーム</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="search.html">検索</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="post.html">投稿作成</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="profile.html">プロフィール</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="mypost.html">マイポスト</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="myplan.html">マイプラン</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="pay.html">募金</a>
+                <!-- <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a> -->
+            </div>
+        </div>
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+            <!-- Top navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <!-- <h1 class="navbar-brand container-fluid">トラベルプ</h1> -->
+                <h1 class="navbar-brand">退会</h1>
+            </nav>
+            <!-- Page content-->
+            <div class="container-fluid">
+                <section class="container my-5">
+                    <h2>アカウント情報</h2>
+                    <form action="delete_account.php" method="POST">
+                        <table class="table">
+                            <tr>
+                                <td><label for="user_id">ユーザーID:</label></td>
+                                <td><input type="text" id="user_id" value="123456" readonly class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="nickname">ニックネーム:</label></td>
+                                <td><input type="text" id="nickname" value="ユーザーのニックネーム" readonly class="form-control"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="email">メールアドレス:</label></td>
+                                <td><input type="email" id="email" value="user@example.com" readonly class="form-control"></td>
+                            </tr>
+                        </table>
+            
+                        <p>アカウントを削除すると、すべての投稿やコメントが失われ、復元できません。</p>
+                        <button type="submit" class="button1">アカウントを削除</button>
+                    </form>
+            
+                    <br>
+                    <a href="home.html"><button class="button">ホームページに戻る</button></a>
+                </section>
+            
+            </div>
+        </div>
+    </div>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
 </body>
-
 </html>

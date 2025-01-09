@@ -1,114 +1,95 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook Clone - 検索</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .search-bar input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .search-results {
-            margin-bottom: 30px;
-        }
-        .search-results h2 {
-            margin-top: 0;
-        }
-        .transfer-form {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-        .transfer-form input, .transfer-form select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .transfer-form button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .transfer-form button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>トラベルプ</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="static/css/styles.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
-        <!-- 検索バー  -->
-        <div class="search-bar">
-            <input type="text" id="search" placeholder="検索...">
-            <button onclick="search()">検索する</button>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom bg-light">トラベルプ</div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="home.html">ホーム</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="search.html">検索</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="post.html">投稿作成</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="profile.html">プロフィール</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="mypost.html">マイポスト</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="myplan.html">マイプラン</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="pay.html">募金</a>
+                <!-- <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a> -->
+            </div>
         </div>
-
-        <!-- 結果表示  -->
-        <div class="search-results" id="results">
-        </div>
-
-        <div class="transfer-form" id="transfer-form" style="display: none;">
-            <h2>振込フォーム</h2>
-            <label for="amount">金額 (Amount):</label>
-            <input type="number" id="amount" placeholder="金額を入力" min="1" required>
-            <label for="duration">期間 (Duration):</label>
-            <input type="number" id="duration-min" placeholder="最小期間 (日)" min="1" required>
-            <input type="number" id="duration-max" placeholder="最大期間 (日)" min="1" required>
-
-            <button id="transfer-btn">振込</button>
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+            <!-- Top navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <!-- <h1 class="navbar-brand container-fluid">トラベルプ</h1> -->
+                <h1 class="navbar-brand">ホーム</h1>
+               
+            </nav>
+            <!-- Page content-->
+            <div class="container-fluid">
+            </div>
         </div>
     </div>
-
-    <script>
-        function search() {
-            var searchQuery = document.getElementById("search").value;
-
-            if (!searchQuery) {
-                alert("検索を入力してください！");
-                return;
-            }
-
-            var resultsDiv = document.getElementById("results");
-            resultsDiv.innerHTML = "<h2>検索結果: " + searchQuery + "</h2>";
-            resultsDiv.innerHTML += "<p>以下の振込フォームを使用できます:</p>";
-
-            var transferForm = document.getElementById("transfer-form");
-            transferForm.style.display = "block";
-        }
-
-        document.getElementById("transfer-btn").addEventListener("click", function() {
-            const amount = document.getElementById("amount").value;
-            const durationMin = document.getElementById("duration-min").value;
-            const durationMax = document.getElementById("duration-max").value;
-
-            if (amount && durationMin && durationMax) {
-                alert(`振込情報: 金額: ¥${amount}, 期間: ${durationMin} ～ ${durationMax} 日`);
-            } else {
-                alert("全てのフィールドに入力してください！");
-            }
-        });
-    </script>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+</body>
+</html><!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>トラベルプ</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="static/css/styles.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom bg-light">トラベルプ</div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="home.html">ホーム</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="search.html">検索</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="post.html">投稿作成</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="profile.html">プロフィール</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="mypost.html">マイポスト</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="myplan.html">マイプラン</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="pay.html">募金</a>
+                <!-- <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a> -->
+            </div>
+        </div>
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+            <!-- Top navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <!-- <h1 class="navbar-brand container-fluid">トラベルプ</h1> -->
+                <h1 class="navbar-brand">ホーム</h1>
+               
+            </nav>
+            <!-- Page content-->
+            <div class="container-fluid">
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
 </body>
 </html>
