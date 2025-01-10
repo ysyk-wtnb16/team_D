@@ -4,7 +4,7 @@ from django.urls import path
 app_name = 'travelp'
 
 urlpatterns = [
-    path('home', views.IndexView.as_view(), name='home'),
+    path('', views.IndexView.as_view(), name='home'),
 
     path('search', views.SearchView.as_view(), name='search'),
 
