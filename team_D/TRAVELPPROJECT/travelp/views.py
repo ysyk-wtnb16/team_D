@@ -9,3 +9,23 @@ class IndexView(TemplateView):
 class SearchView(TemplateView):
 
     template_name = 'search.html'
+
+class PostView(TemplateView):
+
+    template_name = 'post.html'
+
+class ProfileView(TemplateView):
+
+    template_name = 'profile.html'
+
+class MypostView(TemplateView):
+
+    template_name = 'mypost.html'
+
+class MyplanView(TemplateView):
+
+    template_name = 'myplan.html'
+
+class PayView(TemplateView):
+
+    template_name = 'pay.html'
