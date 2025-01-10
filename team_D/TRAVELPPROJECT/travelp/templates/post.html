@@ -4,45 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>投稿ページ</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="static/css/styles.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
-        <h1>投稿作成 (Create Post)</h1>
-        <form action="submit_post.php" method="POST" enctype="multipart/form-data">
-            <!-- Title -->
-            <div class="form-group">
-                <label for="title">タイトル (Title):</label>
-                <input type="text" id="title" name="title" placeholder="タイトルを入力してください" required>
-            </div>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom bg-light">トラベルプ</div>
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="home">ホーム</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="search">検索</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="post">投稿作成</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="profile">プロフィール</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="mypost">マイポスト</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="myplan">マイプラン</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="pay">募金</a>
+                </div>
+        </div>
+        <div id="page-content-wrapper">
+            <!-- Top navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <h1 class="navbar-brand">投稿作成 (Create Post)</h1>
+                
+            </nav>
+          
+            <form action="submit_post.php" method="POST" enctype="multipart/form-data">
+                <!-- Title -->
+                <div class="form-group">
+                    <label for="title">タイトル (Title):</label>
+                    <input type="text" id="title" name="title" placeholder="タイトルを入力してください" required>
+                </div>
 
-            <!-- Text -->
-            <div class="form-group">
-                <label for="text">テキスト (Text):</label>
-                <textarea id="text" name="text" rows="4" placeholder="テキストを入力してください" required></textarea>
-            </div>
+                <!-- Text -->
+                <div class="form-group">
+                    <label for="text">テキスト (Text):</label>
+                    <textarea id="text" name="text" rows="4" placeholder="テキストを入力してください" required></textarea>
+                </div>
 
-            <!-- Photo or Video -->
-            <div class="file-input-wrapper">
-                <label for="media">写真か動画 (Photo or Video):</label>
-                <input type="file" id="media" name="media" accept="image/*,video/*">
-            </div>
+                <!-- Photo or Video -->
+                <div class="file-input-wrapper">
+                    <label for="media">写真か動画 (Photo or Video):</label>
+                    <input type="file" id="media" name="media" accept="image/*,video/*">
+                </div>
 
-            <!-- Location -->
-            <div class="location-input-wrapper">
-                <label for="location">位置情報 (Location Information):</label>
-                <input type="text" id="location" name="location" placeholder="場所を入力してください">
-            </div>
+                <!-- Location -->
+                <div class="location-input-wrapper">
+                    <label for="location">位置情報 (Location Information):</label>
+                    <input type="text" id="location" name="location" placeholder="場所を入力してください">
+                </div>
 
-            <!-- Post Button -->
-            <div class="post-footer">
-                <button type="submit">投稿 (Post)</button>
-            </div>
-        </form>
+                <!-- Post Button -->
+                <div class="post-footer">
+                    <button type="submit"class="button">投稿 (Post)</button>
+                </div>
+            </form>
+        </div>
     </div>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
 </body>
 
 </html>
