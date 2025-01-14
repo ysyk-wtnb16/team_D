@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>プロフィール編集</title>
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+<!-- Core theme CSS (includes Bootstrap)-->
+<link href="static/css/styles.css" rel="stylesheet" />
+
+</head>
+<body>
+<div class="d-flex" id="wrapper">
+<!-- Sidebar-->
+<div class="border-end bg-white" id="sidebar-wrapper">
+<div class="sidebar-heading border-bottom bg-light">トラベルプ</div>
+<div class="list-group list-group-flush">
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="home.html">ホーム</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="search.html">検索</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="post.html">投稿作成</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="profile.html">プロフィール</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="mypost.html">マイポスト</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="myplan.html">マイプラン</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="pay.html">募金</a>
+</div>
+</div>
+<!-- Page content wrapper-->
+<div id="page-content-wrapper">
+<!-- Top navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+<h1 class="navbar-brand">プロフィール編集</h1>
+</nav>
+<!-- Page content-->
+<div class="container-fluid">
+<section class="container my-5">
+<div class="profile-container">
+<div class="profile-header">
+
+                            プロフィール編集
+</div>
+<div class="profile-info">
+<div class="icon">
+<img src="https://via.placeholder.com/100" alt="プロフィール画像">
+<input type="file" accept="image/*">
+</div>
+<div class="details">
+<div>
+<div class="label">ニックネーム</div>
+<div class="content" id="nicknameContent" onclick="editNickname()">ユーザー名</div>
+</div>
+<div>
+<div class="label">ユーザーID</div>
+<div class="content no-underline">user1234</div>
+</div>
+<div>
+<div class="label">自己紹介</div>
+<div class="content" id="introContent" onclick="editIntro()">ここに自己紹介文が表示されます。</div>
+</div>
+</div>
+</div>
+<div class="edit-form" id="edit-form" style="display: none;">
+<label for="nickname">ニックネーム</label>
+<input type="text" id="nickname" name="nickname" placeholder="新しいニックネーム">
+<label for="self-intro">自己紹介</label>
+<textarea id="self-intro" name="self-intro" placeholder="新しい自己紹介文を入力"></textarea>
+<div class="button-container">
+<button class="save-button" onclick="saveChanges()">保存</button>
+<button class="cancel-button" onclick="cancelEdit()">キャンセル</button>
+</div>
+</div>
+<div class="settings-button-container">
+<button class="settings-button" onclick="goToSettings()">設定</button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+<script>
+
+        function editNickname() {
+
+            var nicknameContent = document.getElementById('nicknameContent');
+
+            nicknameContent.style.display = 'none';
+
+            var editForm = document.getElementById('edit-form');
+
+            editForm.style.display = 'block';
+
+            document.getElementById('nickname').value = nicknameContent.innerText;
+
+        }
+
+        function editIntro() {
+
+            var introContent = document.getElementById('introContent');
+
+            introContent.style.display = 'none';
+
+            var editForm = document.getElementById('edit-form');
+
+            editForm.style.display = 'block';
+
+            document.getElementById('self-intro').value = introContent.innerText;
+
+        }
+
+        function cancelEdit() {
+
+            document.getElementById('edit-form').style.display = 'none';
+
+            var nicknameContent = document.getElementById('nicknameContent');
+
+            nicknameContent.style.display = 'block';
+
+            nicknameContent.innerText = document.getElementById('nickname').value;
+
+            var introContent = document.getElementById('introContent');
+
+            introContent.style.display = 'block';
+
+            introContent.innerText = document.getElementById('self-intro').value;
+
+        }
+
+        function saveChanges() {
+
+            var nicknameContent = document.getElementById('nicknameContent');
+
+            nicknameContent.innerText = document.getElementById('nickname').value;
+
+            var introContent = document.getElementById('introContent');
+
+            introContent.innerText = document.getElementById('self-intro').value;
+
+            cancelEdit();
+
+        }
+
+        function goToSettings() {
+
+            window.location.href = 'edit.html';
+
+        }
+</script>
+</body>
+</html>
