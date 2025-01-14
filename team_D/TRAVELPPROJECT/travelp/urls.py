@@ -6,6 +6,8 @@ app_name = 'travelp'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='home'),
 
+    path('home', views.IndexView.as_view(), name='home'),
+
     path('search', views.SearchView.as_view(), name='search'),
 
     path('post', views.PostView.as_view(), name='post'),
