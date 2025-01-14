@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>トラベルプ - ログイン</title>
+<!-- Favicon-->
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+<!-- Core theme CSS (includes Bootstrap)-->
+<link href="static/css/styles.css" rel="stylesheet" />
+</head>
+<body>
+<div class="d-flex" id="wrapper">
+<!-- Sidebar-->
+<div class="border-end bg-white" id="sidebar-wrapper">
+<div class="sidebar-heading border-bottom bg-light">トラベルプ</div>
+<div class="list-group list-group-flush">
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="home.html">ホーム</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="search.html">検索</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="post.html">投稿作成</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="profile.html">プロフィール</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="mypost.html">マイポスト</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="myplan.html">マイプラン</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" href="pay.html">募金</a>
+</div>
+</div>
+<!-- Page content wrapper-->
+<div id="page-content-wrapper">
+<!-- Top navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+<h1 class="navbar-brand">ログイン</h1>
+</nav>
+<!-- Page content-->
+<div class="container-fluid">
+<section class="container my-5">
+<h2>ログイン</h2>
+<form id="login-form" method="POST">
+<div class="mb-3">
+<label for="user-id" class="form-label">ユーザーID</label>
+<input type="text" id="user-id" name="user-id" class="form-control" placeholder="ユーザーIDを入力" required>
+</div>
+<div class="mb-3">
+<label for="password" class="form-label">パスワード</label>
+<input type="password" id="password" name="password" class="form-control" placeholder="パスワードを入力" required>
+</div>
+<div class="mb-3">
+<a href="forgot-password.html">パスワードを忘れた場合</a>
+</div>
+<button type="submit" class="btn btn-primary">ログイン</button>
+</form>
+<div class="register-link mt-3">
+<p>アカウントをお持ちですか？ <a href="register.html">登録する</a></p>
+</div>
+</section>
+</div>
+</div>
+</div>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script>
+
+      document.getElementById('login-form').addEventListener('submit', function (e) {
+
+         e.preventDefault();
+
+         alert("ログイン成功！");
+
+         window.location.href = "top.html"; 
+
+      });
+</script>
+</body>
+</html> 
