@@ -1,149 +1,85 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta name="description" content="" />
-<meta name="author" content="" />
-<title>会員登録 - トラベルプ</title>
-<!-- Favicon-->
-<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-<!-- Bootstrap 5.2.3 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-<!-- Custom styles for this template -->
-<link href="static/css/styles.css" rel="stylesheet" />
-</head>
-<body>
-<div class="d-flex" id="wrapper">
-<!-- Sidebar-->
-<div class="border-end bg-white" id="sidebar-wrapper">
-<div class="sidebar-heading border-bottom bg-light">トラベルプ</div>
-<div class="list-group list-group-flush">
-<a class="list-group-item list-group-item-action list-group-item-light p-3" href="home.html">ホーム</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3" href="search.html">検索</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3" href="post.html">投稿作成</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3" href="profile.html">プロフィール</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3" href="mypost.html">マイポスト</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3" href="myplan.html">マイプラン</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3" href="pay.html">募金</a>
-</div>
-</div>
-<!-- Page content wrapper-->
-<div id="page-content-wrapper">
-<!-- Top navigation-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-<h1 class="navbar-brand">会員登録</h1>
-</nav>
-<!-- Page content-->
-<div class="container-fluid">
+{% extends 'base.html' %}
+
+{% block title %}会員登録 - トラベルプ{% endblock %}
+
+{% block header %}会員登録{% endblock %}
+
+{% block content %}
 <section class="container my-5">
-<h2>新規会員登録</h2>
-<form id="register-form" onsubmit="return validateForm()">
-<div class="mb-3">
-<label for="user-id" class="form-label">ユーザーID</label>
-<input type="text" class="form-control" id="user-id" name="user-id" placeholder="ユーザーIDを入力" required>
-</div>
-<div class="mb-3">
-<label for="nickname" class="form-label">ニックネーム</label>
-<input type="text" class="form-control" id="nickname" name="nickname" placeholder="ニックネームを入力" required>
-</div>
-<div class="mb-3">
-<label for="email" class="form-label">メールアドレス</label>
-<input type="email" class="form-control" id="email" name="email" placeholder="メールアドレスを入力" required>
-</div>
-<div class="mb-3">
-<label for="password" class="form-label">パスワード</label>
-<input type="password" class="form-control" id="password" name="password" placeholder="パスワードを入力" minlength="6" required>
-</div>
-<div class="mb-3">
-<label for="confirm-password" class="form-label">パスワード確認</label>
-<input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="もう一度パスワードを入力" minlength="6" required>
-</div>
-<div class="mb-3 form-check">
-<input type="checkbox" class="form-check-input" id="show-password" onclick="togglePassword()">
-<label class="form-check-label" for="show-password">パスワードを表示</label>
-</div>
-<button type="submit" class="btn btn-primary">登録</button>
-</form>
-<div class="mt-3">
-<p>アカウントをお持ちですか？ <a href="login.html">ログインする</a></p>
-</div>
+    <h2>新規会員登録</h2>
+    <form id="register-form" onsubmit="return validateForm()">
+        <div class="mb-3">
+            <label for="user-id" class="form-label">ユーザーID</label>
+            <input type="text" class="form-control" id="user-id" name="user-id" placeholder="ユーザーIDを入力" required>
+        </div>
+        <div class="mb-3">
+            <label for="nickname" class="form-label">ニックネーム</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" placeholder="ニックネームを入力" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">メールアドレス</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="メールアドレスを入力" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">パスワード</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="パスワードを入力" minlength="6" required>
+        </div>
+        <div class="mb-3">
+            <label for="confirm-password" class="form-label">パスワード確認</label>
+            <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="もう一度パスワードを入力" minlength="6" required>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="show-password" onclick="togglePassword()">
+            <label class="form-check-label" for="show-password">パスワードを表示</label>
+        </div>
+        <button type="submit" class="btn btn-primary">登録</button>
+    </form>
+    <div class="mt-3">
+        <p>アカウントをお持ちですか？ <a href="login.html">ログインする</a></p>
+    </div>
 </section>
-</div>
-</div>
-</div>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Custom JavaScript -->
+{% endblock %}
+
+{% block scripts %}
 <script>
+    // パスワード表示切り替え
+    function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirm-password");
+        const showPassword = document.getElementById("show-password");
+        const type = showPassword.checked ? "text" : "password";
+        passwordInput.type = type;
+        confirmPasswordInput.type = type;
+    }
 
-      // パスワード表示切り替え
+    // バリデーション
+    function validateForm() {
+        const userId = document.getElementById("user-id").value;
+        const nickname = document.getElementById("nickname").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm-password").value;
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-      function togglePassword() {
-
-         const passwordInput = document.getElementById("password");
-
-         const confirmPasswordInput = document.getElementById("confirm-password");
-
-         const showPassword = document.getElementById("show-password");
-
-         const type = showPassword.checked ? "text" : "password";
-
-         passwordInput.type = type;
-
-         confirmPasswordInput.type = type;
-
-      }
-
-      // バリデーション
-
-      function validateForm() {
-
-         const userId = document.getElementById("user-id").value;
-
-         const nickname = document.getElementById("nickname").value;
-
-         const email = document.getElementById("email").value;
-
-         const password = document.getElementById("password").value;
-
-         const confirmPassword = document.getElementById("confirm-password").value;
-
-         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-         // ユーザーIDとニックネームが未入力ならエラーメッセージ
-
-         if (!userId || !nickname || !email || !password || password !== confirmPassword) {
-
+        // ユーザーIDとニックネームが未入力ならエラーメッセージ
+        if (!userId || !nickname || !email || !password || password !== confirmPassword) {
             alert('すべてのフィールドを正しく入力してください');
-
             return false;
+        }
 
-         }
-
-         // メールアドレスの形式確認
-
-         if (!emailPattern.test(email)) {
-
+        // メールアドレスの形式確認
+        if (!emailPattern.test(email)) {
             alert('正しいメールアドレスを入力してください');
-
             return false;
+        }
 
-         }
-
-         // パスワード一致確認
-
-         if (password !== confirmPassword) {
-
+        // パスワード一致確認
+        if (password !== confirmPassword) {
             alert('パスワードが一致しません');
-
             return false;
+        }
 
-         }
-
-         return true;
-
-      }
+        return true;
+    }
 </script>
-</body>
-</html> 
+{% endblock %}
