@@ -20,5 +20,17 @@ urlpatterns = [
     
     path('pay', views.PayView.as_view(), name='pay'),
 
+    path('s_home', views.S_homeView.as_view(), name='s_home'),
+
+    path('s_sinsei', views.S_sinseiView.as_view(), name='s_sinsei'),
+
+    path('s_page', views.S_pageView.as_view(), name='s_page'),
+
+    path('s_post', views.S_postView.as_view(), name='s_post'),
+
+    path('s_history', views.S_historyView.as_view(), name='s_history'),
+
+
+
 
 ]
