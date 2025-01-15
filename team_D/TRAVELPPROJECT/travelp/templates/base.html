@@ -16,15 +16,17 @@
         <div class="d-flex" id="wrapper">
             <!-- Sidebar-->
             <div class="border-end bg-white" id="sidebar-wrapper">
-                <div class="sidebar-heading border-bottom bg-light">トラベルプ</div>
+                    <div class="sidebar-heading border-bottom bg-light">
+                        <a class="navbar-brand" href="{% url 'travelp:index' %}">トラベルプ</a>
+                    </div>
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="">ホーム</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="search">検索</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="post">投稿作成</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="profile">プロフィール</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="mypost">マイポスト</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="myplan">マイプラン</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="pay">募金</a>
+                    {% comment %} <a class="list-group-item list-group-item-action list-group-item-light p-3" href="">ホーム</a> {% endcomment %}
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:search' %}">検索</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:post' %}">投稿作成</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:profile' %}">プロフィール</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:mypost' %}">マイポスト</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:myplan' %}">マイプラン</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:pay' %}">募金</a>
                 </div>
             </div>
             <!-- Page content wrapper-->
