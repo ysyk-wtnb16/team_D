@@ -1,0 +1,20 @@
+{% extends 's_base.html' %}
+{% block title %}姉妹都市申請{% endblock %}
+
+{% block header %}姉妹都市申請{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- コードを入力して申請するフォーム -->
+    <form>
+        <label for="code1">市役所コード（支援する側）</label></br>
+        <input type="text" id="code1" name="code1" placeholder="入力してください"><br><br>
+        
+        <label for="code2">市役所コード（支援される側）</label></br>
+        <input type="text" id="code2" name="code2" placeholder="入力してください"><br><br>
+        
+        <input type="submit" value="申請" class="button">
+    </form>
+    <!-- フォームここまで -->
+</div>
+{% endblock %}

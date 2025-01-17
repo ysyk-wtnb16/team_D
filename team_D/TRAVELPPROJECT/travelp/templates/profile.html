@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}プロフィール - トラベルプ{% endblock %}
+
+{% block header %}プロフィール{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+    <div class="profile-container">
+        <div class="profile-header">
+            プロフィール画面
+        </div>
+        <div class="profile-info">
+            <div class="icon">
+                <img src="https://via.placeholder.com/100" alt="プロフィール画像">
+            </div>
+            <div class="details">
+                <div>
+                    <div class="label">ニックネーム:</div>
+                    <div class="content">ユーザー名</div>
+                </div>
+                <div>
+                    <div class="label">ユーザーID:</div>
+                    <div class="content">user1234</div>
+                </div>
+                <div>
+                    <div class="label">自己紹介:</div>
+                    <div class="content">
+                        ここに自己紹介文が表示されます。自己紹介文は任意で記入してください。
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="extra">
+            <div>
+                <div class="label">いいねした投稿を見る:</div>
+                <div class="content"><a href="#">投稿1</a></div>
+                <div class="content"><a href="#">投稿2</a></div>
+                <div class="content"><a href="#">投稿3</a></div>
+            </div>
+            <div>
+                <div class="label">コメントした投稿を見る:</div>
+                <div class="content"><a href="#">投稿1</a></div>
+                <div class="content"><a href="#">投稿2</a></div>
+                <div class="content"><a href="#">投稿3</a></div>
+            </div>
+        </div>
+        <!-- 編集ボタン -->
+        <a href="edit-profile.html" class="edit-button">プロフィール編集</a>
+    </div>
+</section>
+{% endblock %}

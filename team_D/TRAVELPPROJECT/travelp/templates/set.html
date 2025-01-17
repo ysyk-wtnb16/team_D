@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>設定</title>
+</head>
+<body>
+<div class="settings-container">
+<div class="settings-header">
+
+      設定
+</div>
+<!-- パスワード変更 -->
+<button class="settings-button" onclick="changePassword()">パスワード変更</button>
+<!-- 支払い方法の変更 -->
+<button class="settings-button" onclick="changePaymentMethod()">支払い方法の変更</button>
+<!-- 退会 -->
+<button class="settings-button" onclick="cancelAccount()">退会</button>
+</div>
+<script>
+
+    function changePassword() {
+
+      alert('パスワード変更画面に移動します。');
+
+      // 実際のパスワード変更ページへ遷移する場合
+
+      // location.href = "change_password.html";
+
+    }
+
+    function changePaymentMethod() {
+
+      alert('支払い方法変更画面に移動します。');
+
+      // 実際の支払い方法変更ページへ遷移する場合
+
+      // location.href = "change_payment.html";
+
+    }
+
+    function cancelAccount() {
+
+      if (confirm('退会しますか？')) {
+
+        alert('退会手続きが開始されました。');
+
+        // 実際の退会ページへ遷移する場合
+
+        // location.href = "cancel_account.html";
+
+      }
+
+    }
+</script>
+</body>
+</html> 
+
