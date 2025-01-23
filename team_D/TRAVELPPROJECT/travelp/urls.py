@@ -30,6 +30,17 @@ urlpatterns = [
 
     path('s_history', views.S_historyView.as_view(), name='s_history'),
 
+ # サインアップとログインページの（追加した）
+    path('login/',views.LoginView.as_view(),name='login'),
+
+    path('signup/', views.SignupView.as_view(), name='signup'),
+
+    path('signup/done/', views.SignupDoneView.as_view(), name='signup_done'),  # signup_doneページ
+
+    path('logout/', views.LogoutView.as_view(), name='logout'),  # クラスベースのログアウトURL
+
+    path('s_base/', views.SBaseView.as_view(), name='s_base'),  # スタッフ用ページ
+
 
 
 

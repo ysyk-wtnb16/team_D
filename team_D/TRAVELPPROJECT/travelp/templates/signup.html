@@ -6,80 +6,100 @@
 
 {% block content %}
 <section class="container my-5">
-    <h2>新規会員登録</h2>
-    <form id="register-form" onsubmit="return validateForm()">
-        <div class="mb-3">
-            <label for="user-id" class="form-label">ユーザーID</label>
-            <input type="text" class="form-control" id="user-id" name="user-id" placeholder="ユーザーIDを入力" required>
-        </div>
-        <div class="mb-3">
-            <label for="nickname" class="form-label">ニックネーム</label>
-            <input type="text" class="form-control" id="nickname" name="nickname" placeholder="ニックネームを入力" required>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">メールアドレス</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="メールアドレスを入力" required>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">パスワード</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="パスワードを入力" minlength="6" required>
-        </div>
-        <div class="mb-3">
-            <label for="confirm-password" class="form-label">パスワード確認</label>
-            <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="もう一度パスワードを入力" minlength="6" required>
-        </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="show-password" onclick="togglePassword()">
-            <label class="form-check-label" for="show-password">パスワードを表示</label>
-        </div>
-        <button type="submit" class="btn btn-primary">登録</button>
-    </form>
-    <div class="mt-3">
-        <p>アカウントをお持ちですか？ <a href="login.html">ログインする</a></p>
-    </div>
+<h2>新規会員登録</h2>
+{% if form.errors %}
+<ul>
+       {% for field, errors in form.errors.items %}
+<li>{{ field }}: {{ errors|join:", " }}</li>
+       {% endfor %}
+</ul>
+{% endif %}
+<!-- サインアップフォーム -->
+<form method="POST">
+
+        {% csrf_token %}
+
+<!-- ユーザーID -->
+<div class="mb-3">
+<label for="id_username" class="form-label">ユーザーID</label>
+
+            {{ form.username }}
+</div>
+<!-- ニックネーム -->
+<div class="mb-3">
+<label for="id_nickname" class="form-label">ニックネーム</label>
+
+            {{ form.nickname }}
+</div>
+<!-- メールアドレス -->
+<div class="mb-3">
+<label for="id_email" class="form-label">メールアドレス</label>
+
+            {{ form.email }}
+</div>
+<!-- パスワード -->
+<div class="mb-3">
+<label for="id_password1" class="form-label">パスワード</label>
+
+            {{ form.password1 }}
+</div>
+<!-- パスワード確認 -->
+<div class="mb-3">
+<label for="id_password2" class="form-label">パスワード確認</label>
+
+            {{ form.password2 }}
+</div>
+<!-- 登録ボタン -->
+<button type="submit" class="btn btn-primary">登録</button>
+</form>
+<!-- ログインリンク -->
+<div class="mt-3">
+<p>アカウントをお持ちですか？ <a href="{% url 'travelp:login' %}">ログインする</a></p>
+</div>
 </section>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
-    // パスワード表示切り替え
+
+    // パスワードの表示切り替え
+
     function togglePassword() {
-        const passwordInput = document.getElementById("password");
-        const confirmPasswordInput = document.getElementById("confirm-password");
-        const showPassword = document.getElementById("show-password");
-        const type = showPassword.checked ? "text" : "password";
-        passwordInput.type = type;
-        confirmPasswordInput.type = type;
+
+        const password1 = document.getElementById('id_password1');
+
+        const password2 = document.getElementById('id_password2');
+
+        const showPassword = document.getElementById('show-password');
+
+        const type = showPassword.checked ? 'text' : 'password';
+
+        password1.type = type;
+
+        password2.type = type;
+
     }
 
-    // バリデーション
+    // 簡易バリデーション
+
     function validateForm() {
-        const userId = document.getElementById("user-id").value;
-        const nickname = document.getElementById("nickname").value;
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirm-password").value;
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-        // ユーザーIDとニックネームが未入力ならエラーメッセージ
-        if (!userId || !nickname || !email || !password || password !== confirmPassword) {
-            alert('すべてのフィールドを正しく入力してください');
-            return false;
-        }
+        const password1 = document.getElementById('id_password1').value;
 
-        // メールアドレスの形式確認
-        if (!emailPattern.test(email)) {
-            alert('正しいメールアドレスを入力してください');
-            return false;
-        }
+        const password2 = document.getElementById('id_password2').value;
 
-        // パスワード一致確認
-        if (password !== confirmPassword) {
+        if (password1 !== password2) {
+
             alert('パスワードが一致しません');
+
             return false;
+
         }
 
         return true;
+
     }
 </script>
-{% endblock %}
+
+{% endblock %} 
