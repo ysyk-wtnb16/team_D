@@ -18,6 +18,14 @@ from django.contrib.auth import login as auth_login
 
 from django.contrib.auth import logout as auth_logout
 
+from django.contrib.auth import get_user_model
+
+from django.contrib import messages
+
+from django.contrib.auth.views import PasswordChangeView
+
+from .forms import CustomPasswordChangeForm
+
 
 class IndexView(TemplateView):
 
@@ -131,3 +139,36 @@ class SignupView(CreateView):
 
 class SBaseView(TemplateView):
    template_name = 's_base.html'  # スタッフ用ページ 
+
+
+
+# 現在のユーザーモデルを取得
+
+# カスタムユーザーのモデルを取得
+User = get_user_model()
+def password_change_view(request):
+   if request.method == 'POST':
+       username = request.POST.get('username')
+       new_password = request.POST.get('new_password')
+       if len(new_password) < 8:  # パスワードが8文字以下の場合
+           messages.error(request, "パスワードは8文字以上である必要があります。")
+           return redirect('travelp:password_change')
+       try:
+           user = User.objects.get(username=username)
+           if not user:  # ユーザーが見つからない場合
+               messages.error(request, "ユーザーが見つかりません。")
+               return redirect('travelp:password_change')
+           user.set_password(new_password)
+           user.save()
+           messages.success(request, "パスワードが変更されました！")
+           return redirect('travelp:password_change_done')
+       except User.DoesNotExist:
+           messages.error(request, "そのユーザー名は存在しません。")
+           return redirect('travelp:password_change')
+   return render(request, 'password_change.html')
+
+
+
+
+def password_change_done_view(request):
+   return render(request, 'password_change_done.html')

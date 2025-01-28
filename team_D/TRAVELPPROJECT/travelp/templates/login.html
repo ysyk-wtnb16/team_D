@@ -32,7 +32,7 @@
 <input type="password" id="password" name="password" class="form-control" placeholder="パスワードを入力" required>
 </div>
 <div class="mb-3">
-<a href="forgot-password.html">パスワードを忘れた場合</a>
+        <a href="{% url 'travelp:password_change' %}">パスワードを忘れた場合</a>
 </div>
 <button type="submit" class="btn btn-primary">ログイン</button>
 </form>
