@@ -74,3 +74,54 @@ def delete_account(request):
         return redirect('/')  # 退会後、ホームページにリダイレクト
 
     return render(request, 'delete_account.html')  # GETリクエスト時は確認ページを表示
+
+
+def password_change_view(request):
+   if request.method == "POST":
+       username = request.POST.get('username')
+       new_password = request.POST.get('new_password')
+       try:
+           user = User.objects.get(username=username)  # ユーザーを取得
+           user.set_password(new_password)  # 新しいパスワードを設定
+           user.save()
+           messages.success(request, "パスワードが変更されました！")
+           return redirect('password_change_done')  # 完了ページへリダイレクト
+       except User.DoesNotExist:
+           messages.error(request, "そのユーザー名は存在しません。")
+   return render(request, 'password_change.html')  # パスワード変更フォームを描画
+def password_change_done_view(request):
+   return render(request, 'password_change_done.html')  # 完了メッセージを表示
+from django.contrib.auth import get_user_model
+
+from django.contrib import messages
+
+from django.shortcuts import render, redirect
+
+# 現在のユーザーモデルを取得
+
+# カスタムユーザーのモデルを取得
+User = get_user_model()
+def password_change_view(request):
+   if request.method == 'POST':
+       username = request.POST.get('username')
+       new_password = request.POST.get('new_password')
+       if len(new_password) < 8:  # パスワードが8文字以下の場合
+           messages.error(request, "パスワードは8文字以上である必要があります。")
+           return redirect('accounts:password_change')
+       try:
+           user = User.objects.get(username=username)
+           if not user:  #ユーザーが見つからない場合の処理
+               messages.error(request, "ユーザーが見つかりません。")
+               return redirect('accounts:password_change')
+           user.set_password(new_password)
+           user.save()
+           messages.success(request, "パスワードが変更されました！")
+           return redirect('accounts:password_change_done')
+       except User.DoesNotExist:
+           messages.error(request, "そのユーザー名は存在しません。")
+           return redirect('travelp:password_change')
+   return render(request, 'password_change.html')
+
+
+def password_change_done_view(request):
+    return render(request, 'password_change_done.html')
