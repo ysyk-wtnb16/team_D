@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 # viewsをインポートしてauth_viewという記名で利用する
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LogoutView
 
 # URLパターンを逆引きできるように名前を付ける
 app_name = 'accounts'
@@ -37,8 +38,8 @@ urlpatterns = [
     # 「http(s)://<ホスト名>/logout/」へのアクセスに対して、
     # django.contrib.auth.views.logoutViewをインスタンス化して
     # ログアウトさせる
-    path('logout/',
-         auth_views.LogoutView.as_view(template_name='logout.html'),
-         name='logout'
-         ),
+    path('logout/', views.logout_view, name='logout'),
+
+    path('delete_account/', views.delete_account, name='delete_account'),
+    
 ]

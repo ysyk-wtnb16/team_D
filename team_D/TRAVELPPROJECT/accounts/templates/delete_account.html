@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}トラベルプ - 退会{% endblock %}
+
+{% block header %}退会{% endblock %}
+
+{% block content %}
+    <h2>退会確認</h2>
+    <p>本当にアカウントを削除しますか？この操作は元に戻せません。</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="button1">退会する</button>
+    </form>
+
+    <a href="{% url 'travelp:index' %}">キャンセルしてホームに戻る</a>
+
+    {% if messages %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

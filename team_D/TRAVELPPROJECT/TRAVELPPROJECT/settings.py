@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+
 from pathlib import Path
 import os
 
@@ -28,8 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# 追加した
-LOGOUT_REDIRECT_URL = 'travelp:home'  # ログアウト後のリダイレクト先URL
 
 # Application definition
 
@@ -41,7 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    
     'travelp.apps.TravelpConfig',
+    # accountsアプリを追加する
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -56,10 +58,29 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'TRAVELPPROJECT.urls'
 
+# TEMPLATES = [
+#     {
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#         'DIRS': [],  # テンプレートディレクトリがあればここに追加
+#         'APP_DIRS': True,
+#         'OPTIONS': {
+#             'context_processors': [
+#                 'django.template.context_processors.debug',
+#                 'django.template.context_processors.request',
+#                 'django.contrib.auth.context_processors.auth',
+#                 'django.contrib.messages.context_processors.messages',
+#             ],
+#         },
+#     },
+# ]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # テンプレートディレクトリがあればここに追加
+        'DIRS': [
+            BASE_DIR / 'templates',  # プロジェクト全体のテンプレートを探すディレクトリ
+            BASE_DIR / 'accounts' / 'templates',  # accountsアプリのテンプレートを探すディレクトリ
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,14 +88,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.contrib.staticfiles.context_processors.static',  # この行は削除します
             ],
         },
     },
 ]
 
-#追加した
-AUTH_USER_MODEL = 'travelp.CustomUser'
 
 WSGI_APPLICATION = 'TRAVELPPROJECT.wsgi.application'
 
@@ -127,8 +145,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
-#追加した
-STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Userモデルの代わりにCustomUserモデルを使用する
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -151,3 +170,11 @@ TEMPLATES = [
         },
     },
 ]
+
+# mediaのURLを登録
+MEDIA_URL = '/media/'
+# mediaフォルダーの場所(BASE_DIR以下のmedia)を登録
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/'

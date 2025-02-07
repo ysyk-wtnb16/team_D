@@ -4,6 +4,9 @@ from django.views.generic import CreateView, TemplateView
 from django.contrib.auth.views import LoginView as AuthLoginView
 from .forms import CustomUserCreationForm, LoginForm
 from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from django.contrib.auth import logout
+from django.contrib import messages
 
 
 
@@ -53,3 +56,21 @@ class LoginView(AuthLoginView):
     # 認証後にリダイレクトするURLを取得するメソッド
     def get_success_url(self):
         return reverse_lazy("travelp:index")
+    
+def logout_view(request):
+    logout(request)
+    messages.success(request, "ログアウトしました。")
+    return redirect('/')  # トップページのURLパターン名にリダイレクト
+
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':  # POSTリクエストの場合のみ退会処理を行う
+        user = request.user
+        user.delete()  # ユーザーを削除
+
+        logout(request)  # ログアウト処理
+        messages.success(request, 'アカウントが削除されました。')
+        return redirect('/')  # 退会後、ホームページにリダイレクト
+
+    return render(request, 'delete_account.html')  # GETリクエスト時は確認ページを表示

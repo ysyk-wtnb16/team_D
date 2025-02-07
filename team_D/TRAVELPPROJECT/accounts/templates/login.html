@@ -14,18 +14,28 @@
                 <label for="username" class="form-label">ユーザーID</label>
                 <input type="text" id="username" name="username" class="form-control" placeholder="ユーザーIDを入力" required>
             </div>
-            <div class="mb-3">
+            {% comment %} <div class="mb-3">
                 <label for="password" class="form-label">パスワード</label>
                 <input type="password" id="password" name="password" class="form-control" placeholder="パスワードを入力" required>
+            </div> {% endcomment %}
+            <div class="form-group">
+                <label for="password">パスワード</label>
+                <div class="password-container">
+                    <input type="password" name="password" id="password" placeholder="パスワード">
+                </div>
             </div>
+            
             <div class="mb-3">
                 <a href="forgot-password.html">パスワードを忘れた場合</a>
             </div>
             <button type="submit" class="btn btn-primary">ログイン</button>
         </form>
-        <div class="register-link mt-3">
+        <div class="register-link mt-3" style="position: absolute; bottom: 0; width: 100%; text-align: center;">
             <p>アカウントをお持ちですか？ <a href="{% url 'accounts:signup' %}">登録する</a></p>
         </div>
     </section>
 </div>
 {% endblock %}
+
+
+
