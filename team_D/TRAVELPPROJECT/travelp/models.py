@@ -88,6 +88,7 @@ class Fundraising(models.Model):
         """残り金額を0以下にならないように返す"""
         return max(0, self.goal_amount - self.raised_amount)
     
+ 
 from django.db import models
 from django.conf import settings
 
@@ -99,7 +100,7 @@ class Donation(models.Model):
     donor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     # 金額（Decimal型）
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(50)])
 
     # 応援メッセージ（任意）
     message = models.TextField(blank=True, null=True)
@@ -114,3 +115,12 @@ class Donation(models.Model):
         # 日付で並び替え（最新の募金が最初に表示される）
         ordering = ['-date']
 
+
+from django.db import models
+
+class FundraisingProject(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    goal_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    collected_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    created_at = models.DateTimeField(auto_now_add=True)

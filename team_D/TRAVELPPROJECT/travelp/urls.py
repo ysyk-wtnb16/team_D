@@ -27,17 +27,23 @@ urlpatterns = [
     path('myplan/', views.myplan, name='myplan'),  # プラン一覧ページ
     path('myplan/<int:plan_id>/', views.plan_detail, name='plan_detail'),  # プラン詳細ページ
     
- 
     # 募金機能
     path('fundraising/', views.fundraising_list, name='fundraising_list'),
     path('fundraising/<int:pk>/', views.fundraising_detail, name='fundraising_detail'),
     path('fundraising/donation-history/', views.donation_history, name='donation_history'),
     path('fundraising/donation-history/<int:pk>/', views.donation_detail, name='donation_detail'),
+
  
     #市役所
     path('fundraising/create/', create_fundraising, name='create_fundraising'),
     path('fundraising/<int:pk>/delete/', views.fundraising_delete, name='fundraising_delete'),
-    path('fundraising/<int:pk>/donate/', views.donate, name='donate'),  # 'donate'のURLパターンを追加
+
+
+    # 募金機能
+    path('fundraising/<int:pk>/donate/', views.donate, name='donate'),
+
+    # ✅ create_checkout_session の URL を統一
+    path('fundraising/<int:pk>/checkout/', views.create_checkout_session, name='create_checkout_session'),
 ]
  
  

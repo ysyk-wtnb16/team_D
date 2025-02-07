@@ -148,7 +148,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
  
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
- 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -166,9 +166,16 @@ TEMPLATES = [
     },
 ]
 
+
 # mediaのURLを登録
 MEDIA_URL = '/media/'
 # mediaフォルダーの場所(BASE_DIR以下のmedia)を登録
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
+
+# settings.py
+STRIPE_PUBLIC_KEY = "pk_test_51QnCXI2Nxfmaq9ljdf4mDAqOqbzBCH0fkLDhKKW8ZazsgGslVdUu4RQQcmQx3vN2ym4SwrKGy0iXQQBugWQYfknZ002jZ9xV4B" # 公開キー
+STRIPE_SECRET_KEY = "sk_test_51QnCXI2Nxfmaq9ljQkrII49KgKQzzd4bBDLqnReA0gd88nQm0vtuqce5EPDNHwjTIk6gcwqSThncNnhnPW67i6Tn00V88Mu5r7" # シークレットキー
+ 

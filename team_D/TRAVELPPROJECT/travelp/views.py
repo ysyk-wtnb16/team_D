@@ -403,3 +403,84 @@ def fundraising_delete(request, pk):
         return redirect('travelp:fundraising_list')
    
     return redirect('travelp:fundraising_detail', pk=pk)
+
+
+
+import stripe
+from django.conf import settings
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from travelp.models import FundraisingProject  # 募金プロジェクトのモデル
+
+ 
+stripe.api_key = settings.STRIPE_SECRET_KEY
+ 
+@csrf_exempt
+def create_checkout_session(request, pk):
+    project = get_object_or_404(Fundraising, id=pk)
+ 
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'price_data': {
+                'currency': 'jpy',
+                'product_data': {
+                    'name': project.title,
+                },
+                # 'unit_amount': "amount",  # 募金額を動的に取得する場合は後で変更
+                'unit_amount': 1000,  # 募金額を動的に取得する場合は後で変更
+            },
+            'quantity': 1,
+        }],
+        mode='payment',
+        success_url=request.build_absolute_uri(reverse('travelp:fundraising_detail', args=[project.id])) + "?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url=request.build_absolute_uri(reverse('travelp:fundraising_detail', args=[project.id])),
+    )
+ 
+    return redirect(session.url, code=303)
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import CreateView, FormView
+from django.urls import reverse_lazy
+from .forms import ProfileEditForm, PostCreateForm, CommentForm
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView, ListView, DetailView, UpdateView, View
+from .models import Post, PostImage, Comment, Like, CustomUser
+from django.http import JsonResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from . import models
+from django.db.models import Q
+from django.contrib import messages
+from .models import Fundraising, Donation
+from .forms import DonationForm
+
+# その他のビュー...
+
+def donate(request, pk):
+    project = get_object_or_404(Fundraising, pk=pk)
+ 
+    if request.method == "POST":
+        form = DonationForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            payment_method = request.POST.get("payment")
+ 
+            if amount <= 0:
+                messages.error(request, "募金額は1円以上にしてください。")
+                return redirect('travelp:fundraising_detail', pk=project.pk)
+ 
+            if payment_method == "pbank":
+                # 銀行振込の場合のみ処理
+                donation = Donation(
+                    project=project,
+                    donor=request.user,
+                    amount=amount
+                )
+                donation.save()
+                project.raised_amount += amount
+                project.save()
+ 
+                messages.success(request, f"¥{amount}の募金が成功しました！")
+                return redirect('travelp:fundraising_detail', pk=project.pk)
