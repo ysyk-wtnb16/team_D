@@ -1,0 +1,41 @@
+/* ダークモード時にサイドバーの背景色を変更 */
+.dark-mode #sidebar-wrapper {
+    background-color: #b6cdff !important;
+}
+
+/* ダークモード時の sidebar-heading の背景色 */
+.dark-mode .sidebar-heading {
+    background-color: #b6cdff !important;  /* ダークモード用の背景色 */
+    color: white !important;  /* 文字色 */
+}
+
+.dark-mode h1.navbar-brand {
+    color: #ffffff !important; /* ダークモード時の文字色 */
+    background-color: #b6cdff !important; /* ダークモード時の背景色 */
+}
+
+/* 通常モードのサイドバーの背景色 */
+#sidebar-wrapper {
+    background-color: #b6cdff !important;
+}
+
+/* サイドバー内のリンクの色 */
+#sidebar-wrapper a {
+    color: #ffffff !important;
+    background-color: #b6cdff !important;
+}
+
+/* サイドバーのリンクのホバー時の色 */
+#sidebar-wrapper a:hover {
+    background-color: #65aaff !important;
+}
+
+/* ナビゲーションバーの背景色 */
+.navbar {
+    background-color: #b6cdff !important;
+}
+
+/* ナビゲーションバーの文字色 */
+.navbar-brand, .navbar-light .navbar-nav .nav-link {
+    color: #ffffff !important;
+}

@@ -1,0 +1,22 @@
+<!-- search_result.html -->
+{% extends "base.html" %}
+ 
+{% block title %}検索結果{% endblock %}
+
+{% block header %}検索結果{% endblock %} 
+
+{% block content %}
+    <form action="{% url 'travelp:search_result' %}" method="GET" class="w-100 navbar-nav">
+        <input type="text" name="keyword" value="{{ request.GET.keyword }}" class="form-control nav-item" placeholder="検索ワードを入力">
+        <input type="submit" value="検索">
+    </form>
+    {% if object_list.count > 0 %}
+    <div class="text-end me-4">
+        <p>{{ object_list.count }}件見つかりました</p>
+    </div>
+    {% include "posts_list.html" %}
+    {% else %}
+    <p>該当投稿は存在しませんでした</p>
+    {% endif %}
+</div>
+{% endblock %}

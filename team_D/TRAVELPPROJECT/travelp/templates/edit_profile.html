@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+ 
+{% block title %}プロフィール編集{% endblock %}
+{% block header %}プロフィール編集{% endblock %}
+
+ 
+{% block content %}
+<section class="container my-5">
+    <div class="profile-container">
+        <div class="profile-header">プロフィール編集</div>
+        <div class="profile-info">
+            <div class="icon">
+                <!-- プロフィール画像の表示と変更 -->
+                {% if form.instance.profile_image %}
+                    <img id="profile-image" src="{{ form.instance.profile_image.url }}" alt="プロフィール画像" width="100">
+                {% else %}
+                    <img id="profile-image" src="https://via.placeholder.com/100" alt="プロフィール画像" width="100">
+                {% endif %}
+            </div>
+            
+            <div class="details">
+                <div>
+                    <div class="label">ユーザーID</div>
+                    <div class="content no-underline">{{ request.user.username }}</div>
+                </div>
+            </div>
+        </div>
+ 
+        <!-- フォームの送信 -->
+        <div class="edit-form">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+               
+                <!-- プロフィール画像と自己紹介文のみの編集フォーム -->
+                <div class="form-group">
+                    <label for="profile_image">プロフィール画像</label>
+                    <input type="file" name="profile_image" id="profile-image-input" accept="image/*" onchange="previewImage(event)">
+                </div>
+                <div class="form-group">
+                    <label for="nickname">ニックネーム</label>
+                    <input type="text" name="nickname" id="nickname" value="{{ form.instance.nickname|default:request.user.username }}" placeholder="新しいニックネーム">
+                </div>
+                <div class="form-group">
+                    <label for="profile_description">自己紹介</label>
+                    <textarea name="profile_description" id="profile_description" placeholder="自己紹介文を入力">{{ form.instance.profile_description|default:"自己紹介文は設定されていません。" }}</textarea>
+                </div>
+ 
+                <!-- 保存とキャンセルボタン -->
+                <div class="button-container">
+                    <button type="submit" class="button">保存</button>
+                    <button type="button" class="button1" onclick="cancelEdit()">キャンセル</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+ 
+<script>
+    // プロフィール画像のプレビュー
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('profile-image');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+ 
+    // 編集キャンセル
+    function cancelEdit() {
+        window.location.href = "{% url 'travelp:myprofile' %}";
+    }
+</script>
+{% endblock %}

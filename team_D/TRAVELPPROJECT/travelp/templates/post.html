@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static%}
+{% block title %}投稿作成{% endblock %}
+{% block header %}投稿作成{% endblock %}
+
+{% block content %}
+<h1>投稿</h1>
+<div class="container">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th>タイトル</th>
+                <td><input type="text" name="title" value="{{ form.title.value|default:'' }}" placeholder="タイトルを入力"></td>
+            </tr>
+            <tr>
+                <th>コメント</th>
+                <td><textarea name="comment" placeholder="コメントを入力" rows="15" cols="50">{{ form.comment.value|default:'' }}</textarea></td>
+            </tr>
+            <tr><th>場所</th>
+                <td>
+                    <!-- 場所検索バー -->
+                    <input id="location-search" type="text" placeholder="場所を検索">
+                    <!-- 地図を表示するためのdiv -->
+                    <div id="map" style="width: 100%; height: 400px;"></div>
+                    <!-- 隠しフィールドで場所の緯度経度を送信 -->
+                    <input type="hidden" name="latitude" id="latitude">
+                    <input type="hidden" name="longitude" id="longitude">
+                </td>
+            </tr>
+            <tr><th><input type="file" name="images" multiple accept="image/*"></td></tr>
+            <tr><th><input type="file" name="images" multiple accept="image/*"></td></tr>
+        </table>
+        <div style="text-align: center; padding-top: 20px;">
+            <button type="submit" class="button">投稿する</button>
+        </div>            
+    </form>
+</div>
+ 
+<!-- Google Maps APIとPlaces APIの読み込み -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDDDHZjQfBlY3LpUJF8W3NwNQygZj38qo&libraries=places&callback=initMap" loading="async" defer></script>
+<!-- 外部JavaScriptファイルを読み込む -->
+<script src="{% static 'js/map.js' %}"></script>
+{% endblock %}

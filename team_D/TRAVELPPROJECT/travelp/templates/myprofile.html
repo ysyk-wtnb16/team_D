@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}プロフィール{% endblock %}
+{% block header %}プロフィール{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>
+                {% if user.nickname %}
+                    {{ user.nickname }}さんのプロフィール
+                {% else %}
+                    {{ user.username }}さんのプロフィール
+                {% endif %}
+                {% if request.user == user %}
+                <a href="{% url 'travelp:edit_profile' user.pk %}" class="btn btn-sm btn-outline-secondary">プロフィールを編集</a>
+                {% endif %}
+            </h2>
+        </div>
+
+        <div class="profile-info">
+            <div class="icon">
+                <!-- ユーザーのプロフィール画像 -->
+                {% if user.profile_image %}
+                    <img src="{{ user.profile_image.url }}" alt="プロフィール画像">
+                {% else %}
+                    <img src="business60.jpg" alt="デフォルト画像">
+                {% endif %}
+            </div>
+            <div class="details">
+                <div>
+                    <div class="label">ユーザー名:</div>
+                    <div class="content">
+                        {% if user.nickname %}
+                            {{ user.nickname }}
+                        {% else %}
+                            {{ user.username }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div>
+                    <div class="label">自己紹介:</div>
+                    <div class="content">{{ user.profile_description|default:"ここに自己紹介文がありません。自分について教えてください！" }}</div>
+                </div>
+            </div>
+        </div>
+
+        <h3>投稿した記事</h3>
+        {% for post in user_posts %}
+          <div class="post">
+            <li><a href="{% url 'travelp:post_detail' pk=post.pk %}">{{ post.title }}</a></li>
+          </div>
+        {% empty %}
+          <p>投稿はまだありません。</p>
+        {% endfor %}
+
+        {% if request.user == user %}
+        <!-- 自分のプロフィールの場合 -->
+        <!-- イイネした投稿一覧 -->
+        <div class="liked-posts">
+            <h3>いいねした投稿</h3>
+            {% if liked_posts %}
+                <ul>
+                    {% for post in liked_posts %}
+                        <li><a href="{% url 'travelp:post_detail' pk=post.pk %}">{{ post.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>まだいいねした投稿はありません。</p>
+            {% endif %}
+        </div>
+
+        <!-- コメントした投稿一覧 -->
+        <div class="commented-posts">
+            <h3>コメントした投稿</h3>
+            {% if commented_posts %}
+                <ul>
+                    {% for post in commented_posts %}
+                        <li><a href="{% url 'travelp:post_detail' pk=post.pk %}">{{ post.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>まだコメントした投稿はありません。</p>
+            {% endif %}
+        </div>
+
+        <!-- 退会リンク -->
+        <div class="delete-account">
+            <h3>アカウント設定</h3>
+            <a href="{% url 'accounts:delete_account' %}" class="btn btn-danger">退会する</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}募金プロジェクト作成{% endblock %}
+
+{% block header %}募金プロジェクト作成{% endblock %}
+
+{% block content %}
+
+<!-- エラーメッセージを表示 -->
+{% if form.errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="button">作成</button>
+</form>
+
+<a href="{% url 'travelp:fundraising_list' %}">← 募金一覧に戻る</a>
+{% endblock %}

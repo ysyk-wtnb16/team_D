@@ -1,0 +1,275 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - 詳細{% endblock %}
+{% block header %}投稿詳細{% endblock %}
+
+
+{% block content %}
+<div class="container-fluid">
+
+  {% if user == post.user %}
+    <p>投稿者：{{ post.user.username }}</p>
+  {% else %}
+      <p>ユーザー情報がありません</p>
+  {% endif %}
+  <!-- 投稿タイトル -->
+  <h1>{{ post.title }}</h1>
+
+  {% if plans %}
+    <h3>この投稿が含まれるプラン</h3>
+    <ul>
+      {% for plan in plans %}
+        <li>
+          <a href="{% url 'travelp:plan_detail' plan.id %}">{{ plan.name }}（作成者: {{ plan.user.username }}）</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>この投稿を含むプランはありません。</p>
+  {% endif %}
+
+  <!-- メイン画像 -->
+  <div style="position: relative;">
+    <img id="main-image" src="{{ post.images.first.image.url }}" alt="メイン画像" width="800" class="img-fluid rounded-3 shadow-sm">
+    <p id="image-count" class="image-count position-absolute bottom-0 start-50 translate-middle-x text-white bg-dark py-1 px-3 rounded-3" style="font-weight: bold; display: none;">1 / {{ post.images.count }}</p>
+  </div>
+
+  <!-- サムネイル画像 -->
+  {% if post.images.count > 1 %}
+    <div class="thumbnail-images">
+      {% for image in post.images.all %}
+        <img class="thumbnail img-thumbnail" src="{{ image.image.url }}" alt="投稿画像" width="150" onclick="changeImageFromThumbnail('{{ image.image.url }}')" style="cursor: pointer; margin: 5px;">
+      {% endfor %}
+    </div>
+
+    <!-- 矢印でサムネイルを切り替え -->
+    <div class="thumbnail-navigation text-center">
+      <button id="prev-thumbnail" class="btn btn-secondary me-2" onclick="changeThumbnail('prev')">←</button>
+      <button id="next-thumbnail" class="btn btn-secondary ms-2" onclick="changeThumbnail('next')">→</button>
+    </div>
+  {% endif %}
+
+  <!-- 投稿日時 -->
+  <p class="text-muted">投稿日時: {{ post.created_at }}</p>
+
+  <!-- いいね -->
+  <p>いいねの数: <span id="like-count">{{ post.like_count }}</span></p>
+
+  <!-- 投稿のコメント -->
+  <p class="lead">{{ post.comment }}</p>
+
+  {% if user.is_authenticated %}
+    <button id="like-button" class="btn {% if liked %}btn-primary{% else %}btn-outline-primary{% endif %}" onclick="toggleLike()" style="width: 50px; height: 50px; padding: 0; background-color: transparent; border: none; position: relative; display: flex; justify-content: center; align-items: center;">
+      <span class="heart-icon" style="font-size: 48px;">{% if liked %}🩷{% else %}🤍{% endif %}</span>
+    </button>
+  {% endif %}
+
+  <!-- コメントセクション -->
+  <h3>コメント</h3>
+
+  {% if user.is_authenticated %}
+    <form id="comment-form" method="POST" action="{% url 'travelp:add_comment' post.pk %}">
+      {% csrf_token %}
+      <textarea name="comment" rows="4" cols="50" placeholder="コメントを追加..." class="form-control" float='float_none' style="max-width: 600px;"></textarea>
+      <button type="submit" class="btn btn-success mt-3">コメントを投稿</button>
+    </form>
+  {% endif %}
+
+  <!-- コメントリスト -->
+  {% if post.comments.count > 5 %}
+    <div>
+      <button id="show-all-comments" class="btn btn-outline-secondary" onclick="toggleComments()">すべてのコメントを表示</button>
+    </div>
+  {% endif %}
+
+  <ul id="comment-list" class="list-unstyled">
+    {% for comment in post.comments.all %}
+      <li class="comment mb-3" style="background-color: #f8f9fa; border-radius: 10px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+        <div class="d-flex justify-content-between">
+          <strong>                  
+            {% if comment.user.nickname %}
+            {{ comment.user.nickname }}
+            {% endif %}
+            {{ comment.user.username }}
+          </strong>
+          <small class="text-muted">{{ comment.created_at|timesince }}前</small>
+        </div>
+        <p class="comment-text mt-2">{{ comment.text }}</p>
+        {% if comment.user == request.user %}
+          <form method="POST" action="{% url 'travelp:delete_comment' post.pk comment.pk %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm mt-2">削除</button>
+          </form>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li class="mb-3" style="background-color: #f8f9fa; border-radius: 10px; padding: 20px;">コメントはありません。</li>
+    {% endfor %}
+  </ul>
+
+  <!-- 投稿者が自分であれば削除ボタンを表示 -->
+  {% if post.user == request.user %}
+    <form method="POST" action="{% url 'travelp:delete_post' post.pk %}">
+      {% csrf_token %}
+      <button type="submit" class="button1">この投稿を削除</button>
+    </form>
+  {% endif %}
+
+  <!-- トップページへ戻るリンク -->
+  <p class="text-center mt-5">
+    <a href="{% url 'travelp:index' %}" class="btn btn-link">トップページへ戻る</a>
+  </p>
+
+  <!-- 場所をマップで表示 -->
+  {% if post.latitude and post.longitude %}
+    <div id="map" style="width: 100%; height: 400px; margin-top: 30px;"></div>
+    <script>
+      function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: {{ post.latitude }}, lng: {{ post.longitude }} },
+          zoom: 14,
+        });
+
+        const marker = new google.maps.Marker({
+          position: { lat: {{ post.latitude }}, lng: {{ post.longitude }} },
+          map: map,
+          title: "{{ post.title }}",
+        });
+      }
+
+      window.initMap = initMap;
+    </script>
+  {% endif %}
+
+</div> <!-- .container -->
+
+<script>
+  // 現在表示されているメイン画像のインデックス
+  let currentImageIndex = 0;
+  const images = [
+    {% for image in post.images.all %}
+      "{{ image.image.url }}",
+    {% endfor %}
+  ];
+
+  // メイン画像を切り替える関数
+  function changeImageFromThumbnail(imageUrl) {
+    const mainImage = document.getElementById('main-image');
+    mainImage.src = imageUrl;
+
+    // 現在の画像のインデックスを更新
+    currentImageIndex = images.indexOf(imageUrl);
+    updateImageCount();
+  }
+
+  // 左右の矢印で画像を切り替える関数
+  function changeThumbnail(direction) {
+    if (direction === 'prev') {
+      currentImageIndex = (currentImageIndex > 0) ? currentImageIndex - 1 : images.length - 1;
+    } else if (direction === 'next') {
+      currentImageIndex = (currentImageIndex < images.length - 1) ? currentImageIndex + 1 : 0;
+    }
+
+    const newImageUrl = images[currentImageIndex];
+    changeImageFromThumbnail(newImageUrl);
+  }
+
+  // 画像の番号を更新する関数
+  function updateImageCount() {
+    const imageCount = document.getElementById('image-count');
+    imageCount.textContent = (currentImageIndex + 1) + " / " + images.length;
+   
+    // 画像番号を表示し、3秒後に非表示にする
+    imageCount.style.display = 'block'; // 表示
+    setTimeout(function() {
+      imageCount.style.display = 'none'; // 3秒後に非表示
+    }, 3000);
+  }
+
+  // 初期状態の画像番号を設定
+  document.addEventListener('DOMContentLoaded', function() {
+    updateImageCount();
+  });
+
+  // コメント表示・非表示のトグル
+  function toggleComments() {
+    const comments = document.getElementById('comment-list');
+    const button = document.getElementById('show-all-comments');
+    const commentItems = comments.querySelectorAll('li');
+
+    // 現在の表示状態をチェック
+    const areAllCommentsVisible = Array.from(commentItems).every(item => item.style.display === 'block');
+
+    if (areAllCommentsVisible) {
+      // すべてのコメントを非表示にする
+      for (let i = 5; i < commentItems.length; i++) {
+        commentItems[i].style.display = 'none';
+      }
+      button.textContent = 'すべてのコメントを表示';
+    } else {
+      // すべてのコメントを表示する
+      for (let i = 5; i < commentItems.length; i++) {
+        commentItems[i].style.display = 'block';
+      }
+      button.textContent = 'すべてのコメントを非表示';
+    }
+  }
+
+  // 初期状態では最新の5件だけ表示、5件目以降は非表示
+  document.addEventListener('DOMContentLoaded', function() {
+    const commentList = document.getElementById('comment-list');
+    const commentItems = commentList.querySelectorAll('li');
+   
+    // コメントが5件以上の場合、最新の5件だけ表示、5件目以降を非表示にする
+    if (commentItems.length > 5) {
+      for (let i = 5; i < commentItems.length; i++) {
+        commentItems[i].style.display = 'none';  // 5件目以降を非表示
+      }
+
+      // ボタンを表示
+      const button = document.getElementById('show-all-comments');
+      button.style.display = 'inline-block'; // ボタンを表示
+      button.textContent = 'すべてのコメントを表示'; // ボタンの初期テキスト
+    } else {
+      // コメントが5件未満の場合、すべて表示
+      const button = document.getElementById('show-all-comments');
+      button.style.display = 'none'; // ボタンを非表示にする
+    }
+  });
+
+  // いいね機能のトグル
+  function toggleLike() {
+    const likeButton = document.getElementById('like-button');
+    const likeCount = document.getElementById('like-count');
+
+    // AJAXリクエストを送信して、いいねを切り替え
+    fetch("{% url 'travelp:post_like' post.pk %}", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}',
+      },
+      body: JSON.stringify({ post_pk: {{ post.pk }} })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // いいねの数を更新
+      likeCount.textContent = data.like_count;
+
+      // ボタンの色を更新
+      if (data.liked) {
+        likeButton.classList.remove('btn-outline-primary');
+        likeButton.classList.add('btn-primary');
+        likeButton.innerHTML = '🩷';  // ここでハートを表示
+      } else {
+        likeButton.classList.remove('btn-primary');
+        likeButton.classList.add('btn-outline-primary');
+        likeButton.innerHTML = '🤍';  // ここでハートを表示
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}トラベルプ{% endblock %}
+
+{% block content %}
+{% if messages %}
+    <div class="alert-messages">
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<script>
+    // ページロード後にアラートを5秒後に消す
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            const alert = document.querySelector('.alert-messages');
+            if (alert) {
+                alert.style.display = 'none';
+            }
+        }, 3000);  // 3000ミリ秒 = 3秒
+    });
+</script>
+<!-- タイトルテンプレートの組み込み -->
+<div style="text-align: center;">
+    {% include "posts_title.html" %}
+</div>
+
+<!-- タイトルテンプレートの組み込み -->
+{% include "posts_list.html" %}
+
+{% endblock %}

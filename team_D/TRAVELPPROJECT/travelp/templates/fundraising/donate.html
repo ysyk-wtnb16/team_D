@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}募金する - {{ project.title }}{% endblock %}
+
+{% block header %}募金する{% endblock %}
+
+{% block content %}
+  <h1>{{ project.title }}への募金</h1>
+  <p>{{ project.description }}</p>
+  <p>目標金額: ¥{{ project.goal_amount }}</p>
+  <p>現在の募金額: ¥{{ project.raised_amount }}</p>
+  <p>残り金額: ¥{{ project.get_remaining_amount }}</p>
+
+  <h2>支払い方法の入力</h2>
+  <form method="post" action="{% url 'travelp:donate' project.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="button">募金する</button>
+  </form>
+
+  <a href="{% url 'travelp:fundraising_list' %}">← 募金一覧に戻る</a>
+{% endblock %}
