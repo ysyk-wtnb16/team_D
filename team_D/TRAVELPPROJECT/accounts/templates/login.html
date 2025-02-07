@@ -8,10 +8,11 @@
 <div class="container-fluid">
     <section class="container my-5">
         <h2>ログイン</h2>
-        <form id="login-form" method="POST">
+        <form method="POST">
+            {% csrf_token %}
             <div class="mb-3">
-                <label for="user-id" class="form-label">ユーザーID</label>
-                <input type="text" id="user-id" name="user-id" class="form-control" placeholder="ユーザーIDを入力" required>
+                <label for="username" class="form-label">ユーザーID</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="ユーザーIDを入力" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">パスワード</label>
@@ -23,18 +24,8 @@
             <button type="submit" class="btn btn-primary">ログイン</button>
         </form>
         <div class="register-link mt-3">
-            <p>アカウントをお持ちですか？ <a href="register.html">登録する</a></p>
+            <p>アカウントをお持ちですか？ <a href="{% url 'accounts:signup' %}">登録する</a></p>
         </div>
     </section>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-    document.getElementById('login-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        alert("ログイン成功！");
-        window.location.href = "top.html"; 
-    });
-</script>
 {% endblock %}
