@@ -8,12 +8,11 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 # django.views.genericからTemplateView、ListViewをインポート
 from django.views.generic import TemplateView, ListView, DetailView,UpdateView, View
-from .models import Post,PostImage, Comment, Like, CustomUser
+from .models import Post,PostImage, Comment, Like, CustomUser,Plan 
 from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import models
 from django.db.models import Q
-from .models import Post, Plan  # 適切なモデルをインポート
  
 class IndexView(ListView):
     template_name = 'index.html'
@@ -21,7 +20,27 @@ class IndexView(ListView):
     queryset = Post.objects.order_by('-created_at')
     # 1ページに表示するレコードの件数
     paginate_by = 9
- 
+
+    from django.shortcuts import render
+
+def post_list(request):
+    posts = Post.objects.all().order_by('-created_at')  # 全投稿を取得（新しい順）
+    
+    # スタッフの募金投稿のみ取得
+    staff_posts = Post.objects.filter(user__is_staff=True, fundraising__isnull=False).order_by('-created_at')
+    
+    final_posts = []
+    staff_index = 0
+    staff_count = staff_posts.count()
+
+    for i, post in enumerate(posts):
+        final_posts.append(post)
+        if (i + 1) % 5 == 0 and staff_index < staff_count:
+            final_posts.append(staff_posts[staff_index])
+            staff_index += 1
+
+    return render(request, 'posts_list.html', {'posts': final_posts})
+
 # 商品検索ビュー
 class SearchView(ListView):
     template_name = "search.html"
@@ -103,6 +122,12 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     form_class = PostCreateForm
     template_name = "post.html"
     success_url = reverse_lazy('travelp:post_done')
+
+    def get_form_kwargs(self):
+        """フォームに現在のユーザー情報を渡す"""
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user  # user を追加
+        return kwargs
  
     def form_valid(self, form):
         # フォームから投稿データを保存
