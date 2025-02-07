@@ -10,11 +10,24 @@ class ProfileEditForm(forms.ModelForm):
             'profile_description': forms.Textarea(attrs={'rows': 3, 'cols': 40}),
         }
  
+from django import forms
+from .models import Post, Fundraising
+
 class PostCreateForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'comment', 'caption', 'latitude', 'longitude']
- 
+        fields = ['title', 'comment', 'caption', 'latitude', 'longitude', 'fundraising']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(PostCreateForm, self).__init__(*args, **kwargs)
+
+        if user is None or not user.is_staff:
+            self.fields.pop('fundraising')
+        else:
+            self.fields['fundraising'].queryset = Fundraising.objects.all()
+            self.fields['fundraising'].required = True
+
  
 class PostImageForm(forms.ModelForm):
     class Meta:

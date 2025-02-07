@@ -15,9 +15,14 @@
               <p class="card-text">{{ post.comment|slice:":10" }}{% if post.comment|length > 10 %}...{% endif %}</p>
              
               <div class="d-flex justify-content-between align-items-center">
-                <!-- 詳細ページリンク -->
-                <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
-               
+                {% if post.fundraising %}
+                  <!-- 募金関連の投稿 -->
+                    <a href="{% url 'travelp:post_detail' pk=post.pk %}" class="btn btn-sm btn-outline-secondary">募金プロジェクトを見る</a>
+                {% else %}
+                  <!-- 普通の投稿詳細ページ -->
+                  <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
+                {% endif %}
+                
                 <!-- 投稿者名 -->
                 <small class="text-muted">
                   <a href="{% url 'travelp:user_profile' post.pk %}">

@@ -15,6 +15,9 @@
     <p>残りの金額: ¥{{ project.get_remaining_amount|format_with_commas }}</p>
     {% if request.user.is_staff %}
     {% else %}
+    {% if fundraising.is_completed %}
+    <p class="text-danger">この募金は終了しました。</p>
+    {% else %}
     <h2>募金する</h2>
     <form method="post" action="{% url 'travelp:donate' project.id %}">
         {% csrf_token %}
@@ -47,6 +50,9 @@
     <button type="submit" id="stripe-button" style="display: none;" class="button">クレジットカードで支払う</button>
     </form>
      
+    {% endif %}
+
+
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         const cardRadio = document.getElementById("card");
