@@ -1,0 +1,65 @@
+<!-- fundraising/pay.html -->
+<script src="https://js.stripe.com/v3/"></script>
+
+<div id="card-element">
+  <!-- Stripe Elements がここに埋め込まれます -->
+</div>
+
+<!-- エラーメッセージの表示 -->
+<div id="card-errors" role="alert"></div>
+
+<script>
+    var stripe = Stripe('{{ STRIPE_TEST_PUBLIC_KEY }}'); // 公開鍵を使ってStripeオブジェクトを作成
+    var elements = stripe.elements();
+    var card = elements.create('card');  // カード入力欄を作成
+
+    card.mount('#card-element');  // 入力欄をページに表示
+
+    // フォーム送信時に支払いを行う処理
+    var form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // 支払い処理
+        var amount = document.getElementById('amount').value * 100;  // 入力された募金額をセンチ単位に変換
+
+        // POSTリクエストでPaymentIntentを作成
+        fetch("{% url 'payments:create_payment_intent' project.id %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',  // CSRFトークンを送信
+            },
+            body: JSON.stringify({ amount: amount }),
+        })
+        .then(function(result) {
+            return result.json();
+        })
+        .then(function(data) {
+            var clientSecret = data.clientSecret;
+
+            // Stripeでカード情報とPaymentIntentを結びつけて決済
+            stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: card,
+                }
+            })
+            .then(function(result) {
+                if (result.error) {
+                    // エラーハンドリング
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // 支払い成功後の処理
+                    if (result.paymentIntent.status === 'succeeded') {
+                        alert('募金が完了しました！');
+                        window.location.href = "{% url 'travelp:fundraising_list' %}";
+                    }
+                }
+            });
+        })
+        .catch(function(error) {
+            console.log('Error:', error);
+        });
+    });
+</script>

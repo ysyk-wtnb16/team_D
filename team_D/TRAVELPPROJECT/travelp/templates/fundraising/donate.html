@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}募金{% endblock %}
+
+{% block header %}募金{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>{{ project.title }}</h1>
+    <p>{{ project.description }}</p>
+    <p>目標金額: ¥{{ project.goal_amount }}</p>
+    <p>現在の募金額: ¥{{ project.raised_amount }}</p>
+    <p>残り金額: ¥{{ project.get_remaining_amount }}</p>
+
+    <h2>募金する</h2>
+    <form method="post" action="{% url 'travelp:donate' project.id %}">
+        {% csrf_token %}
+        
+        <!-- 募金金額 -->
+        <label for="amount">募金金額</label></br>
+        <input type="number" min="50" id="amount" name="amount" placeholder="入力してください" required>円<br><br>
+
+        <!-- 応援メッセージ（任意） -->
+        <label for="message">応援メッセージ（任意）</label></br>
+        <textarea id="message" name="message" rows="5" cols="50"></textarea><br><br>
+
+        <!-- 支払い方法の選択 -->
+        <p>支払い方法</p>
+        <fieldset>
+            <div>
+                <input type="radio" id="card" name="payment" value="pcard" class="radiobutton" required>
+                <label for="card">クレジットカード</label>
+            </div>
+            <div>
+                <input type="radio" id="bank" name="payment" value="pbank" class="radiobutton" required>
+                <label for="bank">銀行振込</label>
+            </div>
+        </fieldset><br>
+
+        <!-- 支払い情報のインクルード -->
+        {% include 'fundeaising/pay.html' %}
+
+        <input type="submit" value="募金" class="button">
+    </form>
+
+    <a href="{% url 'travelp:fundraising_list' %}">← 募金一覧に戻る</a>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const cardRadio = document.getElementById("card");
+        const bankRadio = document.getElementById("bank");
+        const cardInfo = document.getElementById("card-info");
+
+        function toggleCardInfo() {
+            if (cardRadio.checked) {
+                cardInfo.style.display = "block";
+            } else {
+                cardInfo.style.display = "none";
+            }
+        }
+
+        cardRadio.addEventListener("change", toggleCardInfo);
+        bankRadio.addEventListener("change", toggleCardInfo);
+    });
+</script>
+
+{% endblock %}

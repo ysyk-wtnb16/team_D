@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}募金履歴詳細{% endblock %}
+
+{% block header %}募金履歴詳細{% endblock %}
+
+{% block content %}
+  <p>プロジェクト名: {{ donation.project.title }}</p>
+  <p>募金者: {{ donation.donor.username }}</p>
+  <p>募金額: ¥{{ donation.amount }}</p>
+  <p>募金日: {{ donation.date }}</p>
+
+  <a href="{% url 'travelp:donation_history' %}">← 戻る</a>
+{% endblock %}
