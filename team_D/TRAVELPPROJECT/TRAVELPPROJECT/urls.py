@@ -4,10 +4,9 @@ from django.urls import path, include
 from django.conf import settings
 # staticを追加
 from django.conf.urls.static import static
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+ 
     path('',include('travelp.urls')),
 
     # accounts.urlsへのURLパターン
@@ -15,7 +14,10 @@ urlpatterns = [
 
 ]
 
+ 
 
+ 
+ 
 # urlpatternsにmediaフォルダーのURLパターンを追加
 urlpatterns += static(
    # MEDIA_URL = '/media/'
@@ -23,4 +25,3 @@ urlpatterns += static(
   # MEDIA_ROOTにリダイレクト
   document_root=settings.MEDIA_ROOT
   )
-
