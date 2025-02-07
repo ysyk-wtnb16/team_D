@@ -58,8 +58,10 @@ cover/
 # Django stuff:
 *.log
 local_settings.py
-db.sqlite3
-db.sqlite3-journal
+git add db.sqlite3
+git commit -m "Track db.sqlite3 in repository"
+git push origin travelp
+
 
 # Flask stuff:
 instance/
