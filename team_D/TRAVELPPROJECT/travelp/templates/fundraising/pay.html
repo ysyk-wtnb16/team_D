@@ -1,77 +1,65 @@
-{% extends 'base.html' %}
+<!-- fundraising/pay.html -->
+<script src="https://js.stripe.com/v3/"></script>
 
-{% block title %}募金{% endblock %}
-
-{% block header %}募金{% endblock %}
-
-{% block content %}
-<div class="container-fluid">
-    <h1>{{ project.title }}</h1>
-    <p>{{ project.description }}</p>
-    <p>目標金額: ¥{{ project.goal_amount }}</p>
-    <p>現在の募金額: ¥{{ project.raised_amount }}</p>
-    <p>残り金額: ¥{{ project.get_remaining_amount }}</p>
-
-    <h2>募金する</h2>
-    <form method="post" action="{% url 'travelp:donate' project.id %}">
-        {% csrf_token %}
-
-        <!-- 募金金額 -->
-        <label for="amount">募金金額</label></br>
-        <input type="number" min="1" id="amount" name="amount" placeholder="入力してください" required>円<br><br>
-
-        <!-- 応援メッセージ（任意） -->
-        <label for="message">応援メッセージ（任意）</label></br>
-        <textarea id="message" name="message" rows="5" cols="50"></textarea><br><br>
-
-        <!-- 支払い方法 -->
-        <p>支払い方法</p>
-        <fieldset>
-            <div>
-                <input type="radio" id="card" name="payment" value="pcard" class="radiobutton" required>
-                <label for="card">クレジットカード</label>
-            </div>
-            <div>
-                <input type="radio" id="bank" name="payment" value="pbank" class="radiobutton" required>
-                <label for="bank">銀行振込</label>
-            </div>
-        </fieldset><br>
-
-        <!-- クレジットカード情報（クレジットカード選択時のみ表示する） -->
-        <div id="card-info" style="display: none;">
-            <label for="card_number">クレジットカード番号</label>
-            <input type="text" name="card_number">
-
-            <label for="expiry_date">有効期限（MM/YY）</label>
-            <input type="text" name="expiry_date">
-
-            <label for="cvv">CVV</label>
-            <input type="text" name="cvv">
-        </div>
-
-        <input type="submit" value="募金" class="button">
-    </form>
-
-    <a href="{% url 'travelp:fundraising_list' %}">← 募金一覧に戻る</a>
+<div id="card-element">
+  <!-- Stripe Elements がここに埋め込まれます -->
 </div>
 
+<!-- エラーメッセージの表示 -->
+<div id="card-errors" role="alert"></div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const cardRadio = document.getElementById("card");
-        const bankRadio = document.getElementById("bank");
-        const cardInfo = document.getElementById("card-info");
+    var stripe = Stripe('{{ STRIPE_TEST_PUBLIC_KEY }}'); // 公開鍵を使ってStripeオブジェクトを作成
+    var elements = stripe.elements();
+    var card = elements.create('card');  // カード入力欄を作成
 
-        function toggleCardInfo() {
-            if (cardRadio.checked) {
-                cardInfo.style.display = "block";
-            } else {
-                cardInfo.style.display = "none";
-            }
-        }
+    card.mount('#card-element');  // 入力欄をページに表示
 
-        cardRadio.addEventListener("change", toggleCardInfo);
-        bankRadio.addEventListener("change", toggleCardInfo);
+    // フォーム送信時に支払いを行う処理
+    var form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // 支払い処理
+        var amount = document.getElementById('amount').value * 100;  // 入力された募金額をセンチ単位に変換
+
+        // POSTリクエストでPaymentIntentを作成
+        fetch("{% url 'payments:create_payment_intent' project.id %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',  // CSRFトークンを送信
+            },
+            body: JSON.stringify({ amount: amount }),
+        })
+        .then(function(result) {
+            return result.json();
+        })
+        .then(function(data) {
+            var clientSecret = data.clientSecret;
+
+            // Stripeでカード情報とPaymentIntentを結びつけて決済
+            stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: card,
+                }
+            })
+            .then(function(result) {
+                if (result.error) {
+                    // エラーハンドリング
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // 支払い成功後の処理
+                    if (result.paymentIntent.status === 'succeeded') {
+                        alert('募金が完了しました！');
+                        window.location.href = "{% url 'travelp:fundraising_list' %}";
+                    }
+                }
+            });
+        })
+        .catch(function(error) {
+            console.log('Error:', error);
+        });
     });
 </script>
-
-{% endblock %}

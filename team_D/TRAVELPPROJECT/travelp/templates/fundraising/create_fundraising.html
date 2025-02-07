@@ -22,7 +22,7 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="button">作成</button>
+    <button type="submit">作成</button>
 </form>
 
 <a href="{% url 'travelp:fundraising_list' %}">← 募金一覧に戻る</a>

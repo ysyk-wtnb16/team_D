@@ -1,25 +1,24 @@
 {% extends 'base.html' %}
- 
+
 {% load custom_filters %}
- 
+
 {% block title %}募金プロジェクト一覧{% endblock %}
- 
+
 {% block header %}募金プロジェクト一覧{% endblock %}
- 
+
 {% block content %}
   <ul>
     {% for project in fundraising_projects %}
       <li>
         <h2>{{ project.title }}</h2>
         <p>{{ project.description }}</p>
-        <p>目標金額: ¥{{ project.goal_amount|format_with_commas }} / 集まった金額: ¥{{ project.raised_amount|format_with_commas }}</p>
+        <p>目標金額: ¥{{ project.goal_amount|format_with_commas }} / 現在の集まった金額: ¥{{ project.raised_amount|format_with_commas }}</p>
         <p>残り金額: ¥{{ project.get_remaining_amount|format_with_commas }}</p>
-        <a href="{% url 'travelp:fundraising_detail' project.id %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
+        <a href="{% url 'travelp:fundraising_detail' project.id %}">詳細を見る</a>
+        </a>
       </li>
-      <hr>
     {% empty %}
       <p>募金プロジェクトはまだありません。</p>
     {% endfor %}
   </ul>
 {% endblock %}
- 
