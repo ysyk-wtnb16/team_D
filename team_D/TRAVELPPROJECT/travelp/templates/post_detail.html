@@ -7,20 +7,35 @@
 {% block content %}
 <div class="container-fluid">
  
-  {% if user.nickname %}
-  <p>投稿者： {{ user.nickname }}
-  {% else %}
-  <p>投稿者：{{ post.user.username }}</p>
-  {% endif %}
+                <!-- 投稿者名 -->
+                <small class="text-muted">
+                  <p>投稿者<a href="{% url 'travelp:user_profile' post.pk %}">
+                    {% if post.user.nickname %}
+                      {{ post.user.nickname }}
+                    {% else %}
+                      {{ post.user.username }}
+                    {% endif %}
+                  </a>
+                </small>
+  {% comment %} <div class="profile-info">
+    <div class="icon">
+        <!-- ユーザーのプロフィール画像 -->
+        {% if user.profile_image %}
+            <img src="{{ user.profile_image.url }}" alt="プロフィール画像">
+        {% else %}
+            <img src="business60.jpg" alt="デフォルト画像">
+        {% endif %}
+    </div> {% endcomment %}
   <!-- 投稿タイトル -->
   <h1>{{ post.title }}</h1>
+
+
+  <!-- 投稿のコメント -->
+  <p class="lead">{{ post.comment }}</p>
  
   {% if post.fundraising %}
   <!-- 募金関連の投稿 -->
   <a href="{% url 'travelp:fundraising_detail' post.fundraising.id %}" class="btn btn-sm btn-outline-secondary">募金プロジェクトを見る</a>
-  {% else %}
-    <!-- 普通の投稿詳細ページ -->
-    <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
   {% endif %}
  
   {% if plans %}
@@ -63,8 +78,7 @@
   <!-- いいね -->
   <p>いいねの数: <span id="like-count">{{ post.like_count }}</span></p>
  
-  <!-- 投稿のコメント -->
-  <p class="lead">{{ post.comment }}</p>
+
  
   {% if user.is_authenticated %}
     <button id="like-button" class="btn {% if liked %}btn-primary{% else %}btn-outline-primary{% endif %}" onclick="toggleLike()" style="width: 50px; height: 50px; padding: 0; background-color: transparent; border: none; position: relative; display: flex; justify-content: center; align-items: center;">
