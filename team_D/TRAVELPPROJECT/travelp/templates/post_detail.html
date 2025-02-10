@@ -6,21 +6,21 @@
 
 {% block content %}
 <div class="container-fluid">
-
+ 
   {% if user.nickname %}
-  <p>投稿者： {{ user.nickname }}
+  <p>投稿者： {{ post.user.nickname }}
   {% else %}
   <p>投稿者：{{ post.user.username }}</p>
   {% endif %}
   <!-- 投稿タイトル -->
   <h1>{{ post.title }}</h1>
 
+  <!-- 投稿のコメント -->
+  <p class="lead">{{ post.comment }}</p>
+ 
   {% if post.fundraising %}
   <!-- 募金関連の投稿 -->
   <a href="{% url 'travelp:fundraising_detail' post.fundraising.id %}" class="btn btn-sm btn-outline-secondary">募金プロジェクトを見る</a>
-  {% else %}
-    <!-- 普通の投稿詳細ページ -->
-    <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
   {% endif %}
 
   {% if plans %}
@@ -62,10 +62,8 @@
 
   <!-- いいね -->
   <p>いいねの数: <span id="like-count">{{ post.like_count }}</span></p>
-
-  <!-- 投稿のコメント -->
-  <p class="lead">{{ post.comment }}</p>
-
+ 
+ 
   {% if user.is_authenticated %}
     <button id="like-button" class="btn {% if liked %}btn-primary{% else %}btn-outline-primary{% endif %}" onclick="toggleLike()" style="width: 50px; height: 50px; padding: 0; background-color: transparent; border: none; position: relative; display: flex; justify-content: center; align-items: center;">
       <span class="heart-icon" style="font-size: 48px;">{% if liked %}🩷{% else %}🤍{% endif %}</span>

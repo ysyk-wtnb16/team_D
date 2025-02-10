@@ -22,7 +22,7 @@
                   <!-- 普通の投稿詳細ページ -->
                   <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
                 {% endif %}
-                
+               
                 <!-- 投稿者名 -->
                 <small class="text-muted">
                   <a href="{% url 'travelp:user_profile' post.pk %}">
@@ -33,6 +33,16 @@
                     {% endif %}
                   </a>
                 </small>
+
+                {% comment %} <div class="profile-info">
+                  <div class="icon">
+                      <!-- ユーザーのプロフィール画像 -->
+                      {% if user.profile_image %}
+                          <img src="{{ user.profile_image.url }}" alt="プロフィール画像">
+                      {% else %}
+                          <img src="business60.jpg" alt="デフォルト画像">
+                      {% endif %}
+                  </div> {% endcomment %}
                
                 <!-- いいねの数 -->
                 <small class="text-muted">いいね: {{ post.like_count }}</small>
@@ -46,3 +56,4 @@
     </div>
   </div>
 </div>
+ 
