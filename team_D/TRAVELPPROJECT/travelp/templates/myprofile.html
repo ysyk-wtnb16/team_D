@@ -55,6 +55,8 @@
           <p>投稿はまだありません。</p>
         {% endfor %}
 
+        
+
         {% if request.user == user %}
         <!-- 自分のプロフィールの場合 -->
         <!-- イイネした投稿一覧 -->
@@ -86,8 +88,14 @@
         </div>
 
         <!-- 退会リンク -->
-        <div class="delete-account">
+        <div class="mb-3">
             <h3>アカウント設定</h3>
+
+            <div class="password-change">
+                <p>パスワードの変更</p>
+                <a href="{% url 'accounts:password_change' %}" class="btn btn-danger">変更する</a>
+            </div>
+            <p>アカウント削除</p>
             <a href="{% url 'accounts:delete_account' %}" class="btn btn-danger">退会する</a>
         </div>
         {% endif %}

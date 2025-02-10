@@ -15,35 +15,33 @@
               <p class="card-text">{{ post.comment|slice:":10" }}{% if post.comment|length > 10 %}...{% endif %}</p>
              
               <div class="d-flex justify-content-between align-items-center">
-                {% if post.fundraising %}
-                  <!-- 募金関連の投稿 -->
+                
                     <a href="{% url 'travelp:post_detail' pk=post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
-                {% else %}
-                  <!-- 普通の投稿詳細ページ -->
-                  <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
-                {% endif %}
-               
-                <!-- 投稿者名 -->
-                <small class="text-muted">
-                  <a href="{% url 'travelp:user_profile' post.pk %}">
-                    {% if post.user.nickname %}
-                      {{ post.user.nickname }}
-                    {% else %}
-                      {{ post.user.username }}
-                    {% endif %}
-                  </a>
-                </small>
-
-                {% comment %} <div class="profile-info">
-                  <div class="icon">
-                      <!-- ユーザーのプロフィール画像 -->
-                      {% if user.profile_image %}
-                          <img src="{{ user.profile_image.url }}" alt="プロフィール画像">
+                
+                <!-- ログインユーザーが投稿者である場合は「自分のプロフィール」リンクを表示 -->
+                {% if request.user == post.user %}
+                  <small class="text-muted">
+                    <a href="{% url 'travelp:myprofile' %}">
+                      {% if post.user.nickname %}
+                        {{ post.user.nickname }}
                       {% else %}
-                          <img src="business60.jpg" alt="デフォルト画像">
+                        {{ post.user.username }}
                       {% endif %}
-                  </div> {% endcomment %}
-               
+                    </a>
+                  </small>                
+                {% else %}
+                  <!-- ログインユーザーが投稿者でない場合は通常のプロフィールリンクを表示 -->
+                  <small class="text-muted">
+                    <a href="{% url 'travelp:user_profile' post.pk %}">
+                      {% if post.user.nickname %}
+                        {{ post.user.nickname }}
+                      {% else %}
+                        {{ post.user.username }}
+                      {% endif %}
+                    </a>
+                  </small>
+                {% endif %}
+                
                 <!-- いいねの数 -->
                 <small class="text-muted">いいね: {{ post.like_count }}</small>
               </div>
@@ -56,4 +54,3 @@
     </div>
   </div>
 </div>
- 
