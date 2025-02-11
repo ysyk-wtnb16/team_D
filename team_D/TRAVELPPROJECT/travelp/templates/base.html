@@ -36,9 +36,9 @@
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:myprofile' %}">プロフィール</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:mypost' %}">マイポスト</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:myplan' %}">マイプラン</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:fundraising_list' %}">募金</a>
                     {% endif %}
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:fundraising_list' %}">募金</a>
- 
+                    
                     {% if request.user.is_staff %}
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'travelp:create_fundraising' %}">募金プロジェクト作成</a>
                     {% endif %}
