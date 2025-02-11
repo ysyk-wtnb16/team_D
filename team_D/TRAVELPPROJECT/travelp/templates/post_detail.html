@@ -18,13 +18,13 @@
   <!-- 投稿のコメント -->
   <p class="lead">{{ post.comment }}</p>
  
-  {% comment %} {% if post.fundraising %}
+  {% if post.fundraising %}
   <!-- 募金関連の投稿 -->
   <a href="{% url 'travelp:fundraising_detail' post.project.id %}" class="btn btn-sm btn-outline-secondary">募金プロジェクトを見る</a>
   {% else %}
     <!-- 普通の投稿詳細ページ -->
     <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
-  {% endif %} {% endcomment %}
+  {% endif %}
 
   {% if plans %}
     <h3>この投稿が含まれるプラン</h3>
