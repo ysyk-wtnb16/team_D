@@ -54,6 +54,11 @@ class FundraisingForm(forms.ModelForm):
     class Meta:
         model = Fundraising
         fields = ['title', 'description', 'goal_amount']
+        labels = {
+            'title': '　タイトル',
+            'description': '説　　明',
+            'goal_amount': '目標金額',
+        }
  
     def clean_goal_amount(self):
         goal_amount = self.cleaned_data.get('goal_amount')
