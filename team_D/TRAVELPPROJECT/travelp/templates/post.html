@@ -17,6 +17,25 @@
                 <th>コメント</th>
                 <td><textarea name="comment" placeholder="コメントを入力" rows="5" cols="50">{{ form.comment.value|default:'' }}</textarea></td>
             </tr>
+
+                        <!-- スタッフユーザーのみ募金プロジェクトを選択できるように -->
+                        {% if user.is_staff %}
+                        <tr>
+                            <th>募金プロジェクト</th>
+                            <td>
+                                <select name="fundraising">
+                                    <option value="" selected>選択してください</option>
+                                    {% for project in form.fields.fundraising.queryset %}
+                                        <option value="{{ project.id }}" {% if form.fundraising.value == project.pk %}selected{% endif %}>
+                                            {{ project.title }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                
+                            </td>
+                        </tr>
+                        {% endif %}
+            
             <tr>
                 <th>場所</th>
                 <td>
