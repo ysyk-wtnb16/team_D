@@ -15,9 +15,6 @@
   <!-- 投稿タイトル -->
   <h1>{{ post.title }}</h1>
  
-  <!-- 投稿のコメント -->
-  <p class="lead">{{ post.comment }}</p>
- 
   {% if post.fundraising %}
   <!-- 募金関連の投稿 -->
   <a href="{% url 'travelp:fundraising_detail' post.project.id %}" class="btn btn-sm btn-outline-secondary">募金プロジェクトを見る</a>
@@ -70,6 +67,9 @@
       </a>
     </p>
   {% endif %}
+
+  <!-- 投稿のコメント -->
+  <p class="lead">{{ post.comment }}</p>
  
   <!-- いいね -->
   <p>いいねの数: <span id="like-count">{{ post.like_count }}</span></p>
