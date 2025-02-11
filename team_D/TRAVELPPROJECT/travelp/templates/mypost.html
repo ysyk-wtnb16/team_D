@@ -51,6 +51,62 @@
           alert('少なくとも1つの投稿を選択してください。');
         }
       });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const selectedPostsKey = "selectedPosts";
+        
+        // ローカルストレージから選択状態を復元
+        const savedSelections = JSON.parse(localStorage.getItem(selectedPostsKey)) || [];
+        savedSelections.forEach(postId => {
+          const checkbox = document.getElementById(`post${postId}`);
+          if (checkbox) {
+            checkbox.checked = true;
+          }
+        });
+    
+        // チェックボックスの変更を監視
+        document.querySelectorAll('input[name="selected_posts"]').forEach(checkbox => {
+          checkbox.addEventListener("change", function () {
+            let selectedPosts = JSON.parse(localStorage.getItem(selectedPostsKey)) || [];
+    
+            if (this.checked) {
+              if (!selectedPosts.includes(this.value)) {
+                selectedPosts.push(this.value);
+              }
+            } else {
+              selectedPosts = selectedPosts.filter(id => id !== this.value);
+            }
+    
+            localStorage.setItem(selectedPostsKey, JSON.stringify(selectedPosts));
+          });
+        });
+    
+        // フォーム送信時にhidden inputを追加
+        document.getElementById('plan-form').addEventListener('submit', function (event) {
+          let selectedPosts = JSON.parse(localStorage.getItem(selectedPostsKey)) || [];
+          if (selectedPosts.length === 0) {
+            event.preventDefault();
+            alert('少なくとも1つの投稿を選択してください。');
+            return;
+          }
+    
+          // 既存のhidden inputを削除
+          document.querySelectorAll(".hidden-post-input").forEach(input => input.remove());
+    
+          // hidden inputを作成してフォームに追加
+          selectedPosts.forEach(postId => {
+            let hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "selected_posts";
+            hiddenInput.value = postId;
+            hiddenInput.classList.add("hidden-post-input");
+            this.appendChild(hiddenInput);
+          });
+    
+          // ローカルストレージをクリア
+          localStorage.removeItem(selectedPostsKey);
+        });
+      });
     </script>
- 
+      
 {% endblock %}
