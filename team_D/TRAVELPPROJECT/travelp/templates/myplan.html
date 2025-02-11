@@ -2,14 +2,13 @@
 {% load static %}
 {% block title %}マイプラン{% endblock %}
 {% block header %}マイプラン{% endblock %}
-
+ 
 {% block content %}
     <h2>マイプラン一覧</h2>
-
     {% if plans %}
       <div class="row g-4">
         {% for plan in plans %}
-          <div class="col-12 col-sm-6 col-md-4"> 
+          <div class="col-12 col-sm-6 col-md-4">
             <div class="card shadow-sm">
                 {% if plan.thumbnail %}
                     <img src="{{ plan.thumbnail.images.first.image.url }}" class="card-img-top" width="100%" height="225" alt="プランのサムネイル">
@@ -28,5 +27,7 @@
     {% else %}
       <p>まだプランを作成していません。</p>
     {% endif %}
-
+ 
+    {% include 'pagination.html' with page_obj=plans %}
+ 
 {% endblock %}

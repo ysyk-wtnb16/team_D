@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}投稿作成{% endblock %}
 {% block header %}投稿作成{% endblock %}
-
+ 
 {% block content %}
 <h1>投稿</h1>
 <div class="container">
@@ -15,58 +15,104 @@
             </tr>
             <tr>
                 <th>コメント</th>
-                <td><textarea name="comment" placeholder="コメントを入力" rows="15" cols="50">{{ form.comment.value|default:'' }}</textarea></td>
+                <td><textarea name="comment" placeholder="コメントを入力" rows="5" cols="50">{{ form.comment.value|default:'' }}</textarea></td>
             </tr>
-
-            <!-- スタッフユーザーのみ募金プロジェクトを選択できるように -->
-            {% if user.is_staff %}
-            <tr>
-                <th>募金プロジェクト</th>
-                <td>
-                    <select name="fundraising">
-                        <option value="" selected>選択してください</option>
-                        {% for project in form.fields.fundraising.queryset %}
-                            <option value="{{ project.id }}" {% if form.fundraising.value == project.pk %}selected{% endif %}>
-                                {{ project.title }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                    
-                </td>
-            </tr>
-            {% endif %}
-
             <tr>
                 <th>場所</th>
                 <td>
-                    <input id="location-search" type="text" placeholder="場所を検索">
-                    <div id="map" style="width: 100%; height: 400px;"></div>
+                    <!-- 場所検索バー -->
+                    <input id="search-box" type="text" placeholder="場所を検索">
+                    <button type="button" onclick="searchLocation()" class="btn btn-sm btn-outline-secondary">検索</button>
+ 
+                    <!-- 地図を表示するためのdiv -->
+                    <div id="map" style="width: 100%; height: 270px; margin-top: 10px;"></div>
+ 
+                    <!-- 隠しフィールドで場所の緯度経度を送信 -->
                     <input type="hidden" name="latitude" id="latitude">
                     <input type="hidden" name="longitude" id="longitude">
                 </td>
-            </tr>
-
-            <tr>
-                <th>画像</th>
-                <td><input type="file" name="images" multiple accept="image/*"></td>
-            </tr>
-            <tr>
-                <th>画像</th>
-                <td><input type="file" name="images" multiple accept="image/*"></td>
             </tr>
             <tr>
                 <th>画像</th>
                 <td><input type="file" name="images" multiple accept="image/*"></td>
             </tr>
         </table>
-
         <div style="text-align: center; padding-top: 20px;">
             <button type="submit" class="button">投稿する</button>
         </div>            
     </form>
 </div>
-
-<!-- Google Maps APIの読み込み -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDDDHZjQfBlY3LpUJF8W3NwNQygZj38qo&libraries=places&callback=initMap" loading="async" defer></script>
-<script src="{% static 'js/map.js' %}"></script>
+ 
+<!-- Leaflet.js 読み込み -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+ 
+<script>
+    var map = L.map('map').setView([35.6895, 139.6917], 12); // 初期表示（東京）
+ 
+    // OpenStreetMapのタイルを追加
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+ 
+    // マーカー（初期は東京駅）
+    var marker = L.marker([35.6895, 139.6917], { draggable: true }).addTo(map)
+        .bindPopup("ここを選択")
+        .openPopup();
+ 
+    // 地図クリックでマーカー移動
+    map.on("click", function(e) {
+        var lat = e.latlng.lat;
+        var lon = e.latlng.lng;
+ 
+        // 緯度、経度の桁数チェック
+        var latitude = lat.toFixed(8); // 小数点以下6桁に丸める
+        var longitude = lon.toFixed(11); // 小数点以下9桁に丸める
+ 
+        // 緯度経度の合計桁数が制限を超えている場合、調整する
+        if (longitude.length > 11) { // 合計桁数が9桁以内でない場合
+            longitude = lon.toFixed(8); // 小数点以下8桁に調整
+        }
+ 
+        // 値をフォームに設定
+        document.getElementById("latitude").value = latitude;
+        document.getElementById("longitude").value = longitude;
+ 
+        marker.setLatLng([lat, lon])
+            .bindPopup("選択した場所")
+            .openPopup();
+    });
+ 
+ 
+    // 検索機能
+    function searchLocation() {
+        var query = document.getElementById("search-box").value;
+        var url = `https://nominatim.openstreetmap.org/search?format=json&q=${query}`;
+ 
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    var lat = parseFloat(data[0].lat);  // 緯度
+                    var lon = parseFloat(data[0].lon);  // 経度
+ 
+                    // 地図をその位置に移動
+                    map.setView([lat, lon], 15);
+ 
+                    // マーカーの位置を更新
+                    marker.setLatLng([lat, lon])
+                        .bindPopup(data[0].display_name) // 地名を表示
+                        .openPopup();
+ 
+                    // フォームの緯度・経度を更新
+                    document.getElementById("latitude").value = lat.toFixed(8);  // 小数点以下6桁
+                    document.getElementById("longitude").value = lon.toFixed(11); // 小数点以下9桁
+                } else {
+                    alert("場所が見つかりませんでした。");
+                }
+            })
+            .catch(error => console.error("検索エラー:", error));
+    }
+ 
+</script>
 {% endblock %}

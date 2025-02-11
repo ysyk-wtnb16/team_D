@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
+ 
 {% block title %}プラン詳細{% endblock %}
 {% block header %}プラン詳細{% endblock %}
-
+ 
 {% block content %}
     <h2>{{ plan.name|default:"無題のプラン" }}</h2>
     <p><font size="4">このプランに含まれる投稿一覧</font></p>
     <p><strong>作成者:</strong> {{ plan.user.username }}</p>
-
-    <div class = "text-end">
+ 
+    <div class="text-end">
       {% if plan.user == request.user %}
         <form action="{% url 'travelp:delete_plan' plan.id %}" method="POST" onsubmit="return confirm('このプランを削除しますか？');">
             {% csrf_token %}
@@ -16,7 +17,7 @@
         <a href="{% url 'travelp:myplan' %}" class="btn btn-secondary mt-3">プランの一覧に戻る</a>
       {% endif %}
     </div>
-
+ 
     <h3>関連投稿</h3>
     <div class="row g-4">
       {% for post in plan.posts.all %}
@@ -29,13 +30,61 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <!-- 詳細ページリンク -->
                     <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
-                  </div>
+                </div>
+ 
+                {% if post.latitude and post.longitude %}
+                  <div id="map-{{ post.pk }}" style="height: 200px;"></div>
+                  <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                      var map = L.map('map-{{ post.pk }}').setView([{{ post.latitude }}, {{ post.longitude }}], 14);
+ 
+                      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                      }).addTo(map);
+ 
+                      L.marker([{{ post.latitude }}, {{ post.longitude }}]).addTo(map)
+                        .bindPopup("投稿位置")
+                        .openPopup();
+                    });
+                  </script>
+                {% endif %}
             </div>
           </div>
         </div>
       {% empty %}
         <p>まだ投稿がありません。</p>
       {% endfor %}
-      
     </div>
+ 
+    <!-- プランの位置情報をつなぐマーカー -->
+    {% if plan.posts.count > 1 %}
+      <h3>プランに含まれる投稿の位置情報</h3>
+      <div id="plan-map" style="height: 400px;"></div>
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          var map = L.map('plan-map').setView([{{ plan.posts.first.latitude }}, {{ plan.posts.first.longitude }}], 14);
+ 
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(map);
+ 
+          var latLngs = [];
+ 
+          {% for post in plan.posts.all %}
+            {% if post.latitude and post.longitude %}
+              latLngs.push([{{ post.latitude }}, {{ post.longitude }}]);
+              L.marker([{{ post.latitude }}, {{ post.longitude }}]).addTo(map)
+                .bindPopup("{{ post.title }} - {{ post.comment|slice:":20" }}...");
+ 
+            {% endif %}
+          {% endfor %}
+ 
+          // 投稿をつなぐ線を引く
+          if (latLngs.length > 1) {
+            L.polyline(latLngs, {color: 'blue'}).addTo(map);
+          }
+        });
+      </script>
+    {% endif %}
+ 
 {% endblock %}

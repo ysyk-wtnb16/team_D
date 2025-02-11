@@ -509,3 +509,111 @@ def donate(request, pk):
  
                 messages.success(request, f"¥{amount}の募金が成功しました！")
                 return redirect('travelp:fundraising_detail', pk=project.pk)
+            
+
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    form_class = PostCreateForm
+    template_name = "post.html"
+    success_url = reverse_lazy('travelp:post_done')
+ 
+    def form_valid(self, form):
+        print("form_validが呼ばれた！")  # ここで確認
+        postdata = form.save(commit=False)
+        postdata.user = self.request.user
+ 
+        # フォームからの緯度・経度取得
+        lat = form.cleaned_data.get('latitude')
+        lon = form.cleaned_data.get('longitude')
+ 
+        # 緯度・経度を丸めて保存
+        postdata.latitude = round(lat, 8) if lat else None  # 小数点以下6桁に丸める
+        postdata.longitude = round(lon, 8) if lon else None  # 小数点以下9桁に丸める
+ 
+        print("保存する緯度:", postdata.latitude)
+        print("保存する経度:", postdata.longitude)
+ 
+        postdata.save()
+ 
+        # 画像を保存
+        images = self.request.FILES.getlist('images')
+        for image in images:
+            PostImage.objects.create(post=postdata, image=image)
+ 
+        return super().form_valid(form)
+ 
+   
+    def form_invalid(self, form):
+        print("form_invalidが呼ばれた！")  
+        print("フォームエラー:", form.errors)  
+ 
+        # フォームデータの中身を確認！
+        print("受け取った緯度 (latitude):", self.request.POST.get('latitude'))
+        print("受け取った経度 (longitude):", self.request.POST.get('longitude'))
+ 
+        return super().form_invalid(form)
+            
+
+            
+from django.core.paginator import Paginator
+ 
+@login_required
+def mypost(request):
+    posts_list = Post.objects.filter(user=request.user).order_by('-created_at')
+ 
+    # 🔹 Paginator を適用（1ページに6件表示）
+    paginator = Paginator(posts_list, 6)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)  # 現在のページのオブジェクトを取得
+ 
+    if request.method == 'POST':
+        # プラン作成処理
+        plan_name = request.POST.get('plan_name')
+        selected_posts = request.POST.getlist('selected_posts')
+ 
+        # Planの作成
+        plan = Plan.objects.create(user=request.user, name=plan_name)
+ 
+        # 投稿をプランに関連付け
+        for post_id in selected_posts:
+            post = Post.objects.get(pk=post_id)
+            plan.posts.add(post)
+ 
+        return redirect('travelp:myplan')  # 作成したプランページにリダイレクト
+ 
+    return render(request, 'mypost.html', {'posts': posts})
+ 
+@login_required
+def myplan(request):
+    plans = Plan.objects.filter(user=request.user).order_by('-id')  # 自分の作成したプランを取得（新しい順）
+ 
+    # 🔹 Paginator を適用（1ページに6件表示）
+    paginator = Paginator(plans, 6)
+    page_number = request.GET.get('page')
+    plans = paginator.get_page(page_number)  # 現在のページのオブジェクトを取得
+ 
+    for plan in plans:
+        # 各プランの中で一番古い投稿を取得
+        plan.thumbnail = plan.posts.order_by('created_at').first()
+    return render(request, 'myplan.html', {'plans': plans})
+ 
+@login_required
+def plan_detail(request, plan_id):
+    plan = get_object_or_404(Plan, id=plan_id)  # どのユーザーのプランでも取得可能に
+ 
+     # 投稿の位置情報を取得
+    post_locations = []
+    for post in plan.posts.all():
+        if post.latitude and post.longitude:  # 位置情報がある場合
+            post_locations.append({
+                'latitude': post.latitude,
+                'longitude': post.longitude,
+                'title': post.title,
+            })
+   
+    return render(request, 'plan_detail.html', {
+        'plan': plan,
+        'post_locations': post_locations
+    })
+ 
+    # return render(request, 'plan_detail.html', {'plan': plan})

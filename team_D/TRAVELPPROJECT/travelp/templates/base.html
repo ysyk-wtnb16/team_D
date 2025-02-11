@@ -15,6 +15,11 @@
             <link rel="stylesheet" href="{% static 'css/dark-mode.css' %}">
         {% endif %}
 
+        <!-- Leaflet.js -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
     </head>
     <body class="{% if request.user.is_staff %} dark-mode {% endif %}">
         <div class="d-flex" id="wrapper">
@@ -54,9 +59,12 @@
                 <!-- Page content-->
                 <div class="container-fluid">
                     {% block content %}{% endblock %}
-                    <!-- ページネーションの挿入 -->
-                    {% include 'pagination.html' %} 
-                </div>
+
+                    <!-- ページネーションを投稿の下に配置 -->
+                    <div class="d-flex justify-content-center mt-5">
+                        {% include 'pagination.html' %}
+                    </div>
+                </div>                    
             </div>  
         </div>
         <!-- Bootstrap core JS-->

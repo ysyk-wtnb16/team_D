@@ -7,43 +7,20 @@
 {% block content %}
 <div class="container-fluid">
  
-                <!-- 投稿者名 -->
-                <small class="text-muted">
-                  <p>投稿者<a href="{% url 'travelp:user_profile' post.pk %}">
-                    {% if post.user.nickname %}
-                      {{ post.user.nickname }}
-                    {% else %}
-                      {{ post.user.username }}
-                    {% endif %}
-                  </a>
-                </small>
-  {% comment %} <div class="profile-info">
-    <div class="icon">
-        <!-- ユーザーのプロフィール画像 -->
-        {% if user.profile_image %}
-            <img src="{{ user.profile_image.url }}" alt="プロフィール画像">
-        {% else %}
-            <img src="business60.jpg" alt="デフォルト画像">
-        {% endif %}
-    </div> {% endcomment %}
+  {% if user == post.user %}
+    <p>投稿者：{{ post.user.username }}</p>
+  {% else %}
+      <p>ユーザー情報がありません</p>
+  {% endif %}
   <!-- 投稿タイトル -->
   <h1>{{ post.title }}</h1>
-
-
-  <!-- 投稿のコメント -->
-  <p class="lead">{{ post.comment }}</p>
- 
-  {% if post.fundraising %}
-  <!-- 募金関連の投稿 -->
-  <a href="{% url 'travelp:fundraising_detail' post.fundraising.id %}" class="btn btn-sm btn-outline-secondary">募金プロジェクトを見る</a>
-  {% endif %}
  
   {% if plans %}
     <h3>この投稿が含まれるプラン</h3>
     <ul>
       {% for plan in plans %}
         <li>
-          <a href="{% url 'travelp:plan_detail' plan.id %}">{{ plan.name }}（作成者: {{ plan.user.username }}）</a>
+          <a href="{% url 'travelp:plan_detail' plan.id %}" class="btn btn-sm btn-outline-secondary">{{ plan.name }}（作成者: {{ plan.user.username }}）</a>
         </li>
       {% endfor %}
     </ul>
@@ -75,10 +52,19 @@
   <!-- 投稿日時 -->
   <p class="text-muted">投稿日時: {{ post.created_at }}</p>
  
+  {% if post.latitude and post.longitude %}
+    <p>
+      <a href="https://www.openstreetmap.org/?mlat={{ post.latitude }}&mlon={{ post.longitude }}#map=14/{{ post.latitude }}/{{ post.longitude }}" target="_blank">
+        位置情報を地図で確認
+      </a>
+    </p>
+  {% endif %}
+ 
   <!-- いいね -->
   <p>いいねの数: <span id="like-count">{{ post.like_count }}</span></p>
  
-
+  <!-- 投稿のコメント -->
+  <p class="lead">{{ post.comment }}</p>
  
   {% if user.is_authenticated %}
     <button id="like-button" class="btn {% if liked %}btn-primary{% else %}btn-outline-primary{% endif %}" onclick="toggleLike()" style="width: 50px; height: 50px; padding: 0; background-color: transparent; border: none; position: relative; display: flex; justify-content: center; align-items: center;">
