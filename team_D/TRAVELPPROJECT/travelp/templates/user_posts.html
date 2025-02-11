@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock %}
+{% block header %}{{ user.username }}さんの投稿一覧{% endblock %}
+
+{% block content %}
+<section class="album py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4">{{ user.username }}さんの投稿一覧</h2>
+    <div class="row g-3 justify-content-center"> <!-- 1件のときも中央寄せ -->
+      {% for post in posts %}
+        <div class="col-sm-6 col-md-4 d-flex" style="max-width: 350px;"> <!-- サイズ制限 -->
+          <div class="card shadow-sm w-100" style="min-height: 250px;"> <!-- 高さを小さめに -->
+            <!-- 画像表示部分 -->
+            {% if post.images.exists %}
+              <img src="{{ post.images.first.image.url }}" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="投稿画像">
+            {% else %}
+              <img src="{% static 'default-thumbnail.jpg' %}" class="bd-placeholder-img card-img-top" width="100%" height="180" alt="デフォルト画像">
+            {% endif %}
+           
+            <div class="card-body d-flex flex-column">
+              <!-- 投稿のタイトル（10文字以上なら省略） -->
+              <h5 class="card-title" style="font-size: 0.9rem;">{{ post.title|slice:":10" }}{% if post.title|length > 10 %}...{% endif %}</h5>
+ 
+              <!-- 投稿のコメント（10文字以上なら省略） -->
+              <p class="card-text flex-grow-1" style="font-size: 0.8rem;">{{ post.comment|slice:":10" }}{% if post.comment|length > 10 %}...{% endif %}</p>
+ 
+              <div class="d-flex justify-content-between align-items-center">
+                <!-- 詳細ページリンク -->
+                <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細</a>
+ 
+                <!-- いいねの数 -->
+                <small class="text-muted">❤️ {{ post.like_count }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12 text-center">
+          <p>投稿はまだありません。</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

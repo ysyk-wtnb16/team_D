@@ -14,6 +14,9 @@ urlpatterns = [
     path('profile/<int:pk>/', views.ProfileView.as_view(), name='user_profile'),
     path('profile/edit/<int:pk>/', views.EditProfileView.as_view(), name='edit_profile'),
     path('post/', views.PostCreateView.as_view(), name='post'),
+
+    path('user/<int:user_id>/posts/', views.user_posts, name='user_posts'),
+
     path('post_done/', views.PostSuccessView.as_view(), name='post_done'),
     path('post-detail/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
     path('post/<int:pk>/delete/', views.DeletePostView.as_view(), name='delete_post'),
@@ -21,7 +24,7 @@ urlpatterns = [
     path('post/<int:post_pk>/comment', views.AddCommentView.as_view(), name='add_comment'),
     path('post/<int:post_pk>/comment/<int:comment_id>/delete', views.DeleteCommentView.as_view(), name='delete_comment'),
     path('mypost/', views.mypost, name='mypost'),
-    
+
     path('user/<int:user_id>/plans/', views.user_plans, name='user_plans'),
 
     path('myplan/<int:plan_id>/delete/', views.delete_plan, name='delete_plan'),  # プラン削除

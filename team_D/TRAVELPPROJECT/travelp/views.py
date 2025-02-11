@@ -254,7 +254,14 @@ class DeleteCommentView(View):
         if comment.user == request.user:
             comment.delete()
         return redirect('travelp:post_detail', pk=post_pk)
-   
+
+def user_posts(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)  # ユーザーを取得
+    posts = Post.objects.filter(user=user)  # そのユーザーの投稿を取得
+    return render(request, 'user_posts.html', {'user': user, 'posts': posts})
+
+
+
 from django.core.paginator import Paginator
  
 @login_required
@@ -316,7 +323,6 @@ def plan_detail(request, plan_id):
         'post_locations': post_locations
     })
  
-    # return render(request, 'plan_detail.html', {'plan': plan})
 
 
     return render(request, 'plan_detail.html', {'plan': plan})

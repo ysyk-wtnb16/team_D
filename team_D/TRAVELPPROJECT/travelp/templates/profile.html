@@ -42,16 +42,15 @@
                 </div>
             </div>
         </div>
-  <div class="user-posts">
-    <h3>投稿した記事</h3>
-    {% for post in user_posts %}
-      <div class="post">
-        <li><a href="{% url 'travelp:post_detail' pk=post.pk %}">{{ post.title }}</a></li>
+        <div class="user-posts">
+          <h3>投稿した記事</h3>
+          {% if user_posts %}
+              <a class="btn btn-primary mt-3" href="{% url 'travelp:user_posts' user.id %}">このユーザーの投稿を見る</a>
+          {% else %}
+              <p>投稿はまだありません。</p>
+          {% endif %}
       </div>
-    {% empty %}
-      <p>投稿はまだありません。</p>
-    {% endfor %}
-
+      
     {% if user.nickname %}
     <h3>{{ user.nickname }}さんのプラン</h3>
     <a class="btn btn-primary" href="{% url 'travelp:user_plans' user.id %}">このユーザーのプランを見る</a>
