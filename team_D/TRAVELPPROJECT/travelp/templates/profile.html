@@ -54,32 +54,15 @@
 
     {% if user.nickname %}
     <h3>{{ user.nickname }}さんのプラン</h3>
+    <a class="btn btn-primary" href="{% url 'travelp:user_plans' user.id %}">このユーザーのプランを見る</a>
+
     {% else %}
     <h3>{{ user.username }}さんのプラン</h3>
+    <a class="btn btn-primary" href="{% url 'travelp:user_plans' user.id %}">このユーザーのプランを見る</a>
+
     {% endif %}
 
-    {% if plans %}
-      <div class="row g-4">
-        {% for plan in plans %}
-          <div class="col-12 col-sm-6 col-md-4"> 
-            <div class="card shadow-sm">
-                {% if plan.thumbnail %}
-                    <img src="{{ plan.thumbnail.images.first.image.url }}" class="card-img-top" width="100%" height="225" alt="プランのサムネイル">
-                {% else %}
-                    <img src="{% static 'default-thumbnail.jpg' %}" class="card-img-top" width="100%" height="225" alt="デフォルト画像">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ plan.name|default:"無題のプラン" }}</h5>
-                    <p class="card-text">投稿数: {{ plan.posts.count }}</p>
-                    <a href="{% url 'travelp:plan_detail' plan_id=plan.id %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
-                </div>
-            </div>
-          </div>  <!-- ここまでが1つのカード -->
-        {% endfor %}
-      </div>
-    {% else %}
-      <p>まだプランを作成していません。</p>
-    {% endif %}
+
   </div>
 </div>
 </section>

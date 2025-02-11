@@ -21,6 +21,9 @@ urlpatterns = [
     path('post/<int:post_pk>/comment', views.AddCommentView.as_view(), name='add_comment'),
     path('post/<int:post_pk>/comment/<int:comment_id>/delete', views.DeleteCommentView.as_view(), name='delete_comment'),
     path('mypost/', views.mypost, name='mypost'),
+    
+    path('user/<int:user_id>/plans/', views.user_plans, name='user_plans'),
+
     path('myplan/<int:plan_id>/delete/', views.delete_plan, name='delete_plan'),  # プラン削除
     path('create_plan/', views.create_plan, name='create_plan'),
     path('save_plan/', views.save_plan, name='save_plan'),

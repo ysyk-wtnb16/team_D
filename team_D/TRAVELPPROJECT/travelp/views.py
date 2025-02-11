@@ -354,6 +354,13 @@ def create_plan(request):
     
     return redirect('travelp:mypost')  # GETリクエストの場合は自分の投稿ページにリダイレクト
 
+
+
+def user_plans(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)  # ユーザーを取得
+    plans = Plan.objects.filter(user=user)  # そのユーザーのプランを取得
+    return render(request, 'user_plans.html', {'user': user, 'plans': plans})
+
 @login_required
 def delete_plan(request, plan_id):
     """プランを削除"""
