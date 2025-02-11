@@ -17,10 +17,7 @@
  
   {% if post.fundraising %}
   <!-- 募金関連の投稿 -->
-  <a href="{% url 'travelp:fundraising_detail' post.project.id %}" class="btn btn-sm btn-outline-secondary">募金プロジェクトを見る</a>
-  {% else %}
-    <!-- 普通の投稿詳細ページ -->
-    <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
+  <a href="{% url 'travelp:fundraising_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">募金プロジェクトを見る</a>
   {% endif %}
 
   {% if plans %}
