@@ -15,12 +15,14 @@
               <p class="card-text flex-grow-1" style="font-size: 0.8rem;">{{ post.comment|slice:":10" }}{% if post.comment|length > 10 %}...{% endif %}</p>
  
               <div class="d-flex justify-content-between align-items-center">
-                
-                    <a href="{% url 'travelp:post_detail' pk=post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
-                
-                <!-- ログインユーザーが投稿者である場合は「自分のプロフィール」リンクを表示 -->
-                {% if request.user == post.user %}
-                  <small class="text-muted">
+                <!-- 詳細ページリンク -->
+                <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細</a>
+ 
+                <!-- 投稿者名 -->
+                <small class="text-muted">
+                  <!-- ここで投稿者がログインユーザーかどうかを確認 -->
+                  {% if request.user == post.user %}
+                    <!-- ログインユーザーが投稿者の場合「自分のプロフィール」リンク -->
                     <a href="{% url 'travelp:myprofile' %}">
                       {% if post.user.nickname %}
                         {{ post.user.nickname }}
@@ -28,10 +30,8 @@
                         {{ post.user.username }}
                       {% endif %}
                     </a>
-                  </small>                
-                {% else %}
-                  <!-- ログインユーザーが投稿者でない場合は通常のプロフィールリンクを表示 -->
-                  <small class="text-muted">
+                  {% else %}
+                    <!-- ログインユーザーが投稿者でない場合は通常のプロフィールリンク -->
                     <a href="{% url 'travelp:user_profile' post.pk %}">
                       {% if post.user.nickname %}
                         {{ post.user.nickname }}
@@ -39,21 +39,7 @@
                         {{ post.user.username }}
                       {% endif %}
                     </a>
-                  </small>
-                {% endif %}
-                
-                <!-- 詳細ページリンク -->
-                <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細</a>
- 
-                <!-- 投稿者名 -->
-                <small class="text-muted">
-                  <a href="{% url 'travelp:user_profile' post.pk %}">
-                    {% if post.user.nickname %}
-                      {{ post.user.nickname }}
-                    {% else %}
-                      {{ post.user.username }}
-                    {% endif %}
-                  </a>
+                  {% endif %}
                 </small>
  
                 <!-- いいねの数 -->
@@ -62,45 +48,52 @@
             </div>
           </div>
         </div>
-      {% empty %}<div class="album py-5 bg-light">
-        <div class="container">
-          <div class="row g-3">
-            {% for post in object_list %}
-              <div class="col-12 {% if object_list|length == 1 %}col-md-6 offset-md-3{% else %}col-sm-6 col-md-4{% endif %} d-flex">
-                <div class="card shadow-sm w-100" style="min-height: 350px;">
-                  <img id="main-image" src="{{ post.images.first.image.url }}" class="bd-placeholder-img card-img-top" width="100%" height="200" alt="投稿画像">
-                 
-                  <div class="card-body d-flex flex-column">
-                    <h5 class="card-title" style="font-size: 1rem;">{{ post.title|slice:":10" }}{% if post.title|length > 10 %}...{% endif %}</h5>
-                    <p class="card-text flex-grow-1" style="font-size: 0.9rem;">{{ post.comment|slice:":10" }}{% if post.comment|length > 10 %}...{% endif %}</p>
+      {% empty %}
+        <div class="album py-5 bg-light">
+          <div class="container">
+            <div class="row g-3">
+              {% for post in object_list %}
+                <div class="col-12 {% if object_list|length == 1 %}col-md-6 offset-md-3{% else %}col-sm-6 col-md-4{% endif %} d-flex">
+                  <div class="card shadow-sm w-100" style="min-height: 350px;">
+                    <img id="main-image" src="{{ post.images.first.image.url }}" class="bd-placeholder-img card-img-top" width="100%" height="200" alt="投稿画像">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title" style="font-size: 1rem;">{{ post.title|slice:":10" }}{% if post.title|length > 10 %}...{% endif %}</h5>
+                      <p class="card-text flex-grow-1" style="font-size: 0.9rem;">{{ post.comment|slice:":10" }}{% if post.comment|length > 10 %}...{% endif %}</p>
      
-                    <div class="d-flex justify-content-between align-items-center">
-                      <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
-                      <small class="text-muted">
-                        <a href="{% url 'travelp:user_profile' post.pk %}">
-                          {% if post.user.nickname %}
-                            {{ post.user.nickname }}
+                      <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
+                        <!-- 投稿者名 -->
+                        <small class="text-muted">
+                          {% if request.user == post.user %}
+                            <a href="{% url 'travelp:myprofile' %}">
+                              {% if post.user.nickname %}
+                                {{ post.user.nickname }}
+                              {% else %}
+                                {{ post.user.username }}
+                              {% endif %}
+                            </a>
                           {% else %}
-                            {{ post.user.username }}
+                            <a href="{% url 'travelp:user_profile' post.pk %}">
+                              {% if post.user.nickname %}
+                                {{ post.user.nickname }}
+                              {% else %}
+                                {{ post.user.username }}
+                              {% endif %}
+                            </a>
                           {% endif %}
-                        </a>
-                      </small>
-                      <small class="text-muted">♡ {{ post.like_count }}</small>
+                        </small>
+                        <small class="text-muted">♡ {{ post.like_count }}</small>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            {% empty %}
-              <div class="col-12 text-center">
-                <p>投稿はまだありません。</p>
-              </div>
-            {% endfor %}
+              {% empty %}
+                <div class="col-12 text-center">
+                  <p>投稿はまだありません。</p>
+                </div>
+              {% endfor %}
+            </div>
           </div>
-        </div>
-      </div>
-     
-        <div class="col-12 text-center">
-          <p>投稿はまだありません。</p>
         </div>
       {% endfor %}
     </div>
