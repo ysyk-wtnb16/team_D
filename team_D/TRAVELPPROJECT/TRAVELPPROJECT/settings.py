@@ -179,3 +179,9 @@ LOGIN_REDIRECT_URL = '/'
 STRIPE_PUBLIC_KEY = "pk_test_51QnCXI2Nxfmaq9ljdf4mDAqOqbzBCH0fkLDhKKW8ZazsgGslVdUu4RQQcmQx3vN2ym4SwrKGy0iXQQBugWQYfknZ002jZ9xV4B" # 公開キー
 STRIPE_SECRET_KEY = "sk_test_51QnCXI2Nxfmaq9ljQkrII49KgKQzzd4bBDLqnReA0gd88nQm0vtuqce5EPDNHwjTIk6gcwqSThncNnhnPW67i6Tn00V88Mu5r7" # シークレットキー
  
+
+# メールバックエンド設定（デバッグ環境ではコンソールに出力されます）
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # 開発環境用。プロダクションでは他のバックエンドを使用する
+
+# メール送信者のアドレス
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'

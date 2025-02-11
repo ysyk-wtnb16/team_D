@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, TemplateView
 from django.contrib.auth.views import LoginView as AuthLoginView
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from .forms import CustomUserCreationForm, LoginForm
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
@@ -51,7 +53,7 @@ class SignUpSuccessView(TemplateView):
 # ログインビュー
 class LoginView(AuthLoginView):
     form_class = LoginForm
-    template_name = "accounts/login.html"
+    template_name = "login.html"
 
     # 認証後にリダイレクトするURLを取得するメソッド
     def get_success_url(self):
@@ -125,3 +127,22 @@ def password_change_view(request):
 
 def password_change_done_view(request):
     return render(request, 'password_change_done.html')
+
+
+class PasswordResetView(PasswordResetView):
+    template_name = 'password_reset.html'
+    email_template_name = 'password_reset_email.html'
+    subject_template_name = 'password_reset_subject.txt'
+    success_url = reverse_lazy('accounts:password_reset_done')
+# パスワードリセット完了ビュー
+class PasswordResetDoneView(TemplateView):
+    template_name = 'password_reset_done.html'
+
+# パスワードリセット確認（メール内のリンクをクリック後）
+class PasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'password_reset_form.html'
+    success_url = reverse_lazy('travelp:password_reset_complete')
+
+# パスワードリセット完了後のビュー
+class PasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'password_reset_complete.html'

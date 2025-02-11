@@ -15,6 +15,33 @@
               <p class="card-text flex-grow-1" style="font-size: 0.8rem;">{{ post.comment|slice:":10" }}{% if post.comment|length > 10 %}...{% endif %}</p>
  
               <div class="d-flex justify-content-between align-items-center">
+                
+                    <a href="{% url 'travelp:post_detail' pk=post.pk %}" class="btn btn-sm btn-outline-secondary">詳細を見る</a>
+                
+                <!-- ログインユーザーが投稿者である場合は「自分のプロフィール」リンクを表示 -->
+                {% if request.user == post.user %}
+                  <small class="text-muted">
+                    <a href="{% url 'travelp:myprofile' %}">
+                      {% if post.user.nickname %}
+                        {{ post.user.nickname }}
+                      {% else %}
+                        {{ post.user.username }}
+                      {% endif %}
+                    </a>
+                  </small>                
+                {% else %}
+                  <!-- ログインユーザーが投稿者でない場合は通常のプロフィールリンクを表示 -->
+                  <small class="text-muted">
+                    <a href="{% url 'travelp:user_profile' post.pk %}">
+                      {% if post.user.nickname %}
+                        {{ post.user.nickname }}
+                      {% else %}
+                        {{ post.user.username }}
+                      {% endif %}
+                    </a>
+                  </small>
+                {% endif %}
+                
                 <!-- 詳細ページリンク -->
                 <a href="{% url 'travelp:post_detail' post.pk %}" class="btn btn-sm btn-outline-secondary">詳細</a>
  
@@ -79,4 +106,3 @@
     </div>
   </div>
 </div>
- 
