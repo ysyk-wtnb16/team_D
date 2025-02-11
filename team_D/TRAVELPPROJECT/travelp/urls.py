@@ -21,6 +21,14 @@ urlpatterns = [
     path('post-detail/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
     path('post/<int:pk>/delete/', views.DeletePostView.as_view(), name='delete_post'),
     path('post/<int:post_pk>/like/', views.PostLikeView.as_view(), name='post_like'),
+
+
+    # 既存のURLパターン
+    path('profile/<int:user_id>/liked/', views.liked_posts, name='liked_posts'),
+    path('profile/<int:user_id>/commented/', views.commented_posts, name='commented_posts'),
+
+
+
     path('post/<int:post_pk>/comment', views.AddCommentView.as_view(), name='add_comment'),
     path('post/<int:post_pk>/comment/<int:comment_id>/delete', views.DeleteCommentView.as_view(), name='delete_comment'),
     path('mypost/', views.mypost, name='mypost'),

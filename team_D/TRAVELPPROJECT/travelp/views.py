@@ -244,6 +244,18 @@ class AddCommentView(View):
         comment_text = request.POST.get('comment')
         Comment.objects.create(user=request.user, post=post, text=comment_text)
         return redirect('travelp:post_detail', pk=post_pk)
+    
+
+def liked_posts(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    liked_posts = Post.objects.filter(likes=user)  # いいねした投稿を取得
+    return render(request, 'travelp/liked_posts.html', {'user': user, 'liked_posts': liked_posts})
+
+def commented_posts(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    commented_posts = Post.objects.filter(comments__user=user).distinct()  # コメントした投稿を取得
+    return render(request, 'travelp/commented_posts.html', {'user': user, 'commented_posts': commented_posts})
+
    
 # コメントを削除
 class DeleteCommentView(View):
