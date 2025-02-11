@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block title %}プロフィール{% endblock %}
 {% block header %}プロフィール{% endblock %}
 
@@ -21,7 +20,6 @@
 
         <div class="profile-info">
             <div class="icon">
-                <!-- ユーザーのプロフィール画像 -->
                 {% if user.profile_image %}
                     <img src="{{ user.profile_image.url }}" alt="プロフィール画像">
                 {% else %}
@@ -55,11 +53,10 @@
           <p>投稿はまだありません。</p>
         {% endfor %}
 
-        
-
         {% if request.user == user %}
         <!-- 自分のプロフィールの場合 -->
-        <!-- イイネした投稿一覧 -->
+
+        <!-- いいねした投稿一覧 -->
         <div class="liked-posts">
             <h3>いいねした投稿</h3>
             {% if liked_posts %}
@@ -68,6 +65,7 @@
                         <li><a href="{% url 'travelp:post_detail' pk=post.pk %}">{{ post.title }}</a></li>
                     {% endfor %}
                 </ul>
+                {% comment %} <a class="btn btn-primary mt-3" href="{% url 'travelp:liked_posts' user.id %}">いいねした投稿一覧を見る</a> {% endcomment %}
             {% else %}
                 <p>まだいいねした投稿はありません。</p>
             {% endif %}
@@ -82,6 +80,7 @@
                         <li><a href="{% url 'travelp:post_detail' pk=post.pk %}">{{ post.title }}</a></li>
                     {% endfor %}
                 </ul>
+                {% comment %} <a class="btn btn-primary mt-3" href="{% url 'travelp:commented_posts' user.id %}">コメントした投稿一覧を見る</a> {% endcomment %}
             {% else %}
                 <p>まだコメントした投稿はありません。</p>
             {% endif %}
