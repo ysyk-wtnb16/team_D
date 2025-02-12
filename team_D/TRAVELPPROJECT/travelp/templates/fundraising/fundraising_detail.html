@@ -12,7 +12,7 @@
     <p>{{ project.description }}</p>
     <p>目標金額: ¥{{ project.goal_amount|format_with_commas }}</p>
     <p>現在の集まった金額: ¥{{ project.raised_amount|format_with_commas }}</p>
-    {% comment %} <p>残りの金額: ¥{{ project.get_remaining_amount|format_with_commas }}</p> {% endcomment %}
+    <p>残りの金額: ¥{{ project.get_remaining_amount|format_with_commas }}</p>
     {% if request.user.is_staff %}
     {% else %}
     {% if fundraising.is_completed %}
@@ -22,7 +22,8 @@
     <form method="post" action="{% url 'travelp:donate' project.id %}">
         {% csrf_token %}
     <label for="amount">募金金額</label></br>
-    <input type="number" min="50" id="amount" name="amount" placeholder="入力してください" required>円<br><br>
+    {% comment %} <input type="number" min="50" id="amount" name="amount" placeholder="入力してください" required> {% endcomment %}
+    <h5>1000円</h5>
      
         <label for="message">応援メッセージ（任意）</label></br>
     <textarea id="message" name="message" rows="5" cols="50"></textarea><br><br>
@@ -33,10 +34,10 @@
     <input type="radio" id="card" name="payment" value="pcard" class="radiobutton" required>
     <label for="card">クレジットカード</label>
     </div>
-    <div>
+    {% comment %} <div>
     <input type="radio" id="bank" name="payment" value="pbank" class="radiobutton" required>
     <label for="bank">銀行振込</label>
-    </div>
+    </div> {% endcomment %}
     </fieldset><br>
      
         <div id="bank-transfer-info" style="display: none;">
@@ -47,7 +48,7 @@
      
     <form action="{% url 'travelp:create_checkout_session' project.id %}" method="POST">
         {% csrf_token %}
-    <button type="submit" id="stripe-button" style="display: none;" class="button">クレジットカードで支払う</button>
+    <button type="submit" id="stripe-button" style="display: none;" class="button">カード情報を入力</button>
     </form>
      
     {% endif %}
