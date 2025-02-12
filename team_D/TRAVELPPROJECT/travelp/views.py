@@ -404,6 +404,10 @@ def create_plan(request):
 def user_plans(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)  # ユーザーを取得
     plans = Plan.objects.filter(user=user)  # そのユーザーのプランを取得
+
+    for plan in plans:
+        # 各プランの中で一番古い投稿を取得
+        plan.thumbnail = plan.posts.order_by('created_at').first()
     return render(request, 'user_plans.html', {'user': user, 'plans': plans})
  
 @login_required
