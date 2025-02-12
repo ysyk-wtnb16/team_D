@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 # django.views.genericからTemplateView、ListViewをインポート
 from django.views.generic import TemplateView, ListView, DetailView,UpdateView, View
-from .models import Post,PostImage, Comment, Like, CustomUser,Plan 
+from .models import Post,PostImage, Comment, Like, CustomUser,Plan
 from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import models
@@ -20,27 +20,25 @@ class IndexView(ListView):
     queryset = Post.objects.order_by('-created_at')
     # 1ページに表示するレコードの件数
     paginate_by = 6
-
-    from django.shortcuts import render
-
+ 
 def post_list(request):
     posts = Post.objects.all().order_by('-created_at')  # 全投稿を取得（新しい順）
-    
+   
     # スタッフの募金投稿のみ取得
     staff_posts = Post.objects.filter(user__is_staff=True, fundraising__isnull=False).order_by('-created_at')
-    
+   
     final_posts = []
     staff_index = 0
     staff_count = staff_posts.count()
-
+ 
     for i, post in enumerate(posts):
         final_posts.append(post)
         if (i + 1) % 5 == 0 and staff_index < staff_count:
             final_posts.append(staff_posts[staff_index])
             staff_index += 1
-
+ 
     return render(request, 'posts_list.html', {'posts': final_posts})
-
+ 
 # 商品検索ビュー
 class SearchView(ListView):
     template_name = "search.html"
@@ -122,7 +120,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     form_class = PostCreateForm
     template_name = "post.html"
     success_url = reverse_lazy('travelp:post_done')
-
+ 
     def get_form_kwargs(self):
         """フォームに現在のユーザー情報を渡す"""
         kwargs = super().get_form_kwargs()
@@ -133,25 +131,25 @@ class PostCreateView(LoginRequiredMixin, CreateView):
             print("form_validが呼ばれた！")  # ここで確認
             postdata = form.save(commit=False)
             postdata.user = self.request.user
-    
+   
             # フォームからの緯度・経度取得
             lat = form.cleaned_data.get('latitude')
             lon = form.cleaned_data.get('longitude')
-    
+   
             # 緯度・経度を丸めて保存
             postdata.latitude = round(lat, 8) if lat else None  # 小数点以下6桁に丸める
             postdata.longitude = round(lon, 8) if lon else None  # 小数点以下9桁に丸める
-    
+   
             print("保存する緯度:", postdata.latitude)
             print("保存する経度:", postdata.longitude)
-    
+   
             postdata.save()
-    
+   
             # 画像を保存
             images = self.request.FILES.getlist('images')
             for image in images:
                 PostImage.objects.create(post=postdata, image=image)
-    
+   
             return super().form_valid(form)
  
    
@@ -185,13 +183,13 @@ class PostDetailView(DetailView):
  
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+ 
         # **この投稿を含むプランを取得**
         context['plans'] = Plan.objects.filter(posts=self.object)
-        
+       
         # **デバッグ: プランの数をログに出す**
         print(f"DEBUG: {self.object.title} を含むプラン数 → {context['plans'].count()}")
-
+ 
         post = self.object  # 現在表示されている投稿オブジェクトを取得
  
         context['comments'] = Comment.objects.filter(post=post)
@@ -205,16 +203,16 @@ class PostDetailView(DetailView):
    
     def post_detail(request, post_id):
         post = get_object_or_404(Post, id=post_id)
-
+ 
         # **イイネ or コメントがない場合はリダイレクト**
         if not (post.likes.filter(id=request.user.id).exists() or post.comments.filter(user=request.user).exists()):
             return redirect('some_other_page')
-
+ 
         # **この投稿が含まれる全てのプランを取得（どのユーザーのプランでもOK）**
         plans = Plan.objects.filter(posts=post)
-
+ 
         print(f"DEBUG: {post.title} を含むプラン数 → {plans.count()}")
-
+ 
         return render(request, 'post_detail.html', {'post': post, 'plans': plans})
        
 class PostLikeView(View):
@@ -257,6 +255,18 @@ def commented_posts(request, user_id):
     return render(request, 'travelp/commented_posts.html', {'user': user, 'commented_posts': commented_posts})
 
    
+ 
+def liked_posts(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    liked_posts = Post.objects.filter(likes=user)  # いいねした投稿を取得
+    return render(request, 'travelp/liked_posts.html', {'user': user, 'liked_posts': liked_posts})
+ 
+def commented_posts(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    commented_posts = Post.objects.filter(comments__user=user).distinct()  # コメントした投稿を取得
+    return render(request, 'travelp/commented_posts.html', {'user': user, 'commented_posts': commented_posts})
+ 
+   
 # コメントを削除
 class DeleteCommentView(View):
     @method_decorator(login_required)
@@ -266,14 +276,14 @@ class DeleteCommentView(View):
         if comment.user == request.user:
             comment.delete()
         return redirect('travelp:post_detail', pk=post_pk)
-
+ 
 def user_posts(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)  # ユーザーを取得
     posts = Post.objects.filter(user=user)  # そのユーザーの投稿を取得
     return render(request, 'user_posts.html', {'user': user, 'posts': posts})
-
-
-
+ 
+ 
+ 
 from django.core.paginator import Paginator
  
 @login_required
@@ -335,50 +345,50 @@ def plan_detail(request, plan_id):
         'post_locations': post_locations
     })
  
-
-
+ 
+ 
     return render(request, 'plan_detail.html', {'plan': plan})
-
-
+ 
+ 
 @login_required
 def save_plan(request):
     if request.method == "POST":
         plan_name = request.POST.get('plan_name')
         selected_post_ids = request.POST.getlist('selected_posts')
         selected_posts = Post.objects.filter(id__in=selected_post_ids)
-
+ 
         # プランを作成
         plan = Plan.objects.create(name=plan_name, user=request.user)
         plan.posts.add(*selected_posts)  # 選択した投稿をプランに追加
-
+ 
         return redirect('travelp:myplan', plan.pk)
-
+ 
     return redirect('travelp:mypost')
-
+ 
 def create_plan(request):
     if request.method == 'POST':
         # 選択された投稿を取得
         selected_posts = request.POST.getlist('selected_posts')  # 複数の投稿IDを取得
-        
+       
         # Planの作成
         plan = Plan.objects.create(user=request.user)
-        
+       
         # 投稿をプランに関連付ける
         for post_id in selected_posts:
             post = Post.objects.get(pk=post_id)
             plan.posts.add(post)  # `posts` は Plan モデルで定義された ManyToMany フィールド
-        
+       
         return redirect('travelp:myplan', plan_id=plan.id)  # 作成したプランページにリダイレクト
-    
+   
     return redirect('travelp:mypost')  # GETリクエストの場合は自分の投稿ページにリダイレクト
-
-
-
+ 
+ 
+ 
 def user_plans(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)  # ユーザーを取得
     plans = Plan.objects.filter(user=user)  # そのユーザーのプランを取得
     return render(request, 'user_plans.html', {'user': user, 'plans': plans})
-
+ 
 @login_required
 def delete_plan(request, plan_id):
     """プランを削除"""
@@ -507,16 +517,16 @@ def fundraising_delete(request, pk):
         return redirect('travelp:fundraising_list')
    
     return redirect('travelp:fundraising_detail', pk=pk)
-
-
-
+ 
+ 
+ 
 import stripe
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from travelp.models import FundraisingProject  # 募金プロジェクトのモデル
-
+ 
  
 stripe.api_key = settings.STRIPE_SECRET_KEY
  
@@ -543,7 +553,7 @@ def create_checkout_session(request, pk):
     )
  
     return redirect(session.url, code=303)
-
+ 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, FormView
 from django.urls import reverse_lazy
@@ -559,9 +569,9 @@ from django.db.models import Q
 from django.contrib import messages
 from .models import Fundraising, Donation
 from .forms import DonationForm
-
+ 
 # その他のビュー...
-
+ 
 def donate(request, pk):
     project = get_object_or_404(Fundraising, pk=pk)
  
