@@ -13,7 +13,7 @@
         <h2>{{ project.title }}</h2>
         <p>{{ project.description }}</p>
         <p>目標金額: ¥{{ project.goal_amount|format_with_commas }} / 現在の集まった金額: ¥{{ project.raised_amount|format_with_commas }}</p>
-        <p>残り金額: ¥{{ project.get_remaining_amount|format_wiproject.idth_commas }}</p>
+        {% comment %} <p>残り金額: ¥{{ project.get_remaining_amount|format_wiproject.idth_commas }}</p> {% endcomment %}
         <a href="{% url 'travelp:fundraising_detail'  %}">詳細を見る</a>
         </a>
       </li>
