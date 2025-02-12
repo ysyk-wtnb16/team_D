@@ -9,7 +9,7 @@
     <h1>{{ project.title }}</h1>
     <p>{{ project.description }}</p>
     <p>目標金額: ¥{{ project.goal_amount }}</p>
-    <p>現在の募金額: ¥{{ project.raised_amount }}</p>
+    {% comment %} <p>現在の募金額: ¥{{ project.raised_amount }}</p> {% endcomment %}
     <p>残り金額: ¥{{ project.get_remaining_amount }}</p>
 
     <h2>募金する</h2>
