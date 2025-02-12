@@ -1,18 +1,26 @@
-from django.shortcuts import render,redirect, get_object_or_404
-from django.views.generic import CreateView,FormView
-from django.urls import reverse_lazy
-from .forms import ProfileEditForm,PostCreateForm,CommentForm
-# method_decoratorをインポート
-from django.utils.decorators import method_decorator
-# login_requiredをインポート
-from django.contrib.auth.decorators import login_required
-# django.views.genericからTemplateView、ListViewをインポート
-from django.views.generic import TemplateView, ListView, DetailView,UpdateView, View
-from .models import Post,PostImage, Comment, Like, CustomUser,Plan
+# Django standard imports
+from django.core.paginator import Paginator
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.http import JsonResponse
-from django.contrib.auth.mixins import LoginRequiredMixin
-from . import models
 from django.db.models import Q
+from django.contrib import messages
+from django.conf import settings
+from django.views.generic import TemplateView, ListView, DetailView, UpdateView, CreateView, FormView, View
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
+from .forms import ProfileEditForm, PostCreateForm, CommentForm, DonationForm, FundraisingForm
+from .models import Post, PostImage, Comment, Like, CustomUser, Plan, Fundraising, Donation
+from . import models
+
+# Stripe API
+import stripe
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
  
 class IndexView(ListView):
     template_name = 'index.html'
@@ -242,19 +250,6 @@ class AddCommentView(View):
         comment_text = request.POST.get('comment')
         Comment.objects.create(user=request.user, post=post, text=comment_text)
         return redirect('travelp:post_detail', pk=post_pk)
-    
-
-def liked_posts(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
-    liked_posts = Post.objects.filter(likes=user)  # いいねした投稿を取得
-    return render(request, 'travelp/liked_posts.html', {'user': user, 'liked_posts': liked_posts})
-
-def commented_posts(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
-    commented_posts = Post.objects.filter(comments__user=user).distinct()  # コメントした投稿を取得
-    return render(request, 'travelp/commented_posts.html', {'user': user, 'commented_posts': commented_posts})
-
-   
  
 def liked_posts(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
@@ -283,8 +278,6 @@ def user_posts(request, user_id):
     return render(request, 'user_posts.html', {'user': user, 'posts': posts})
  
  
- 
-from django.core.paginator import Paginator
  
 @login_required
 def mypost(request):
@@ -346,10 +339,6 @@ def plan_detail(request, plan_id):
     })
  
  
- 
-    return render(request, 'plan_detail.html', {'plan': plan})
- 
- 
 @login_required
 def save_plan(request):
     if request.method == "POST":
@@ -396,12 +385,7 @@ def delete_plan(request, plan_id):
     plan.delete()
     return redirect('travelp:myplan')  # 削除後にプラン一覧へリダイレクト
  
- 
-# 募金機能
-from django.shortcuts import render
-from .models import Fundraising, Donation
-from .forms import DonationForm
-from django.contrib import messages
+
  
 def fundraising_list(request):
     fundraising_projects = Fundraising.objects.all()
@@ -484,12 +468,7 @@ def donation_detail(request, pk):
     donation = get_object_or_404(Donation, pk=pk)
     return render(request, 'fundraising/donation_detail.html', {'donation': donation})
  
-# 市役所
-# 募金プロジェクト作成
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .forms import FundraisingForm
-from .models import Fundraising
+
  
 @login_required
 def create_fundraising(request):
@@ -519,17 +498,6 @@ def fundraising_delete(request, pk):
     return redirect('travelp:fundraising_detail', pk=pk)
  
  
- 
-import stripe
-from django.conf import settings
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
-from travelp.models import FundraisingProject  # 募金プロジェクトのモデル
- 
- 
-stripe.api_key = settings.STRIPE_SECRET_KEY
- 
 @csrf_exempt
 def create_checkout_session(request, pk):
     project = get_object_or_404(Fundraising, id=pk)
@@ -553,24 +521,7 @@ def create_checkout_session(request, pk):
     )
  
     return redirect(session.url, code=303)
- 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import CreateView, FormView
-from django.urls import reverse_lazy
-from .forms import ProfileEditForm, PostCreateForm, CommentForm
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView, ListView, DetailView, UpdateView, View
-from .models import Post, PostImage, Comment, Like, CustomUser
-from django.http import JsonResponse
-from django.contrib.auth.mixins import LoginRequiredMixin
-from . import models
-from django.db.models import Q
-from django.contrib import messages
-from .models import Fundraising, Donation
-from .forms import DonationForm
- 
-# その他のビュー...
+
  
 def donate(request, pk):
     project = get_object_or_404(Fundraising, pk=pk)

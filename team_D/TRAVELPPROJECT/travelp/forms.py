@@ -1,7 +1,7 @@
-from django.forms import ModelForm
-from .models import CustomUser, Post, PostImage, Comment, Donation
 from django import forms
- 
+from django.forms import ModelForm
+from .models import CustomUser, Post, PostImage, Comment, Donation, Fundraising
+
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = CustomUser
@@ -9,9 +9,6 @@ class ProfileEditForm(forms.ModelForm):
         widgets = {
             'profile_description': forms.Textarea(attrs={'rows': 3, 'cols': 40}),
         }
- 
-from django import forms
-from .models import Post, Fundraising
 
 class PostCreateForm(forms.ModelForm):
     class Meta:
@@ -28,28 +25,22 @@ class PostCreateForm(forms.ModelForm):
             self.fields['fundraising'].queryset = Fundraising.objects.all()
             self.fields['fundraising'].required = True
 
- 
 class PostImageForm(forms.ModelForm):
     class Meta:
         model = PostImage
         fields = ['image']
- 
- 
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['text']
- 
-# 募金機能
+
 class DonationForm(forms.ModelForm):
     class Meta:
         model = Donation
         fields = ['amount']
-        # amount = forms.IntegerField(label="募金額", min_value=1、max_digits=10)
- 
-# 市役所
-# 募金プロジェクト作成
-from .models import Fundraising
+        # amount = forms.IntegerField(label="募金額", min_value=1, max_digits=10)
+
 class FundraisingForm(forms.ModelForm):
     class Meta:
         model = Fundraising
@@ -59,15 +50,12 @@ class FundraisingForm(forms.ModelForm):
             'description': '説　　明',
             'goal_amount': '目標金額',
         }
- 
+
     def clean_goal_amount(self):
         goal_amount = self.cleaned_data.get('goal_amount')
         if goal_amount is not None and goal_amount <= 0:
             raise forms.ValidationError("目標金額は1円以上にしてください。")
         return goal_amount
-    
 
-from django import forms
- 
 class PaymentForm(forms.Form):
     amount = forms.IntegerField(min_value=1, label="Amount", required=True)
