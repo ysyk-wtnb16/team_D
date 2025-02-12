@@ -84,7 +84,7 @@ class Post(models.Model):
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     caption = models.TextField(verbose_name='場所', blank=True)
-    fundraising = models.BooleanField(default=False)
+    fundraising = models.ForeignKey(Fundraising, null=True, blank=True, on_delete=models.SET_NULL)
     latitude = models.DecimalField(max_digits=15, decimal_places=11, null=True, blank=True)  # 緯度
     longitude = models.DecimalField(max_digits=15, decimal_places=11, null=True, blank=True)  # 経度
  

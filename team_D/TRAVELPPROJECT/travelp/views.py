@@ -211,6 +211,8 @@ class PostDetailView(DetailView):
    
     def post_detail(request, post_id):
         post = get_object_or_404(Post, id=post_id)
+
+        fundraising = get_object_or_404(Fundraising, post=post)  # 投稿に関連する募金プロジェクト
  
         # **イイネ or コメントがない場合はリダイレクト**
         if not (post.likes.filter(id=request.user.id).exists() or post.comments.filter(user=request.user).exists()):
@@ -220,9 +222,35 @@ class PostDetailView(DetailView):
         plans = Plan.objects.filter(posts=post)
  
         print(f"DEBUG: {post.title} を含むプラン数 → {plans.count()}")
+        
+        return render(request, 'post_detail.html', {'post': post, 'plans': plans, 'fundraising': fundraising})
+        
+    def fundraising_detail(request, pk):
+        project = get_object_or_404(Fundraising, pk=pk)
+        donations = project.donations.all().order_by('-date')  # 新しい順に募金履歴を取得
+    
+        if request.method == "POST":
+            form = DonationForm(request.POST)
+            if form.is_valid():
+                donation = form.save(commit=False)
+                donation.project = project  # どの募金プロジェクトへの募金か設定
+                donation.donor = request.user  # 現在のユーザーを募金者として設定
+                donation.save()  # 保存
+    
+                return redirect('travelp:fundraising_detail', pk=project.pk)  # ページを再読み込み
+    
+        else:
+            form = DonationForm()
+    
+        return render(request, 'fundraising/fundraising_detail.html', {
+            'project': project,
+            'donations': donations,
+            'form': form,  # フォームをテンプレートに渡す
+        })
+    
  
-        return render(request, 'post_detail.html', {'post': post, 'plans': plans})
-       
+
+
 class PostLikeView(View):
     @method_decorator(login_required)
     def post(self, request, post_pk):
