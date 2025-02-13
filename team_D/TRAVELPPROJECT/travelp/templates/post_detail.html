@@ -22,6 +22,7 @@
     {% endif %}
   {% endif %}
 
+  {% if user.is_authenticated %}
   {% if plans %}
     <h3>この投稿が含まれるプラン</h3>
     <ul>
@@ -32,8 +33,11 @@
       {% endfor %}
     </ul>
   {% else %}
+    <h3>この投稿が含まれるプラン</h3>
     <p>この投稿を含むプランはありません。</p>
   {% endif %}
+{% endif %}
+
  
   <!-- メイン画像 -->
   <div style="position: relative;">
