@@ -78,71 +78,39 @@ def delete_account(request):
     return render(request, 'delete_account.html')  # GETリクエスト時は確認ページを表示
 
 
-def password_change_view(request):
-   if request.method == "POST":
-       username = request.POST.get('username')
-       new_password = request.POST.get('new_password')
-       try:
-           user = User.objects.get(username=username)  # ユーザーを取得
-           user.set_password(new_password)  # 新しいパスワードを設定
-           user.save()
-           messages.success(request, "パスワードが変更されました！")
-           return redirect('password_change_done')  # 完了ページへリダイレクト
-       except User.DoesNotExist:
-           messages.error(request, "そのユーザー名は存在しません。")
-   return render(request, 'password_change.html')  # パスワード変更フォームを描画
-def password_change_done_view(request):
-   return render(request, 'password_change_done.html')  # 完了メッセージを表示
-from django.contrib.auth import get_user_model
-
-from django.contrib import messages
-
-from django.shortcuts import render, redirect
-
-# 現在のユーザーモデルを取得
-
-# カスタムユーザーのモデルを取得
-User = get_user_model()
-def password_change_view(request):
-   if request.method == 'POST':
-       username = request.POST.get('username')
-       new_password = request.POST.get('new_password')
-       if len(new_password) < 8:  # パスワードが8文字以下の場合
-           messages.error(request, "パスワードは8文字以上である必要があります。")
-           return redirect('accounts:password_change')
-       try:
-           user = User.objects.get(username=username)
-           if not user:  #ユーザーが見つからない場合の処理
-               messages.error(request, "ユーザーが見つかりません。")
-               return redirect('accounts:password_change')
-           user.set_password(new_password)
-           user.save()
-           messages.success(request, "パスワードが変更されました！")
-           return redirect('accounts:password_change_done')
-       except User.DoesNotExist:
-           messages.error(request, "そのユーザー名は存在しません。")
-           return redirect('travelp:password_change')
-   return render(request, 'password_change.html')
 
 
-def password_change_done_view(request):
-    return render(request, 'password_change_done.html')
 
-
-class PasswordResetView(PasswordResetView):
-    template_name = 'password_reset.html'
-    email_template_name = 'password_reset_email.html'
-    subject_template_name = 'password_reset_subject.txt'
-    success_url = reverse_lazy('accounts:password_reset_done')
-# パスワードリセット完了ビュー
-class PasswordResetDoneView(TemplateView):
-    template_name = 'password_reset_done.html'
-
-# パスワードリセット確認（メール内のリンクをクリック後）
-class PasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'password_reset_form.html'
-    success_url = reverse_lazy('travelp:password_reset_complete')
-
-# パスワードリセット完了後のビュー
-class PasswordResetCompleteView(PasswordResetCompleteView):
-    template_name = 'password_reset_complete.html'
+from django.contrib.auth.views import PasswordResetView as AuthPasswordResetView
+from .forms import PasswordResetForm
+ 
+ 
+# パスワードリセットビュー
+class PasswordResetView(AuthPasswordResetView):
+    template_name = "accounts/password_reset.html"
+    form_class = PasswordResetForm
+    success_url = reverse_lazy("accounts:password_reset_done")
+    # メールのテンプレート
+    email_template_name = "accounts/password_reset_email.html"
+ 
+ 
+from django.contrib.auth.views import (
+    PasswordResetConfirmView as AuthPasswordResetConfirmView,
+)
+from django.contrib.auth.forms import SetPasswordForm as AuthSetPasswordForm
+ 
+ 
+# パスワードリセット新パスワード入力ビュー
+class PasswordResetConfirmView(AuthPasswordResetConfirmView):
+    # 内部クラス...このクラス(PasswordResetConfimView)だけが使えるクラス
+    class SetPasswordForm(AuthSetPasswordForm):
+        error_messages = {"password_mismatch": "パスワードが一致しません"}
+ 
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields["new_password1"].widget.attrs["class"] = "form-control ms-5"
+            self.fields["new_password2"].widget.attrs["class"] = "form-control ms-5"
+ 
+    template_name = "accounts/password_reset_form.html"
+    form_class = SetPasswordForm
+    success_url = reverse_lazy("accounts:password_reset_form_done")

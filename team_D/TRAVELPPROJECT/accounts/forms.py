@@ -43,3 +43,10 @@ class CustomPasswordChangeForm(PasswordChangeForm):
        if len(new_password) < 8:
           raise ValidationError("パスワードは8文字以上である必要があります。")
        return new_password
+   
+from django.contrib.auth.forms import PasswordResetForm as AuthPasswordResetForm
+class PasswordResetForm(AuthPasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+ 
+        self.fields["email"].widget.attrs["class"] = "form-control ms-5"

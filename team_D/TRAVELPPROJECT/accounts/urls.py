@@ -1,7 +1,8 @@
 from django.urls import path
+from . import views
 from .views import (
-    SignUpView, SignUpSuccessView, LoginView, logout_view,
-    delete_account, password_change_view, password_change_done_view,
+    TemplateView,SignUpView, SignUpSuccessView, LoginView, logout_view,
+    delete_account, 
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
 
@@ -21,13 +22,29 @@ urlpatterns = [
     # アカウント削除
     path('delete_account/', delete_account, name='delete_account'),
     
-    # パスワード変更
-    path('password_change/', password_change_view, name='password_change'),
-    path('password_change_done/', password_change_done_view, name='password_change_done'),
-
-    # パスワードリセット関連
-    path('password_reset/', PasswordResetView.as_view(), name='password_reset'),
-    path('password_reset_done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+ # パスワードリセット:password_reset
+    path(
+        "password_reset",views.PasswordResetView.as_view(),
+        name="password_reset",
+    ),
+ 
+    # パスワードリセット送信完了:password_reset_done
+    path(
+        "password_reset_done",TemplateView.as_view(template_name="accounts/password_reset_done.html"),
+        name="password_reset_done",
+    ),
+ 
+    # パスワードリセットフォーム:password_reset_form
+    path(
+        "password_reset_form/<uidb64>/<token>",
+        views.PasswordResetConfirmView.as_view(),
+        name="password_reset_form",
+    ),
+ 
+    # パスワードリセット完了:password_reset_form_done
+    path(
+        "password_reset_form_done",
+        TemplateView.as_view(template_name="accounts/password_reset_form_done.html"),
+        name="password_reset_form_done",
+    ),
 ]
