@@ -44,13 +44,6 @@
     </form>
  
     <script>
-      document.getElementById('plan-form').addEventListener('submit', function(event) {
-        const selectedPosts = document.querySelectorAll('input[name="selected_posts"]:checked');
-        if (selectedPosts.length === 0) {
-          event.preventDefault();
-          alert('少なくとも1つの投稿を選択してください。');
-        }
-      });
 
       document.addEventListener("DOMContentLoaded", function () {
         const selectedPostsKey = "selectedPosts";

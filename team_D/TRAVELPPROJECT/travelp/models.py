@@ -56,28 +56,6 @@ class Donation(models.Model):
         ordering = ['-date']
 
 
-
-# class Post(models.Model):
-#     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)    
-#     title = models.CharField(max_length=200)
-#     comment = models.TextField()
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     caption = models.TextField(verbose_name='場所', blank=True)
-#     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)  # 緯度
-#     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)  # 経度
-#     fundraising = models.ForeignKey(Fundraising, null=True, blank=True, on_delete=models.SET_NULL)
-
-#     def __str__(self):
-#         return f"{self.user.username} - {self.title}"
-
-#     def like_count(self):
-#         return self.likes.count()  # 投稿に対する「いいね」の数を返す
-
-#     def liked_by_user(self, user):
-#         """投稿にユーザーがいいねをしているか確認する"""
-#         return self.likes.filter(user=user).exists()
-
-
 class Post(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)    
     title = models.CharField(max_length=200)
