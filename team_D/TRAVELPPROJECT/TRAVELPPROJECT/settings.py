@@ -180,8 +180,15 @@ STRIPE_PUBLIC_KEY = "pk_test_51QnCXI2Nxfmaq9ljdf4mDAqOqbzBCH0fkLDhKKW8ZazsgGslVd
 STRIPE_SECRET_KEY = "sk_test_51QnCXI2Nxfmaq9ljQkrII49KgKQzzd4bBDLqnReA0gd88nQm0vtuqce5EPDNHwjTIk6gcwqSThncNnhnPW67i6Tn00V88Mu5r7" # シークレットキー
  
 
-# メールバックエンド設定（デバッグ環境ではコンソールに出力されます）
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # 開発環境用。プロダクションでは他のバックエンドを使用する
-
+# 送信メールをターミナルに表示する設定（デバッグ用）
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ 
+# メール送信に使うアカウント情報
+DEFAULT_FROM_EMAIL = os.environ['EMAIL_ADDRESS']  # メールの送信元のアドレスを入力
+EMAIL_HOST = 'smtp-mail.outlook.com'            # Office365のSMTPサーバー　　　
+EMAIL_PORT = 587                         # SMTPサーバーのポート番号
+EMAIL_HOST_USER = os.environ['EMAIL_ADDRESS']     # Office365のアドレスを入力
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD'] # Office365のパスワードを入力
+EMAIL_USE_TLS = True # SMTP サーバと通信する際に TLS (セキュア) 接続を使う
 # メール送信者のアドレス
 DEFAULT_FROM_EMAIL = 'webmaster@localhost'
